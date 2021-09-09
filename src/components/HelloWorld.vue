@@ -76,7 +76,7 @@
           href="https://github.com/vuejs/awesome-vue"
           target="_blank"
         >
-          awesome-vue
+          awesome-vue <font-awesome-icon icon="user-secret" />
         </a>
       </li>
     </ul>
