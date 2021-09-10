@@ -53,7 +53,7 @@ npm run build
 
 ![스크린샷 2021-09-09 오후 11 59 47](https://user-images.githubusercontent.com/16532326/132710797-63f2e67e-e579-40ee-9833-3fc6432aa437.png)
 
-`selenium` 활용 크롬브라우저로 테스트 진행
+`selenium` 활용 크롬브라우저로 테스트 진행 (`nightwatchjs` 사용)
 
 ```bash
 npm run test
