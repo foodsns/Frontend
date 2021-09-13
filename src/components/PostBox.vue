@@ -1,6 +1,18 @@
 <template>
   <div id="postbox">
-    <h1>{{ msg }}</h1>
+    <img />
+    <div>
+        <h3></h3>
+        <pre></pre>
+        <div></div>
+        <hr>
+        <div>
+            <img />
+            <span>by <span>stories2</span></span>
+            <font-awesome-icon icon="heart" />
+            <span>105</span>
+        </div>
+    </div>
   </div>
 </template>
 
