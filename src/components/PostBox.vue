@@ -41,8 +41,10 @@ export default {
   },
   computed: {
       cutDescript: function () {
-          if (this.postItem.descript.length >= 200) {
+          if (this.postItem && this.postItem.descript && this.postItem.descript.length >= 200) {
               return `${this.postItem.descript.slice(0, 197)}...`
+          } else if (this.postItem && !this.postItem.descript) {
+              return '본문이 비어있습니다.'
           }
           return this.postItem.descript
       }
