@@ -44,7 +44,9 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
 
 // Make BootstrapVue available throughout your project
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue, {
+  breakpoints: [`xs`, 'sm', 'md', 'lg', 'xl', 'xxl']
+})
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
