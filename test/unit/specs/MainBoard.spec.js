@@ -88,6 +88,8 @@ describe('MainBoard.vue', () => {
           }
         ]
     })
-    expect(mainBoard.vm.$el.querySelectorAll('post-box').length).toEqual(8)
+    .then(() => {
+        expect(mainBoard.vm.$el.querySelectorAll('post-box').length).toEqual(8)
+    })
   })
 })
