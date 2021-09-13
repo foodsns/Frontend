@@ -86,7 +86,7 @@ p {
     overflow:hidden;
     text-overflow:ellipsis;
     overflow-wrap: break-word;
-    word-break: break-word;
+    word-break: break-all;
 }
 
 h4 {
