@@ -56,7 +56,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #postbox {
-    width: 300px;
+    width: 100%;
     margin: 5px;
     border-radius: 10px;
     background-color: white;
