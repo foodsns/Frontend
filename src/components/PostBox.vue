@@ -1,6 +1,6 @@
 <template>
   <div id="postbox">
-    <div class="thumbnail-img"></div>
+    <div class="thumbnail-img" v-bind:style="{ backgroundImage: 'url(' + postItem.img + ')'}"></div>
     <div>
         <h4>{{postItem.title}}</h4>
         <p>{{ cutDescript }}</p>
@@ -29,7 +29,8 @@ export default {
                   date: '----년 --월 --일',
                   profileImg: '../assets/logo.png',
                   writer: 'unknown',
-                  good: 0
+                  good: 0,
+                  img: '../assets/logo.png'
               }
           }
       }
