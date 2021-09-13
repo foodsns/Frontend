@@ -60,10 +60,13 @@ export default {
     margin: 5px;
     border-radius: 10px;
     background-color: white;
-    padding: 0 5px 5px;
+    padding: 0 0px 5px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     transition: .4s;
     text-align: left;
+}
+#postbox div {
+    padding: 5px 5px;
 }
 #postbox:hover {
     transform: translate(0, -30px);
@@ -75,6 +78,7 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    border-radius: 10px 10px 0 0;
 }
 .profile-img {
     width: 32px;
