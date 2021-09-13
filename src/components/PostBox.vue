@@ -1,16 +1,15 @@
 <template>
-  <div id="mainboard">
+  <div id="postbox">
     <h1>{{ msg }}</h1>
-    <post-box></post-box>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MainBoard',
+  name: 'postbox',
   data () {
     return {
-        msg: 'hello world'
+        msg: 'post box component'
     }
   }
 }
