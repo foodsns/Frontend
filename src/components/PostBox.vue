@@ -37,6 +37,7 @@ export default {
     padding: 0 5px 5px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     transition: .4s;
+    text-align: left;
 }
 #postbox:hover {
     transform: translate(0, -30px);
@@ -61,15 +62,9 @@ p {
     text-overflow:ellipsis;
     overflow-wrap: break-word;
     word-break: break-word;
-    text-align: left;
-}
-
-h4 {
-    text-align: left;
 }
 
 .text-date {
-    text-align: left;
     font-size: 0.9em;
 }
 
@@ -80,7 +75,6 @@ h4 {
 
 .writer {
     flex-grow: 1;
-    text-align: left;
 }
 
 .writer .bold {
