@@ -2,15 +2,15 @@
   <div id="postbox">
     <div class="thumbnail-img"></div>
     <div>
-        <h4>This is title</h4>
-        <p>This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.</p>
-        <div class="text-date">2021년 9월 4일</div>
+        <h4>{{postItem.title}}</h4>
+        <p>{{ cutDescript }}</p>
+        <div class="text-date">{{postItem.date}}</div>
         <hr>
         <div class="footer">
-            <img class="profile-img" src="../assets/logo.png"/>
-            <span class="writer">by <span class="bold">stories2</span></span>
+            <img class="profile-img" :src="postItem.profileImg"/>
+            <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <font-awesome-icon icon="heart" class="gap_margin_5px_horizontal"/>
-            <span class="gap_margin_5px_horizontal">105</span>
+            <span class="gap_margin_5px_horizontal">{{postItem.good}}</span>
         </div>
     </div>
   </div>
@@ -19,10 +19,33 @@
 <script>
 export default {
   name: 'postbox',
+  props: {
+      post: {
+          type: Object,
+          default: function () {
+              return {
+                  title: 'Undefined',
+                  descript: 'This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.',
+                  date: '----년 --월 --일',
+                  profileImg: '../assets/logo.png',
+                  writer: 'unknown',
+                  good: 0
+              }
+          }
+      }
+  },
   data () {
     return {
-        msg: 'post box component'
+        postItem: this.post
     }
+  },
+  computed: {
+      cutDescript: function () {
+          if (this.postItem.descript.length >= 200) {
+              return `${this.postItem.descript.slice(0, 197)}...`
+          }
+          return this.postItem.descript
+      }
   }
 }
 </script>
@@ -64,6 +87,12 @@ p {
     word-break: break-word;
 }
 
+h4 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .text-date {
     font-size: 0.9em;
 }
@@ -75,6 +104,10 @@ p {
 
 .writer {
     flex-grow: 1;
+    margin-left: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .writer .bold {
