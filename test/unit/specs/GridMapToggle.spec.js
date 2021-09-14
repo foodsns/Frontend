@@ -33,12 +33,12 @@ describe('GridMapToggle.vue', () => {
         expect(gridMapToggle.vm.currentMode).toBe('grid')
     })
 
-    it('If insert unexpected value it should be chage to [map]', () => {
+    it('If insert unexpected value it should be chage to [grid]', () => {
         const gridMapToggle = factory({
-            mode: 'grid'
+            mode: 'map'
         })
-        expect(gridMapToggle.vm.currentMode).toBe('grid')
-        gridMapToggle.vm.toggleMode('unexpected')
         expect(gridMapToggle.vm.currentMode).toBe('map')
+        gridMapToggle.vm.toggleMode('unexpected')
+        expect(gridMapToggle.vm.currentMode).toBe('grid')
     })
 })
