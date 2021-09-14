@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faHeart, faMap, faTh } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Import the functions you need from the SDKs you need
@@ -20,6 +20,7 @@ import { getAnalytics } from 'firebase/analytics'
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import PostBox from './components/PostBox'
+import GridMapToggle from './components/GridMapToggle'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -39,9 +40,12 @@ getAnalytics(app)
 
 library.add(faUserSecret)
 library.add(faHeart)
+library.add(faMap)
+library.add(faTh)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
+Vue.component('grid-map-toggle', GridMapToggle)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {

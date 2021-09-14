@@ -2,6 +2,13 @@
   <div id="mainboard">
     <b-container >
       <b-row>
+        <b-col cols="6">
+        </b-col>
+        <b-col cols="6" class="toggle-btn">
+          <grid-map-toggle @current-mode="onViewModeChanged" :mode="'grid'"></grid-map-toggle>
+        </b-col>
+      </b-row>
+      <b-row>
         <b-col xxl="3" xl="4" lg="6" cols="12" class="b-col" v-for="(post, index) in postList" :key="index">
           <post-box v-bind:post="post" class="post-item"></post-box>
         </b-col>
@@ -91,6 +98,11 @@ export default {
           }
         ]
     }
+  },
+  methods: {
+      onViewModeChanged: function (mode) {
+        console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
+      }
   }
 }
 </script>
@@ -106,13 +118,8 @@ export default {
   display: inline-block;
   width: auto;
 }
-/*
-@media (min-width: 1440px) {
-  .b-col {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 auto;
-    flex: 0 0 auto;
-    width: 25%;
-  }
-}*/
+
+.toggle-btn {
+  text-align: right;
+}
 </style>
