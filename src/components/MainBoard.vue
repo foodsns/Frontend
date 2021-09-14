@@ -5,7 +5,7 @@
         <b-col cols="6">
         </b-col>
         <b-col cols="6" class="toggle-btn">
-          <grid-map-toggle></grid-map-toggle>
+          <grid-map-toggle @current-mode="onViewModeChanged"></grid-map-toggle>
         </b-col>
       </b-row>
       <b-row>
@@ -98,6 +98,11 @@ export default {
           }
         ]
     }
+  },
+  methods: {
+      onViewModeChanged: function (mode) {
+        console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
+      }
   }
 }
 </script>
