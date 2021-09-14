@@ -14,6 +14,7 @@
         </b-col>
       </b-row>
     </b-container>
+    <b-button class = "random-btn" pill variant="outline-danger">랜덤선택</b-button>
   </div>
 </template>
 
@@ -121,5 +122,14 @@ export default {
 
 .toggle-btn {
   text-align: right;
+}
+
+.random-btn{
+  position : fixed;
+  bottom : 30px;
+  right : 30px;
+  width : 90px;
+  height : 90px;
+  border-radius : 100px;
 }
 </style>
