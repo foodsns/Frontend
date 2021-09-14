@@ -14,9 +14,10 @@
 <script>
 export default {
     name: 'GridMapToggle',
+    props: ['mode'],
     data () {
         return {
-            currentMode: 'grid'
+            currentMode: this.mode
         }
     },
     methods: {
