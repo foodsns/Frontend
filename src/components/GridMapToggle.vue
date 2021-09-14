@@ -22,7 +22,7 @@ export default {
     },
     methods: {
         toggleMode: function (mode) {
-            if (mode !== 'grid' || mode !== 'map') {
+            if (mode !== 'grid' && mode !== 'map') {
                 mode = 'grid'
             }
             this.currentMode = mode

@@ -40,5 +40,8 @@ describe('GridMapToggle.vue', () => {
         expect(gridMapToggle.vm.currentMode).toBe('map')
         gridMapToggle.vm.toggleMode('unexpected')
         expect(gridMapToggle.vm.currentMode).toBe('grid')
+
+        gridMapToggle.vm.toggleMode('map')
+        expect(gridMapToggle.vm.currentMode).toBe('map')
     })
 })
