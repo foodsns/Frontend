@@ -1,10 +1,10 @@
 <template>
   <div>
     <b-button-group>
-      <b-button :variant="currentMode == 'grid' ? 'warning' : ''" v-on:click="currentMode = 'grid'">
+      <b-button :variant="currentMode == 'grid' ? 'warning' : ''" v-on:click="toggleMode('grid')">
         <font-awesome-icon icon="th"/>
       </b-button>
-      <b-button :variant="currentMode == 'grid' ? '' : 'warning'" v-on:click="currentMode = 'map'">
+      <b-button :variant="currentMode == 'grid' ? '' : 'warning'" v-on:click="toggleMode('map')">
         <font-awesome-icon icon="map" />
       </b-button>
     </b-button-group>
@@ -17,6 +17,12 @@ export default {
     data () {
         return {
             currentMode: 'grid'
+        }
+    },
+    methods: {
+        toggleMode: function (mode) {
+            this.currentMode = mode
+            this.$emit('current-mode', this.currentMode)
         }
     }
 }
