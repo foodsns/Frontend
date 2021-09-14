@@ -3,6 +3,7 @@
     <b-container >
       <b-row>
         <b-col cols="6">
+          <scrollbar></scrollbar>
         </b-col>
         <b-col cols="6" class="toggle-btn">
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="'grid'"></grid-map-toggle>
@@ -18,7 +19,9 @@
 </template>
 
 <script>
+import Scrollbar from './Scrollbar.vue'
 export default {
+  components: { Scrollbar },
   name: 'MainBoard',
   data () {
     return {

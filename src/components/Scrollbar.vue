@@ -1,5 +1,5 @@
 <template>
-    <div class = "Scrollbar">
+    <div id = "scrollbar">
         <form>
             거리조절:
             <input type="range" min="0" max="100" list="tmeperatures">
@@ -11,3 +11,12 @@
         </form>
     </div>
 </template>
+
+<script>
+export default {
+    name: 'scrollbar'
+}
+</script>
+
+<style scoped>
+</style>
