@@ -115,7 +115,11 @@ export default {
         ]
     }
   },
-  
+  methods: {
+    onViewModeChanged: function (mode) {
+      console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
+    }
+  }
 }
 </script>
 
@@ -137,6 +141,4 @@ export default {
 .toggle-btn {
   text-align: right;
 }
-
-
 </style>

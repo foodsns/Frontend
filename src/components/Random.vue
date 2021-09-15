@@ -8,15 +8,11 @@
 export default {
     name: 'random-btn',
     methods: {
-      onViewModeChanged: function (mode) {
-        console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
-      },
       greet: function (event) {
         /// TODO: https://bootstrap-vue.org/docs/components/modal
         alert('랜덤 결과 창')
       }
   }
-    
 }
 </script>
 
