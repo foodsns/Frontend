@@ -4,7 +4,7 @@
         <b-row align-v="center" align-h="center">
             <b-col cols="12" md="8" lg="5" xl="4" xxl="4" align-self="center">
                 <b-card title="로그인 / 회원가입" sub-title="아래 SNS 인증을 통해 로그인 하세요.">
-                    <b-button variant="outline-danger"><font-awesome-icon :icon="['fab', 'google']" /> Google Sign in / up</b-button>
+                    <google-sign></google-sign>
                 </b-card>
             </b-col>
         </b-row>
