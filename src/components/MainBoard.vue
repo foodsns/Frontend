@@ -7,11 +7,17 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="6">
+        <b-col cols="6" style="text-align: left">
           <scrollbar></scrollbar>
         </b-col>
         <b-col cols="6" class="toggle-btn">
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="'grid'"></grid-map-toggle>
+        </b-col>
+      </b-row>
+      <b-row align-h="center">
+        <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px">
+          <!-- TODO: Write post UI component. -->
+          Write post UI
         </b-col>
       </b-row>
       <b-row>
@@ -113,6 +119,7 @@ export default {
         console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
       },
       greet: function (event) {
+        /// TODO: https://bootstrap-vue.org/docs/components/modal
         alert('랜덤 결과 창')
       }
   }
