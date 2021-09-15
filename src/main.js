@@ -21,6 +21,7 @@ import { getAnalytics } from 'firebase/analytics'
 
 import PostBox from './components/PostBox'
 import GridMapToggle from './components/GridMapToggle'
+import GoogleSign from './components/GoogleSign'
 import Scrollbar from './components/Scrollbar'
 
 // Your web app's Firebase configuration
@@ -47,6 +48,7 @@ library.add(faTh)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
 Vue.component('grid-map-toggle', GridMapToggle)
+Vue.component('google-sign', GoogleSign)
 Vue.component('scrollbar', Scrollbar)
 
 // Make BootstrapVue available throughout your project
