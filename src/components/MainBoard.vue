@@ -1,6 +1,11 @@
 <template>
   <div id="mainboard">
     <b-container >
+      <b-row align-h="end">
+        <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
+          <profile-icon></profile-icon>
+        </b-col>
+      </b-row>
       <b-row>
         <b-col cols="6">
           <scrollbar></scrollbar>

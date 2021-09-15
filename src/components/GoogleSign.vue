@@ -1,6 +1,8 @@
 <template>
     <div id="googlesign">
-        <b-button variant="outline-danger" v-on:click="onGoogleSignInUpBtnClicked"><font-awesome-icon :icon="['fab', 'google']" /> Google Sign in / up</b-button>
+        <b-button variant="outline-danger" v-on:click="onGoogleSignInUpBtnClicked">
+            <font-awesome-icon :icon="['fab', 'google']" /> Google Sign in / up
+        </b-button>
     </div>
 </template>
 

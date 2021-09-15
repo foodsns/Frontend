@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret, faHeart, faMap, faTh } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faHeart, faMap, faTh, faUser, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -24,6 +24,7 @@ import PostBox from './components/PostBox'
 import GridMapToggle from './components/GridMapToggle'
 import GoogleSign from './components/GoogleSign'
 import Scrollbar from './components/Scrollbar'
+import ProfileIcon from './components/ProfileIcon'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -46,12 +47,15 @@ library.add(faHeart)
 library.add(faMap)
 library.add(faTh)
 library.add(faGoogle)
+library.add(faUser)
+library.add(faSignInAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
 Vue.component('grid-map-toggle', GridMapToggle)
 Vue.component('google-sign', GoogleSign)
 Vue.component('scrollbar', Scrollbar)
+Vue.component('profile-icon', ProfileIcon)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {
