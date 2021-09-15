@@ -15,7 +15,7 @@ export default {
     name: 'ProfileIcon',
     data () {
         return {
-            msg: 'hello world',
+            msg: 'hello',
             profileImg: ''
         }
     },
