@@ -21,7 +21,7 @@ import { getAnalytics } from 'firebase/analytics'
 
 import PostBox from './components/PostBox'
 import GridMapToggle from './components/GridMapToggle'
-import Scrollbar from './components/Scrollbar' 
+import Scrollbar from './components/Scrollbar'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
