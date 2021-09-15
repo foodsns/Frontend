@@ -26,7 +26,8 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button>
+    <random-btn></random-btn>
+    <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
 </template>
 
@@ -114,15 +115,7 @@ export default {
         ]
     }
   },
-  methods: {
-      onViewModeChanged: function (mode) {
-        console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
-      },
-      greet: function (event) {
-        /// TODO: https://bootstrap-vue.org/docs/components/modal
-        alert('랜덤 결과 창')
-      }
-  }
+  
 }
 </script>
 
@@ -145,12 +138,5 @@ export default {
   text-align: right;
 }
 
-.random-btn{
-  position : fixed;
-  bottom : 30px;
-  right : 30px;
-  width : 90px;
-  height : 90px;
-  border-radius : 100px;
-}
+
 </style>

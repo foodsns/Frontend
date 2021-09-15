@@ -24,6 +24,7 @@ import GridMapToggle from './components/GridMapToggle'
 import GoogleSign from './components/GoogleSign'
 import Scrollbar from './components/Scrollbar'
 import ProfileIcon from './components/ProfileIcon'
+import Random from './components/Random'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -42,6 +43,7 @@ Vue.component('grid-map-toggle', GridMapToggle)
 Vue.component('google-sign', GoogleSign)
 Vue.component('scrollbar', Scrollbar)
 Vue.component('profile-icon', ProfileIcon)
+Vue.component('random-btn', Random)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {
