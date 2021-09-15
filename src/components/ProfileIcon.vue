@@ -8,6 +8,8 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
+import app from '../firebaseApp'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 export default {
     name: 'ProfileIcon',
