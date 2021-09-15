@@ -4,7 +4,10 @@
         <b-row align-v="center" align-h="center">
             <b-col cols="12" md="8" lg="5" xl="4" xxl="4" align-self="center">
                 <b-card title="로그인 / 회원가입" sub-title="아래 SNS 인증을 통해 로그인 하세요.">
-                    <google-sign @sign-state="onAuthStateChanged"></google-sign>
+                    <google-sign @sign-state="onAuthStateChanged" @sign-error="onError"></google-sign>
+                    <b-card-text style="color: red">
+                        {{ error }}
+                    </b-card-text>
                 </b-card>
             </b-col>
         </b-row>
@@ -17,15 +20,19 @@ export default {
   name: 'LoginBoard',
   data () {
     return {
-        msg: 'hello world'
+        msg: 'hello world',
+        error: ''
     }
   },
   methods: {
-      onAuthStateChanged: function (state) {
-          if (state) {
-              this.$router.push('/')
-          }
-      }
+        onAuthStateChanged: function (state) {
+            if (state) {
+                this.$router.push('/')
+            }
+        },
+        onError: function (errMsg) {
+            this.error = errMsg
+        }
   }
 }
 </script>

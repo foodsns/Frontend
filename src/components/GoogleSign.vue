@@ -27,6 +27,7 @@ export default {
                 // ...
             }).catch((error) => {
                 console.log('err', error)
+                this.$emit('sign-error', error.message)
             })
         },
         firebaseSignOut: function () {
@@ -37,6 +38,7 @@ export default {
             }).catch((error) => {
             // An error happened.
                 console.log('[GoogleSign] [firebaseSignOut]: error', error)
+                this.$emit('sign-error', error.message)
             })
         },
         authStateChangeListener: function () {
