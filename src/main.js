@@ -11,6 +11,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, faHeart, faMap, faTh } from '@fortawesome/free-solid-svg-icons'
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Import the functions you need from the SDKs you need
@@ -44,6 +45,7 @@ library.add(faUserSecret)
 library.add(faHeart)
 library.add(faMap)
 library.add(faTh)
+library.add(faGoogle)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
