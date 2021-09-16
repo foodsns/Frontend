@@ -9,8 +9,8 @@
         <div class="footer">
             <img class="profile-img" :src="postItem.profileImg"/>
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
-            <font-awesome-icon icon="heart" class="gap_margin_5px_horizontal"/>
-            <span class="gap_margin_5px_horizontal">{{postItem.good}}</span>
+            <font-awesome-icon icon="heart" class="gap_margin_5px_horizontal" id="on" @click="greet"/>
+            <span class="good_num">{{postItem.good}}</span>
         </div>
     </div>
   </div>
@@ -49,6 +49,12 @@ export default {
           }
           return this.postItem.descript
       }
+  },
+  methods: {
+       greet: function (event) {
+           var x = document.getElementById('on')
+           x.style.color = 'red'
+       }
   }
 }
 </script>
@@ -124,4 +130,17 @@ h4 {
 .gap_margin_5px_horizontal {
     margin: 0 5px;
 }
+
+.good_num {
+    margin: 0 5px;
+}
+
+.gap_margin_5px_horizontal:hover {
+    color:palevioletred;
+}
+
+.on {
+    color: red;
+}
+
 </style>
