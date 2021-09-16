@@ -25,6 +25,7 @@ import GoogleSign from './components/GoogleSign'
 import Scrollbar from './components/Scrollbar'
 import ProfileIcon from './components/ProfileIcon'
 import Random from './components/Random'
+import KakaoMap from './components/KakaoMap'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -44,6 +45,7 @@ Vue.component('google-sign', GoogleSign)
 Vue.component('scrollbar', Scrollbar)
 Vue.component('profile-icon', ProfileIcon)
 Vue.component('random-btn', Random)
+Vue.component('kakao-map', KakaoMap)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {

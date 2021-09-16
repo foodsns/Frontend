@@ -1,5 +1,6 @@
 <template>
   <div id="mainboard">
+    <kakao-map v-if="viewMode === 'map'"></kakao-map>
     <b-container >
       <b-row align-h="end">
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
@@ -11,7 +12,7 @@
           <scrollbar></scrollbar>
         </b-col>
         <b-col cols="6" class="toggle-btn">
-          <grid-map-toggle @current-mode="onViewModeChanged" :mode="'grid'"></grid-map-toggle>
+          <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
         </b-col>
       </b-row>
       <b-row align-h="center">
@@ -39,6 +40,7 @@ export default {
   data () {
     return {
         msg: 'hello world',
+        viewMode: 'grid',
         postList: [
           {
             title: '게시물 타이틀게시물 타이틀게시물 타이틀게시물 타이틀게시물 타이틀',
@@ -118,6 +120,7 @@ export default {
   methods: {
     onViewModeChanged: function (mode) {
       console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
+      this.viewMode = mode
     }
   }
 }
