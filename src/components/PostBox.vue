@@ -9,7 +9,7 @@
         <div class="footer">
             <img class="profile-img" :src="postItem.profileImg"/>
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
-            <font-awesome-icon icon="heart" class="gap_margin_5px_horizontal" id="on" @click="greet"/>
+            <font-awesome-icon icon="heart" class="gap_margin_5px_horizontal" id="on" v-on:click="greet"/>
             <span class="good_num">{{postItem.good}}</span>
         </div>
     </div>
