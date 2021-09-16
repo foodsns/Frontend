@@ -138,9 +138,4 @@ h4 {
 .gap_margin_5px_horizontal:hover {
     color:palevioletred;
 }
-
-.on {
-    color: red;
-}
-
 </style>
