@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import MainBoard from '@/components/MainBoard'
 import HelloWorld from '@/components/HelloWorld'
 import LoginBoard from '@/components/LoginBoard'
+import GoodListPage from '@/components/GoodListPage'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/login',
       name: 'LoginBoard',
       component: LoginBoard
+    },
+    {
+      path: '/goodlist',
+      name: 'GoodLisPage',
+      component: GoodListPage
     },
     { path: '*', redirect: '/' }
   ]

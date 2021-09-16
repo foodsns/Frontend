@@ -26,7 +26,8 @@
         </b-col>
       </b-row>
     </b-container>
-    <random-btn></random-btn>
+    <goodlist-btn/>
+    <random-btn/>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
 </template>
@@ -141,4 +142,5 @@ export default {
 .toggle-btn {
   text-align: right;
 }
+
 </style>
