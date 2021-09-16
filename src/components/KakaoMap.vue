@@ -43,7 +43,6 @@ export default {
     width: 100vw;
     height: 100vh;
     background-color: antiquewhite;
-    z-index: -200;
     top: 0;
 }
 </style>

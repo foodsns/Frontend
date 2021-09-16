@@ -1,32 +1,34 @@
 <template>
   <div id="mainboard">
     <kakao-map v-if="viewMode === 'map'"></kakao-map>
-    <b-container >
-      <b-row align-h="end">
-        <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
-          <profile-icon></profile-icon>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="6" style="text-align: left">
-          <scrollbar></scrollbar>
-        </b-col>
-        <b-col cols="6" class="toggle-btn">
-          <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
-        </b-col>
-      </b-row>
-      <b-row align-h="center">
-        <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px">
-          <!-- TODO: Write post UI component. -->
-          Write post UI
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col xxl="3" xl="4" lg="6" cols="12" class="b-col" v-for="(post, index) in postList" :key="index">
-          <post-box v-bind:post="post" class="post-item"></post-box>
-        </b-col>
-      </b-row>
-    </b-container>
+    <div class="wrapper">
+      <b-container >
+        <b-row align-h="end">
+          <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
+            <profile-icon></profile-icon>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col cols="6" style="text-align: left">
+            <scrollbar></scrollbar>
+          </b-col>
+          <b-col cols="6" class="toggle-btn">
+            <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
+          </b-col>
+        </b-row>
+        <b-row align-h="center">
+          <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px">
+            <!-- TODO: Write post UI component. -->
+            Write post UI
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col xxl="3" xl="4" lg="6" cols="12" class="b-col" v-for="(post, index) in postList" :key="index">
+            <post-box v-bind:post="post" class="post-item"></post-box>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
     <random-btn></random-btn>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
@@ -130,7 +132,13 @@ export default {
 <style scoped>
 #mainboard {
   margin-top: 60px;
+  position: relative;
 }
+#mainboard .wrapper {
+    position: absolute;
+    width: 100%;
+}
+
 .b-col {
   text-align: center;
   margin: 20px 0;
