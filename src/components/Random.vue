@@ -12,7 +12,7 @@ export default {
         /// TODO: https://bootstrap-vue.org/docs/components/modal
         alert('랜덤 결과 창')
       }
-  }
+    }
 }
 </script>
 

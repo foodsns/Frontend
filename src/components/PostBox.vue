@@ -9,7 +9,10 @@
         <div class="footer">
             <img class="profile-img" :src="postItem.profileImg"/>
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
-            <font-awesome-icon icon="heart" class="gap_margin_5px_horizontal" id="on" v-on:click="greet"/>
+            <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
+                    :variant="currentMode == 'grid' ? 'danger' : ''"
+                    v-on:click="greet('grid')"
+            />
             <span class="good_num">{{postItem.good}}</span>
         </div>
     </div>
@@ -37,7 +40,8 @@ export default {
   },
   data () {
     return {
-        postItem: this.post
+        postItem: this.post,
+        currentMode: this.mode
     }
   },
   computed: {
@@ -51,9 +55,12 @@ export default {
       }
   },
   methods: {
-       greet: function (event) {
-           var x = document.getElementById('on')
-           x.style.color = 'red'
+       greet: function (mode) {
+           if (mode !== 'grid' && mode !== 'map') {
+                mode = 'grid'
+            }
+            this.currentMode = mode
+            this.$emit('current-mode', this.currentMode)
        }
   }
 }
