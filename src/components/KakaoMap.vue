@@ -4,10 +4,33 @@
 </template>
 
 <script>
+var kakao = window.kakao
 export default {
     name: 'KakaoMap',
     data () {
         return {
+        }
+    },
+    mounted () {
+        if (kakao) {
+            console.log('map init')
+            this.initMap()
+        }
+    },
+    methods: {
+        initMap () {
+            const container = document.querySelector('#kakaomap')
+            const options = {
+                center: new kakao.maps.LatLng(35.19656853772262, 129.0807270648317),
+                level: 3
+            }
+            const map = new kakao.maps.Map(container, options)
+            const markerPosition = new kakao.maps.LatLng(35.19656853772262, 129.0807270648317)
+
+            const marker = new kakao.maps.Marker({
+                position: markerPosition
+            })
+            marker.setMap(map)
         }
     }
 }
