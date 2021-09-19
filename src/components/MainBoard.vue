@@ -148,7 +148,7 @@ export default {
     left: 0;
     max-width: 350px;
     z-index: 999;
-    overflow-y: auto;
+    overflow-y: hidden;
     height: calc(100vh - 60px);
     padding: 0px 0px 5px 0px;
     transition: .4s;
@@ -159,6 +159,8 @@ export default {
   width: 300px;
   background-color: white;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  overflow-y: auto;
+  height: calc(100vh - 60px);
 }
 
 #mainboard .wrapper .list-toggle {
