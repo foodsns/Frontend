@@ -23,13 +23,16 @@
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
     </b-container>
-    <div class="wrapper" v-if="viewMode === 'map'">
+    <div class="wrapper" v-if="viewMode === 'map'" v-bind:style="openSideList ? 'transform: translateX(0px);' : 'transform: translateX(-300px);'">
       <div class="list">
         <b-container fluid>
           <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true"></grid-board>
         </b-container >
       </div>
-      <div class="list-toggle"></div>
+      <div class="list-toggle" v-on:click="openSideList = !openSideList">
+        <font-awesome-icon icon="arrow-right" v-if="!openSideList"/>
+        <font-awesome-icon icon="arrow-left" v-else/>
+      </div>
     </div>
     <random-btn></random-btn>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
@@ -45,6 +48,7 @@ export default {
     return {
         msg: 'hello world',
         viewMode: 'grid',
+        openSideList: false,
         postList: [
           {
             title: '게시물 타이틀게시물 타이틀게시물 타이틀게시물 타이틀게시물 타이틀',
@@ -146,25 +150,38 @@ export default {
     overflow-y: auto;
     height: calc(100vh - 60px);
     padding: 0px 0px 5px 0px;
+    transition: .4s;
 }
 
 #mainboard .wrapper .list {
   border-top-right-radius: 15px;
   width: 300px;
   background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 #mainboard .wrapper .list-toggle {
-    position: fixed;
-    left: 300px;
-    top: 50%;
-    width: 40px;
-    height: 80px;
-    background-color: white;
-    border-top-right-radius: 40px;
-    border-bottom-right-radius: 40px;
-    z-index: 999;
-    cursor: pointer;
+  position: fixed;
+  left: 300px;
+  top: 50%;
+  width: 40px;
+  height: 80px;
+  background-color: white;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  z-index: 999;
+  cursor: pointer;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#mainboard .wrapper .list-toggle svg {
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 1.2em;
 }
 
 .b-col {
