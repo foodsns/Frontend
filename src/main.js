@@ -28,7 +28,7 @@ import Random from './components/Random'
 import KakaoMap from './components/KakaoMap'
 import GridBoard from './components/GridBoard'
 import MapBoard from './components/MapBoard'
-import GoodList from './components/Goodlist'
+import GoodList from './components/GoodList'
 
 // Initialize Firebase
 getAnalytics(app)
