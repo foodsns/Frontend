@@ -160,7 +160,7 @@ export default {
   background-color: white;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   overflow-y: auto;
-  height: calc(100vh - 60px);
+  height: 100%;
 }
 
 #mainboard .wrapper .list-toggle {
