@@ -1,30 +1,28 @@
 <template>
   <div id="mainboard">
     <kakao-map v-if="viewMode === 'map'"></kakao-map>
-    <div class="wrapper">
-      <b-container >
-        <b-row align-h="end">
-          <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
-            <profile-icon></profile-icon>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col cols="6" style="text-align: left">
-            <scrollbar></scrollbar>
-          </b-col>
-          <b-col cols="6" class="toggle-btn">
-            <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
-          </b-col>
-        </b-row>
-        <b-row align-h="center">
-          <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px">
-            <!-- TODO: Write post UI component. -->
-            Write post UI
-          </b-col>
-        </b-row>
-        <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
-      </b-container>
-    </div>
+    <b-container >
+      <b-row align-h="end">
+        <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
+          <profile-icon style="position: relative"></profile-icon>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="6" style="text-align: left">
+          <scrollbar style="position: relative"></scrollbar>
+        </b-col>
+        <b-col cols="6" class="toggle-btn">
+          <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
+        </b-col>
+      </b-row>
+      <b-row align-h="center">
+        <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px; position: relative">
+          <!-- TODO: Write post UI component. -->
+          Write post UI
+        </b-col>
+      </b-row>
+      <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
+    </b-container>
     <random-btn></random-btn>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
