@@ -23,6 +23,11 @@
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
     </b-container>
+    <div class="wrapper">
+      <b-container fluid v-if="viewMode === 'map'">
+        <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true"></grid-board>
+      </b-container >
+    </div>
     <random-btn></random-btn>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
@@ -131,6 +136,15 @@ export default {
 #mainboard .wrapper {
     position: absolute;
     width: 100%;
+    top: 0;
+    left: 0;
+    max-width: 300px;
+    z-index: 999;
+    overflow-y: auto;
+    height: calc(100vh - 60px);
+    background-color: white;
+    border-top-right-radius: 15px;
+    padding: 5px;
 }
 
 .b-col {
