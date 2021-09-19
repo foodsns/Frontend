@@ -35,6 +35,7 @@
       </div>
     </div>
     <random-btn></random-btn>
+    <goodlist-btn><goodlist-btn/>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
 </template>

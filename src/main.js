@@ -28,6 +28,7 @@ import Random from './components/Random'
 import KakaoMap from './components/KakaoMap'
 import GridBoard from './components/GridBoard'
 import MapBoard from './components/MapBoard'
+import GoodList from './components/Goodlist'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -52,6 +53,7 @@ Vue.component('random-btn', Random)
 Vue.component('kakao-map', KakaoMap)
 Vue.component('grid-board', GridBoard)
 Vue.component('map-board', MapBoard)
+Vue.component('goodlist-btn', GoodList)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {
