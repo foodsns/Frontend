@@ -149,18 +149,20 @@ export default {
     max-width: 350px;
     z-index: 999;
     overflow-y: hidden;
-    height: calc(100vh - 60px);
-    padding: 0px 0px 5px 0px;
+    height: calc(100vh - 90px);
+    padding: 0;
     transition: .4s;
 }
 
 #mainboard .wrapper .list {
   border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
   width: 300px;
   background-color: white;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   overflow-y: auto;
   height: 100%;
+  padding: 5px 0px;
 }
 
 #mainboard .wrapper .list-toggle {
