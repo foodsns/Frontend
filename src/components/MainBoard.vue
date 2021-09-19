@@ -1,33 +1,41 @@
 <template>
   <div id="mainboard">
+    <kakao-map v-if="viewMode === 'map'"></kakao-map>
     <b-container >
       <b-row align-h="end">
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
-          <profile-icon></profile-icon>
+          <profile-icon style="position: relative"></profile-icon>
         </b-col>
       </b-row>
       <b-row>
         <b-col cols="6" style="text-align: left">
-          <scrollbar></scrollbar>
+          <scrollbar style="position: relative"></scrollbar>
         </b-col>
         <b-col cols="6" class="toggle-btn">
-          <grid-map-toggle @current-mode="onViewModeChanged" :mode="'grid'"></grid-map-toggle>
+          <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
         </b-col>
       </b-row>
       <b-row align-h="center">
-        <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px">
+        <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px; position: relative">
           <!-- TODO: Write post UI component. -->
           Write post UI
         </b-col>
       </b-row>
-      <b-row>
-        <b-col xxl="3" xl="4" lg="6" cols="12" class="b-col" v-for="(post, index) in postList" :key="index">
-          <post-box v-bind:post="post" class="post-item"></post-box>
-        </b-col>
-      </b-row>
+      <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
     </b-container>
-    <goodlist-btn/>
-    <random-btn/>
+    <div class="wrapper" v-if="viewMode === 'map'" v-bind:style="openSideList ? 'transform: translateX(0px);' : 'transform: translateX(-300px);'">
+      <div class="list">
+        <b-container fluid>
+          <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true"></grid-board>
+        </b-container >
+      </div>
+      <div class="list-toggle" v-on:click="openSideList = !openSideList">
+        <font-awesome-icon icon="arrow-right" v-if="!openSideList"/>
+        <font-awesome-icon icon="arrow-left" v-else/>
+      </div>
+    </div>
+    <random-btn></random-btn>
+    <goodlist-btn></goodlist-btn>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
 </template>
@@ -40,6 +48,8 @@ export default {
   data () {
     return {
         msg: 'hello world',
+        viewMode: 'grid',
+        openSideList: false,
         postList: [
           {
             title: '게시물 타이틀게시물 타이틀게시물 타이틀게시물 타이틀게시물 타이틀',
@@ -119,6 +129,7 @@ export default {
   methods: {
     onViewModeChanged: function (mode) {
       console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
+      this.viewMode = mode
     }
   }
 }
@@ -128,7 +139,52 @@ export default {
 <style scoped>
 #mainboard {
   margin-top: 60px;
+  position: relative;
 }
+#mainboard .wrapper {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    max-width: 350px;
+    z-index: 999;
+    overflow-y: auto;
+    height: calc(100vh - 60px);
+    padding: 0px 0px 5px 0px;
+    transition: .4s;
+}
+
+#mainboard .wrapper .list {
+  border-top-right-radius: 15px;
+  width: 300px;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#mainboard .wrapper .list-toggle {
+  position: fixed;
+  left: 300px;
+  top: 50%;
+  width: 40px;
+  height: 80px;
+  background-color: white;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  z-index: 999;
+  cursor: pointer;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#mainboard .wrapper .list-toggle svg {
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 1.2em;
+}
+
 .b-col {
   text-align: center;
   margin: 20px 0;
