@@ -26,6 +26,8 @@ import Scrollbar from './components/Scrollbar'
 import ProfileIcon from './components/ProfileIcon'
 import Random from './components/Random'
 import KakaoMap from './components/KakaoMap'
+import GridBoard from './components/GridBoard'
+import MapBoard from './components/MapBoard'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -46,6 +48,8 @@ Vue.component('scrollbar', Scrollbar)
 Vue.component('profile-icon', ProfileIcon)
 Vue.component('random-btn', Random)
 Vue.component('kakao-map', KakaoMap)
+Vue.component('grid-board', GridBoard)
+Vue.component('map-board', MapBoard)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {

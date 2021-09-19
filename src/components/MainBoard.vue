@@ -22,11 +22,7 @@
             Write post UI
           </b-col>
         </b-row>
-        <b-row>
-          <b-col xxl="3" xl="4" lg="6" cols="12" class="b-col" v-for="(post, index) in postList" :key="index">
-            <post-box v-bind:post="post" class="post-item"></post-box>
-          </b-col>
-        </b-row>
+        <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
       </b-container>
     </div>
     <random-btn></random-btn>
