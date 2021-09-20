@@ -49,6 +49,10 @@
 
 CI & CD 자동화 스크립트 or 워크 플로우 제공
 
+<img src="https://lh3.googleusercontent.com/proxy/y4t1ArKSfJrbFA9plDQ_Qzk9IU6E38KaZFYZGyPcPSwTko4FThfWrt2q9g8U-IX-qj6ywvx9Y_r-Dj3NdV_Chho9YBTwy2ydopaug6Ok2q_viWVceDx9LythFuAn-ic4h6y48xbDcdL_2Vf6UCF0kvN-nE9vlLMhkCkTT7q9pET-b1QbuI4YH3In9YBNn4Nuq5RWYkigAsr4uhqApSi7iDfjMe4l-RDJXUoBcFLmjBgwNtbRqSXUXKY6TbZ0o9T2TkrUUgi_C_jdpd9BgWLiZw" width="320" />
+
+카카오 지도 라이브러리 사용
+
 ## 작업 방식
 
 ### 1. 최신 내용 가져오기
