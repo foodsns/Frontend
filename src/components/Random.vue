@@ -1,19 +1,11 @@
 <template>
     <div>
-        <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button>
+        <b-button class = "random-btn" pill variant="outline-danger" v-b-modal = "'random-modal'">랜덤선택</b-button>
+        <b-modal id="random-modal">랜덤결과 창입니다.</b-modal>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'random-btn',
-    methods: {
-      greet: function (event) {
-        /// TODO: https://bootstrap-vue.org/docs/components/modal
-        alert('랜덤 결과 창')
-      }
-    }
-}
 </script>
 
 <style>
