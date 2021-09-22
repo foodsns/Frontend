@@ -1,7 +1,7 @@
 <template>
 <div>
     <b-button  v-on:click="showlist" class="goodlist-btn" pill variant="outline-danger">
-        <b-icon icon="heart-fill" variant="danger"></b-icon> LIST
+        <b-icon icon="heart-fill" ></b-icon> LIST
     </b-button>
 </div>
 </template>
@@ -9,15 +9,15 @@
 <script>
 export default {
     name: 'likelist-btn',
-    data: () => {
-    return {
-
+    data () {
+        return {
         }
     },
     methods: {
         showlist: function () {
             this.$router.push('goodlist')
             }
+
         }
 }
 
@@ -32,4 +32,5 @@ export default {
     right : 30px;
     border: 5px;
     }
+
 </style>
