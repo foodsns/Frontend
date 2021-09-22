@@ -11,7 +11,7 @@
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
                     :variant="currentMode == 'grid' ? 'danger' : ''"
-                    v-on:click="greet('grid')"
+                    v-on:click="[greet('grid'), increase()]"
             />
             <span class="good_num">{{postItem.good}}</span>
         </div>
@@ -61,6 +61,10 @@ export default {
             }
             this.currentMode = mode
             this.$emit('current-mode', this.currentMode)
+       },
+       increase: function () {
+           // eslint-disable-next-line vue/no-mutating-props
+           this.post.good++
        }
   }
 }
