@@ -17,8 +17,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px; position: relative">
-          <!-- TODO: Write post UI component. -->
-          Write post UI
+          ui
         </b-col>
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
