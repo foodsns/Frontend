@@ -52,9 +52,9 @@ module.exports = {
             document.querySelector('#move').click()
         })
         .pause(1000)
-        .getLog('browser', (result) => {
-          console.log(`Browser log: `, result)
-        })
+        // .getLog('browser', (result) => {
+        //   console.log(`Browser log: `, result)
+        // })
         .assert.containsText('#lat', '37.566')
         .assert.containsText('#lot', '126.975')
         .pause(1000)
