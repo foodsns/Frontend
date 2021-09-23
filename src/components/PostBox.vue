@@ -57,6 +57,7 @@ export default {
   methods: {
        greet: function (mode) {
            this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
+
            this.currentMode === 'grid' ? this.increase() : this.decrease()
        },
        increase: function () {

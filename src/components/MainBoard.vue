@@ -16,9 +16,16 @@
         </b-col>
       </b-row>
       <b-row align-h="center">
-        <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px;border: 5px dotted black; border-radius: 15px; height: 225px;padding: 5px; position: relative">
-          <!-- TODO: Write post UI component. -->
-          Write post UI
+        <b-col style="margin-bottom:15px">
+          <div id="writePostUI">
+            <div>
+              <textarea v-model="inputText" maxlength="280" placeholder="내용 입력" class="postBox"></textarea>
+            </div>
+            <div class="Buttons">
+              <b-icon icon="camera-fill" class="camerabtn" @click="postclick()"></b-icon>
+              <b-button type="submit" pill variant="primary" class="postbtn">확인</b-button>
+            </div>
+          </div>
         </b-col>
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
@@ -202,4 +209,15 @@ export default {
 .toggle-btn {
   text-align: right;
 }
+
+.postBox{
+    resize : none;
+    height : 100px;
+    width : 500px;
+}
+
+.postbtn{
+    margin : 2px;
+}
+
 </style>
