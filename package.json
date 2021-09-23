@@ -108,7 +108,7 @@
   },
   "eslintConfig": {
     "globals": {
-        "kakao": false
-      }
+      "kakao": false
+    }
   }
 }
