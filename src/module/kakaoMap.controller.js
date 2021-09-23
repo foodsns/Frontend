@@ -5,11 +5,33 @@ export default class KakaoMapController {
     customOverlayList = []
     markerList = []
 
-    constructor (mapEleId) {
-        this.kakao = window.kakao
-        this.mapContainer = document.querySelector(mapEleId)
+    constructor (mapEle) {
+        this.mapContainer = mapEle // document.querySelector(mapEleId)
 
-        this.validateKakaoMapAvailable()
+        if (!this.mapContainer) {
+            throw new Error(`Map container is null`)
+        }
+    }
+
+    loadScript () {
+        return new Promise((resolve, reject) => {
+            this.kakao = window.kakao
+
+            if (!this.kakao) {
+                console.warn(`[kakaoMap.controller] [loadScript] kakao sdk not found. Load from cdn`)
+                const script = document.createElement('script')
+                script.onload = () => {
+                    console.log(`[kakaoMap.controller] [loadScript] kakao sdk loaded successfully.`)
+                    resolve()
+                }
+                script.onerror = () => reject(new Error(`Cannot load kakao map script`))
+                script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=4430c55fe642a239ee97ac7a3161ae89'
+                this.mapContainer.appendChild(script)
+                console.log('document body', this.mapContainer.innerHTML)
+            } else {
+                resolve()
+            }
+        })
     }
 
     validateKakaoMapInit () {
@@ -39,6 +61,7 @@ export default class KakaoMapController {
         //     position: markerPosition
         // })
         // marker.setMap(map)
+        console.log('[kakaoMap.controller] [initMap] Init map instance')
     }
 
     setZoom (lv) {

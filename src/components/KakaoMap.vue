@@ -1,5 +1,5 @@
 <template>
-    <div id="kakaomap">
+    <div id="kakaomap" ref="kakaomap">
     </div>
 </template>
 
@@ -7,14 +7,35 @@
 import KakaoMapController from '../module/kakaoMap.controller'
 export default {
     name: 'KakaoMap',
+    props: {
+        dev: {
+            type: Boolean,
+            default: function () {
+                return false
+            }
+        }
+    },
     data () {
         return {
             kakaoMapInstance: null
         }
     },
     mounted () {
-        this.kakaoMapInstance = new KakaoMapController('#kakaomap')
-        this.kakaoMapInstance.initMap()
+        this.kakaoMapInstance = new KakaoMapController(this.$refs.kakaomap)
+        if (!this.dev) {
+            this.initKakaoMap()
+            .then(() => {
+                this.kakaoMapInstance.initMap()
+            })
+            .catch(err => {
+                console.log(`[KakaoMap] [mounted] Cannot load kakao map script: ${err.message}`)
+            })
+        }
+    },
+    methods: {
+        initKakaoMap () {
+            return this.kakaoMapInstance.loadScript()
+        }
     }
 }
 </script>
