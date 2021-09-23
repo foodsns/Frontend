@@ -11,7 +11,7 @@
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
                     :variant="currentMode == 'grid' ? 'danger' : ''"
-                    v-on:click="[greet('grid'), increase()]"
+                    v-on:click="[greet('grid'), increase(), decrease()]"
             />
             <span class="good_num">{{postItem.good}}</span>
         </div>
@@ -56,15 +56,14 @@ export default {
   },
   methods: {
        greet: function (mode) {
-           if (mode !== 'grid' && mode !== 'map') {
-                mode = 'grid'
-            }
-            this.currentMode = mode
-            this.$emit('current-mode', this.currentMode)
+           this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
+           this.currentMode === 'grid' ? this.increase() : this.decrease()
        },
        increase: function () {
-           // eslint-disable-next-line vue/no-mutating-props
-           this.post.good++
+           this.postItem.good++
+       },
+       decrease: function () {
+           this.postItem.good--
        }
   }
 }
