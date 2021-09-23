@@ -56,11 +56,7 @@ export default {
   },
   methods: {
        greet: function (mode) {
-           if (mode !== 'grid' && mode !== 'map') {
-                mode = 'grid'
-            }
-            this.currentMode = mode
-            this.$emit('current-mode', this.currentMode)
+           this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
        },
        increase: function () {
            // eslint-disable-next-line vue/no-mutating-props
