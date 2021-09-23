@@ -126,6 +126,12 @@ export default {
         ]
     }
   },
+  mounted () {
+    const dev = localStorage.getItem('dev') || false
+    if (dev) {
+      this.postList = JSON.parse(localStorage.getItem('postList')) || []
+    }
+  },
   methods: {
     onViewModeChanged: function (mode) {
       console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)

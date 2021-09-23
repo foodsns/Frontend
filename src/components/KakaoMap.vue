@@ -1,5 +1,14 @@
 <template>
-    <div id="kakaomap" ref="kakaomap">
+    <div>
+        <div id="kakaomap" ref="kakaomap"></div>
+        <div>
+            <span id="lv">{{ lv }}</span>
+            <span id="lat">{{ lat }}</span>
+            <span id="lot">{{ lot }}</span>
+            <button id="zoomin" v-on:click="zoomIn"></button>
+            <button id="zoomout" v-on:click="zoomOut"></button>
+            <button id="move" v-on:click="move"></button>
+        </div>
     </div>
 </template>
 
@@ -17,7 +26,10 @@ export default {
     },
     data () {
         return {
-            kakaoMapInstance: null
+            kakaoMapInstance: null,
+            lv: 0,
+            lat: 0,
+            lot: 0
         }
     },
     mounted () {
@@ -26,6 +38,11 @@ export default {
             this.initKakaoMap()
             .then(() => {
                 this.kakaoMapInstance.initMap()
+                this.getMapInfo()
+
+                this.kakaoMapInstance.kakao.maps.event.addListener(this.kakaoMapInstance.map, 'center_changed', () => {
+                    this.getMapInfo()
+                })
             })
             .catch(err => {
                 console.log(`[KakaoMap] [mounted] Cannot load kakao map script: ${err.message}`)
@@ -35,6 +52,20 @@ export default {
     methods: {
         initKakaoMap () {
             return this.kakaoMapInstance.loadScript()
+        },
+        getMapInfo () {
+            this.lv = this.kakaoMapInstance.map.getLevel()
+            this.lat = this.kakaoMapInstance.map.getCenter().getLat()
+            this.lot = this.kakaoMapInstance.map.getCenter().getLng()
+        },
+        zoomIn () {
+            this.kakaoMapInstance.setZoom(this.lv--)
+        },
+        zoomOut () {
+            this.kakaoMapInstance.setZoom(this.lv++)
+        },
+        move () {
+            this.kakaoMapInstance.moveCenter(37.5662952, 126.9757511)
         }
     }
 }

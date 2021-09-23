@@ -62,6 +62,7 @@ export default class KakaoMapController {
         // })
         // marker.setMap(map)
         console.log('[kakaoMap.controller] [initMap] Init map instance')
+        // this.addMarker(35.19656853772262, 129.0807270648317)
     }
 
     setZoom (lv) {
