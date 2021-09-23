@@ -52,8 +52,38 @@ module.exports = {
             document.querySelector('#move').click()
         })
         .pause(1000)
+        .getLog('browser', (result) => {
+          console.log(`Browser log: `, result)
+        })
         .assert.containsText('#lat', '37.566')
         .assert.containsText('#lot', '126.975')
+        .pause(1000)
+        .perform(() => {
+            console.log('Test create markers')
+        })
+        .execute(() => {
+            document.querySelector('#setmarker').click()
+        })
+        .execute(() => {
+            // https://medium.com/@jameslin_85107/nightwatch-js-b9c5b5719e15
+            // console.assert(document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length === 8, 'Test data & marker should be exist 8 items')
+            return document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length
+        }, (len) => {
+            browser.assert.equal(len.value, 8)
+        })
+        .perform(() => {
+            console.log('Test append markers')
+        })
+        .execute(() => {
+            document.querySelector('#appendMarker').click()
+        })
+        .execute(() => {
+            // console.assert(document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length === 9, 'Test data & marker should be exist 9 items')
+            return document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length
+        }, (len) => {
+            browser.assert.equal(len.value, 9)
+        })
+        .pause(1000)
         .end()
 
     //   browser

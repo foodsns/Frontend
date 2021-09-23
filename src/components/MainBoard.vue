@@ -1,6 +1,6 @@
 <template>
   <div id="mainboard">
-    <kakao-map v-if="viewMode === 'map'"></kakao-map>
+    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"></kakao-map>
     <b-container >
       <b-row align-h="end">
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
