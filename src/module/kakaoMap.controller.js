@@ -148,7 +148,7 @@ export default class KakaoMapController {
             background-position: center;
             background-size: cover;
             position: relative;
-            ">
+            " data-overlay="${item.id}">
                 <div style="
                     position: absolute;
                     width: 100%;
@@ -239,6 +239,11 @@ export default class KakaoMapController {
         this.validateKakaoMapInstance()
         this.customOverlayList.forEach((item, idx) => this.deleteCustomOverlay(idx, 0))
         this.customOverlayList.length = 0
+    }
+
+    testClick () {
+        // console.log(this.markerList[0].Ec.parentNode, this.markerList[0].Ec.parentNode.click())
+        this.kakao.maps.event.trigger(this.markerList[1], 'click')
     }
 
     addMarker (lat, lot, id) {

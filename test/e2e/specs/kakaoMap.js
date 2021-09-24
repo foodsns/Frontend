@@ -96,6 +96,48 @@ module.exports = {
             browser.assert.equal(len.value, 9)
         })
         .perform(() => {
+            console.log('Test create customoverlay')
+        })
+        .execute(() => {
+            document.querySelector('#setCustomOverlay').click()
+        })
+        .execute(() => {
+            return document.querySelector('#testClickMarker').click()
+        })
+        .perform(() => {
+            console.log('Fire 2nd marker click event')
+        })
+        .execute(() => {
+            // console.assert(document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length === 9, 'Test data & marker should be exist 9 items')
+            return document.querySelector('#id-525d7948-d35a-4104-8cbb-ab70f0ced1d1').hasAttribute('hidden')
+        }, (result) => {
+            browser.assert.equal(result.value, false)
+        })
+        .pause(1000)
+        .execute(() => {
+            return document.querySelector('#testClickMarker').click()
+        })
+        .perform(() => {
+            console.log('Fire 2nd marker click event again')
+        })
+        .execute(() => {
+            // console.assert(document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length === 9, 'Test data & marker should be exist 9 items')
+            return document.querySelector('#id-525d7948-d35a-4104-8cbb-ab70f0ced1d1').hasAttribute('hidden')
+        }, (result) => {
+            browser.assert.equal(result.value, true)
+        })
+        .pause(1000)
+        .execute(() => {
+            document.querySelector('#move2').click()
+        })
+        .pause(1000)
+        .execute(() => {
+            return document.querySelectorAll('div[data-overlay]')
+        }, (result) => {
+            browser.assert.equal(result.value.length, 8)
+        })
+        .pause(1000)
+        .perform(() => {
             console.log('Test reset markers')
         })
         .execute(() => {
@@ -107,13 +149,18 @@ module.exports = {
         }, (len) => {
             browser.assert.equal(len.value, 0)
         })
+        .pause(1000)
         .perform(() => {
-            console.log('Test create customoverlay')
+            console.log('Test reset custom overlays')
         })
         .execute(() => {
-            document.querySelector('#setCustomOverlay').click()
+            document.querySelector('#resetCustomOverlayList').click()
         })
-        .pause(60000)
+        .execute(() => {
+            return document.querySelectorAll('div[data-overlay]')
+        }, (len) => {
+            browser.assert.equal(len.value.length, 0)
+        })
         .end()
 
     //   browser

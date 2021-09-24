@@ -1,18 +1,21 @@
 <template>
     <div>
         <div id="kakaomap" ref="kakaomap"></div>
-        <div>
+        <div v-if="dev">
             <span id="lv">{{ lv }}</span>
             <span id="lat">{{ lat }}</span>
             <span id="lot">{{ lot }}</span>
             <button id="zoomin" v-on:click="zoomIn"></button>
             <button id="zoomout" v-on:click="zoomOut"></button>
             <button id="move" v-on:click="move"></button>
+            <button id="move2" v-on:click="move2"></button>
             <button id="setmarker" v-on:click="setMarker(postList)"></button>
             <button id="appendMarker" v-on:click="appendMarker"></button>
             <button id="modifyMarker" v-on:click="modifyMarker"></button>
             <button id="resetMarker" v-on:click="resetMarker"></button>
+            <button id="resetCustomOverlayList" v-on:click="resetCustomOverlayList"></button>
             <button id="setCustomOverlay" v-on:click="setCustomOverlay(postList)"></button>
+            <button id="testClickMarker" v-on:click="testClickMarker"></button>
         </div>
     </div>
 </template>
@@ -22,12 +25,6 @@ import KakaoMapController from '../module/kakaoMap.controller'
 export default {
     name: 'KakaoMap',
     props: {
-        dev: {
-            type: Boolean,
-            default: function () {
-                return false
-            }
-        },
         postListProps: {
             type: Array,
             default: function () {
@@ -47,14 +44,19 @@ export default {
             postList: this.postListProps,
             lv: 0,
             lat: 0,
-            lot: 0
+            lot: 0,
+            dev: localStorage.getItem('dev') || false
         }
     },
     mounted () {
         this.kakaoMapInstance = new KakaoMapController(this.$refs.kakaomap, this.onMarkerClicked)
         this.initKakaoMap()
         .then(() => {
-            this.kakaoMapInstance.initMap()
+            if (!this.dev) {
+                this.kakaoMapInstance.initMap()
+            } else {
+                this.kakaoMapInstance.initMap(35.19656853772262, 129.0807270648317)
+            }
             this.getMapInfo()
             if (!this.dev) {
                 this.setCustomOverlay(this.postList)
@@ -92,6 +94,9 @@ export default {
         },
         move () {
             this.kakaoMapInstance.moveCenter(37.5662952, 126.9757511)
+        },
+        move2 () {
+            this.kakaoMapInstance.moveCenter(37.569337604592334, 126.97666498030881)
         },
         setMarker (array) {
             this.kakaoMapInstance.setMarkerList(array.map(item => {
@@ -134,8 +139,14 @@ export default {
         resetMarker () {
             this.kakaoMapInstance.resetMarkerList()
         },
+        resetCustomOverlayList () {
+            this.kakaoMapInstance.resetCustomOverlayList()
+        },
         setCustomOverlay (array) {
             this.kakaoMapInstance.setCustomOverlayList(array)
+        },
+        testClickMarker () {
+            this.kakaoMapInstance.testClick()
         }
     }
 }
