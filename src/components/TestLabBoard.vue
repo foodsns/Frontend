@@ -1,64 +1,14 @@
 <template>
-  <div id="mainboard">
-    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList" @on-marker-clicked="onMarkerClicked"></kakao-map>
-    <b-container >
-      <b-row align-h="end">
-        <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
-          <profile-icon style="position: relative"></profile-icon>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="6" style="text-align: left">
-          <scrollbar style="position: relative"></scrollbar>
-        </b-col>
-        <b-col cols="6" class="toggle-btn">
-          <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
-        </b-col>
-      </b-row>
-      <b-row align-h="center">
-        <b-col style="margin-bottom:15px">
-          <div id="writePostUI">
-            <div>
-              <textarea v-model="inputText" maxlength="280" placeholder="내용 입력" class="postBox"></textarea>
-            </div>
-            <div class="Buttons">
-              <b-icon icon="camera-fill" class="camerabtn" @click="postclick()"></b-icon>
-              <b-button type="submit" pill variant="primary" class="postbtn">확인</b-button>
-            </div>
-          </div>
-        </b-col>
-      </b-row>
-      <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
-    </b-container>
-    <div class="wrapper" v-if="viewMode === 'map'" v-bind:style="openSideList ? 'transform: translateX(0px);' : 'transform: translateX(-300px);'">
-      <div class="list">
-        <b-container fluid>
-          <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true" v-bind:focusedPostID="focusedPost.id"></grid-board>
-        </b-container >
-      </div>
-      <div class="list-toggle" v-on:click="openSideList = !openSideList">
-        <font-awesome-icon icon="arrow-right" v-if="!openSideList"/>
-        <font-awesome-icon icon="arrow-left" v-else/>
-      </div>
+    <div id="testlabboard">
     </div>
-    <random-btn></random-btn>
-    <goodlist-btn></goodlist-btn>
-    <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
-  </div>
 </template>
 
 <script>
-import Scrollbar from './Scrollbar.vue'
 export default {
-  components: { Scrollbar },
-  name: 'MainBoard',
-  data () {
-    return {
-        msg: 'hello world',
-        viewMode: 'grid',
-        openSideList: false,
-        focusedPost: {},
-        postList: [
+    name: 'TestLabBoard',
+    data () {
+        return {
+            postList: [
                 {
                     id: '993915c4-878b-4486-b9a8-052971a9620d',
                     title: '서울 시청',
@@ -156,104 +106,48 @@ export default {
                     lot: 126.971474
                 }
             ]
-    }
-  },
-  mounted () {
-    const dev = localStorage.getItem('dev') || false
-    if (dev) {
-      this.postList = JSON.parse(localStorage.getItem('postList')) || []
-    }
-  },
-  methods: {
-    onViewModeChanged: function (mode) {
-      console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
-      this.viewMode = mode
+        }
     },
-    onMarkerClicked: function (post) {
-      console.log(`[MainBoard] [onMarkerClicked] post: `, post)
-      this.openSideList = true
-      this.focusedPost = post
+    watch: {
+        $route (to, from) {
+            this.runner(to.params.mode)
+        }
+    },
+    mounted () {
+        this.runner(this.$route.params.mode)
+    },
+    methods: {
+        runner (mode) {
+            switch (mode) {
+                case 'map':
+                    this.setDevMode()
+                    this.setDummyPostList()
+                break
+                case 'release':
+                    this.removeDummyPostList()
+                    this.releaseDevMode()
+                break
+                default :
+                    console.log(`[TestLabBoard] [runner] Undefined test mode ${mode}`)
+                break
+            }
+        },
+        setDevMode () {
+            localStorage.setItem('dev', true)
+        },
+        setDummyPostList () {
+            localStorage.setItem('postList', JSON.stringify(this.postList))
+        },
+        removeDummyPostList () {
+            localStorage.removeItem('postList')
+        },
+        releaseDevMode () {
+            localStorage.removeItem('dev')
+        }
     }
-  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#mainboard {
-  margin-top: 60px;
-  position: relative;
-}
-#mainboard .wrapper {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    max-width: 350px;
-    z-index: 999;
-    overflow-y: hidden;
-    height: calc(100vh - 90px);
-    padding: 0;
-    transition: .4s;
-}
-
-#mainboard .wrapper .list {
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
-  width: 300px;
-  background-color: white;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  overflow-y: auto;
-  height: 100%;
-  padding: 5px 0px;
-}
-
-#mainboard .wrapper .list-toggle {
-  position: fixed;
-  left: 300px;
-  top: 50%;
-  width: 40px;
-  height: 80px;
-  background-color: white;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
-  z-index: 999;
-  cursor: pointer;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-}
-
-#mainboard .wrapper .list-toggle svg {
-  margin: auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  font-size: 1.2em;
-}
-
-.b-col {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.b-col .post-item {
-  display: inline-block;
-  width: auto;
-}
-
-.toggle-btn {
-  text-align: right;
-}
-
-.postBox{
-    resize : none;
-    height : 100px;
-    width : 500px;
-}
-
-.postbtn{
-    margin : 2px;
-}
-
 </style>

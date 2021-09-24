@@ -4,6 +4,7 @@ import MainBoard from '@/components/MainBoard'
 import HelloWorld from '@/components/HelloWorld'
 import LoginBoard from '@/components/LoginBoard'
 import GoodListPage from '@/components/GoodListPage'
+import TestLabBoard from '@/components/TestLabBoard'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/goodlist',
       name: 'GoodLisPage',
       component: GoodListPage
+    },
+    {
+      path: '/dev/:mode',
+      name: 'TestLabBoard',
+      component: TestLabBoard
     },
     { path: '*', redirect: '/' }
   ]
