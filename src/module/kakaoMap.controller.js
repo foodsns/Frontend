@@ -48,11 +48,11 @@ export default class KakaoMapController {
         }
     }
 
-    initMap () {
+    initMap (lat = 37.5662952, lot = 126.9757511) {
         // this.setZoom(3)
         // this.moveCenter(35.19656853772262, 129.0807270648317)
         const options = {
-            center: new this.kakao.maps.LatLng(35.19656853772262, 129.0807270648317),
+            center: new this.kakao.maps.LatLng(lat, lot),
             level: 3
         }
 
