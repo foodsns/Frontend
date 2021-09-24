@@ -29,6 +29,7 @@ import KakaoMap from './components/KakaoMap'
 import GridBoard from './components/GridBoard'
 import MapBoard from './components/MapBoard'
 import GoodList from './components/GoodList'
+import GoodListPage from './components/GoodListPage'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -54,6 +55,7 @@ Vue.component('kakao-map', KakaoMap)
 Vue.component('grid-board', GridBoard)
 Vue.component('map-board', MapBoard)
 Vue.component('goodlist-btn', GoodList)
+Vue.component('goodlist', GoodListPage)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {
