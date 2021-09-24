@@ -29,7 +29,7 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 2,
-                    img: 'http://www.deoksugung.go.kr/ko/assets/images/gallery/t3.jpg',
+                    img: 'https://www.heritage.go.kr/images/content/palaces/pd_pic01.jpg',
                     lat: 37.565772,
                     lot: 126.975160
                 },
