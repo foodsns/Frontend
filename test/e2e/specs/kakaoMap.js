@@ -83,6 +83,30 @@ module.exports = {
         }, (len) => {
             browser.assert.equal(len.value, 9)
         })
+        .perform(() => {
+            console.log('Test modify markers')
+        })
+        .execute(() => {
+            document.querySelector('#modifyMarker').click()
+        })
+        .execute(() => {
+            // console.assert(document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length === 9, 'Test data & marker should be exist 9 items')
+            return document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length
+        }, (len) => {
+            browser.assert.equal(len.value, 9)
+        })
+        .perform(() => {
+            console.log('Test reset markers')
+        })
+        .execute(() => {
+            document.querySelector('#resetMarker').click()
+        })
+        .execute(() => {
+            // console.assert(document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length === 9, 'Test data & marker should be exist 9 items')
+            return document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length
+        }, (len) => {
+            browser.assert.equal(len.value, 0)
+        })
         .pause(1000)
         .end()
 

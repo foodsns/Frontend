@@ -10,6 +10,8 @@
             <button id="move" v-on:click="move"></button>
             <button id="setmarker" v-on:click="setMarker(postList)"></button>
             <button id="appendMarker" v-on:click="appendMarker"></button>
+            <button id="modifyMarker" v-on:click="modifyMarker"></button>
+            <button id="resetMarker" v-on:click="resetMarker"></button>
         </div>
     </div>
 </template>
@@ -103,6 +105,22 @@ export default {
                     lat: 37.5616465,
                     lot: 126.9728315
                 })
+        },
+        modifyMarker () {
+            this.postList[7] = {
+                title: '남대문경찰서 태평로파출소',
+                descript: '서울특별시 중구 다동 48',
+                date: '2021년 9월 4일',
+                profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
+                writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
+                good: 9,
+                img: 'https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=ZChjp5g4pPoS4P160TXNNQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=49.861122&pitch=0&thumbfov=100',
+                lat: 37.5679791,
+                lot: 126.9777753
+            }
+        },
+        resetMarker () {
+            this.kakaoMapInstance.resetMarkerList()
         }
     }
 }
