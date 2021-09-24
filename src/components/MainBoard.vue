@@ -17,7 +17,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col style="margin-bottom:15px">
-          <div id="writePostUI">
+          <div id="writePostUI" style="position: relative">
             <div>
               <textarea v-model="inputText" maxlength="280" placeholder="내용 입력" class="postBox"></textarea>
             </div>
