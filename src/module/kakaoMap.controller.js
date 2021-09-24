@@ -4,6 +4,8 @@ export default class KakaoMapController {
     map = null
     customOverlayList = []
     markerList = []
+    beforeMarkerId = null
+    prefix = 'id-'
 
     constructor (mapEle) {
         this.mapContainer = mapEle // document.querySelector(mapEleId)
@@ -133,10 +135,70 @@ export default class KakaoMapController {
     //     xAnchor: 0.3,
     //     yAnchor: 0.91
     // }
+    customOverlayTemplate (item) {
+        return `
+            <div id="${this.prefix}${item.id}" hidden="hidden" style="
+            background-image: url(${item.img});
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            ">
+                <div style="
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    color: white;
+                    border-radius: 15px;
+                    text-align: left;
+                    padding: 5px;">
+                    <span style="
+                        font-size: 1.2em;
+                        font-weight: bold;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        width: 140px;
+                        display: inline-block;">
+                        ${item.title}
+                    </span>
+                    <p style="
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        overflow-wrap: break-word;
+                        word-break: break-all;
+                        height: 50px;">
+                        ${item.descript}
+                    </p>
+                    <img data-v-8bdc44ea="" src="${item.profileImg}" style="
+                        width: 24px;
+                        height: 24px;
+                        left: 5px;
+                        bottom: 5px;
+                        position: absolute;
+                        border-radius: 12px;
+                    ">
+                    <svg data-v-8bdc44ea="" viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img" aria-label="heart fill" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-heart-fill gap_margin_5px_horizontal b-icon bi" style="
+    right: 5px;
+    bottom: 5px;
+    position: absolute;
+"><g data-v-8bdc44ea=""><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path></g></svg>
+                </div>
+            </div>
+        `
+    }
+
     addCustomOverlay (item) {
         this.validateKakaoMapInstance()
         const customOverlay = new this.kakao.maps.CustomOverlay({
             position: new this.kakao.maps.LatLng(item.lat, item.lot),
+            content: this.customOverlayTemplate(item),
+            xAnchor: 0.5,
+            yAnchor: 1.3,
             ...item
         })
         customOverlay.setMap(this.map)
@@ -160,6 +222,7 @@ export default class KakaoMapController {
     }
 
     setCustomOverlayList (array) {
+        console.log('setCustomOverlayList', array)
         this.resetCustomOverlayList()
         if (!array && array.length < 0) {
             throw new Error(`Unexpected array detected`)
@@ -176,21 +239,36 @@ export default class KakaoMapController {
         this.customOverlayList.length = 0
     }
 
-    addMarker (lat, lot) {
+    addMarker (lat, lot, id) {
         this.validateKakaoMapInstance()
         const markerPosition = new this.kakao.maps.LatLng(lat, lot)
 
         const marker = new this.kakao.maps.Marker({
             position: markerPosition
         })
+        this.kakao.maps.event.addListener(marker, 'click', () => {
+            if (this.beforeMarkerId === id && document.querySelector(`#${this.prefix}${id}`)) {
+                document.querySelector(`#${this.prefix}${id}`).hasAttribute('hidden')
+                    ? document.querySelector(`#${this.prefix}${id}`).removeAttribute('hidden') : document.querySelector(`#${this.prefix}${id}`).setAttribute('hidden', 'hidden')
+            } else {
+                if (document.querySelector(`#${this.prefix}${id}`)) {
+                    document.querySelector(`#${this.prefix}${id}`).removeAttribute('hidden')
+                    document.querySelector(`#${this.prefix}${id}`).parentNode.style.margin = '-195px 0px 0px -75px'
+                }
+                if (this.beforeMarkerId && document.querySelector(`#${this.prefix}${this.beforeMarkerId}`)) {
+                    document.querySelector(`#${this.prefix}${this.beforeMarkerId}`).setAttribute('hidden', 'hidden')
+                }
+            }
+            this.beforeMarkerId = id
+        })
         marker.setMap(this.map)
         this.markerList.push(marker)
         return marker
     }
 
-    modifyMarker (idx, lat, lot) {
+    modifyMarker (idx, lat, lot, id) {
         this.deleteMarker(idx, 0)
-        this.markerList[idx] = this.addMarker(lat, lot)
+        this.markerList[idx] = this.addMarker(lat, lot, id)
     }
 
     deleteMarker (idx, withSplice = 1) {
@@ -210,7 +288,7 @@ export default class KakaoMapController {
         }
 
         array.forEach(item => {
-            this.addMarker(item.lat, item.lot)
+            this.addMarker(item.lat, item.lot, item.id)
         })
     }
 

@@ -12,6 +12,7 @@
             <button id="appendMarker" v-on:click="appendMarker"></button>
             <button id="modifyMarker" v-on:click="modifyMarker"></button>
             <button id="resetMarker" v-on:click="resetMarker"></button>
+            <button id="setCustomOverlay" v-on:click="setCustomOverlay(postList)"></button>
         </div>
     </div>
 </template>
@@ -37,6 +38,7 @@ export default {
     watch: {
         postList: function (val) {
             this.setMarker(val)
+            this.setCustomOverlay(val)
         }
     },
     data () {
@@ -55,6 +57,7 @@ export default {
             this.kakaoMapInstance.initMap()
             this.getMapInfo()
             if (!this.dev) {
+                this.setCustomOverlay(this.postList)
                 this.setMarker(this.postList)
             }
             this.kakaoMapInstance.kakao.maps.event.addListener(this.kakaoMapInstance.map, 'center_changed', () => {
@@ -88,13 +91,15 @@ export default {
             this.kakaoMapInstance.setMarkerList(array.map(item => {
                 return {
                     lat: item.lat,
-                    lot: item.lot
+                    lot: item.lot,
+                    id: item.id
                 }
             }))
         },
         appendMarker () {
             this.postList.push(
                 {
+                    id: '3197c4ce-cc28-4616-b7bf-0274ef782cac',
                     title: '주한 엘살바도르 대사관 Embajada de el salvador',
                     descript: '서울특별시 중구 태평로2가 세종대로 55',
                     date: '2021년 9월 4일',
@@ -108,6 +113,7 @@ export default {
         },
         modifyMarker () {
             this.postList[7] = {
+                id: 'bab1145a-cd19-4f94-8a42-e730a3954ada',
                 title: '남대문경찰서 태평로파출소',
                 descript: '서울특별시 중구 다동 48',
                 date: '2021년 9월 4일',
@@ -121,6 +127,9 @@ export default {
         },
         resetMarker () {
             this.kakaoMapInstance.resetMarkerList()
+        },
+        setCustomOverlay (array) {
+            this.kakaoMapInstance.setCustomOverlayList(array)
         }
     }
 }

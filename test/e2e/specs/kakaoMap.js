@@ -107,7 +107,13 @@ module.exports = {
         }, (len) => {
             browser.assert.equal(len.value, 0)
         })
-        .pause(1000)
+        .perform(() => {
+            console.log('Test create customoverlay')
+        })
+        .execute(() => {
+            document.querySelector('#setCustomOverlay').click()
+        })
+        .pause(60000)
         .end()
 
     //   browser
