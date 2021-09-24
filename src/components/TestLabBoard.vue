@@ -17,9 +17,9 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 1,
-                    img: 'https://lh5.googleusercontent.com/p/AF1QipNV5Yhw_FPjQZjJIHuP7qHexF6Xf5L-WQiVOwQP=w426-h240-k-no',
-                    lat: 37.5662952,
-                    lot: 126.9757511
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Seoul_City_Hall_20190608_001.jpg',
+                    lat: 37.566543,
+                    lot: 126.978421
                 },
                 {
                     id: '525d7948-d35a-4104-8cbb-ab70f0ced1d1',
@@ -29,9 +29,9 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 2,
-                    img: 'https://lh4.googleusercontent.com/proxy/iXWBp-j7fRTrYU1NYIjo5ZR_gV0cQJUmSxXSZEavdqBGpiN_llGmFyKBBrGwt_tgV2ssACYGfZu3v8qM8AM6IgWizSphptS5ekVhbk5g613qIJlG1cYZv2lnS3-oSFuXKs9uZ8uk8LkdzpMM7E5kzCULN5EirMI=w438-h240-k-no',
-                    lat: 37.5653575,
-                    lot: 126.9737973
+                    img: 'http://www.deoksugung.go.kr/ko/assets/images/gallery/t3.jpg',
+                    lat: 37.565772,
+                    lot: 126.975160
                 },
                 {
                     id: '9758a109-3adc-4dc3-a50c-d25afa839e05',
@@ -41,9 +41,9 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 3,
-                    img: 'https://lh5.googleusercontent.com/p/AF1QipM2LpBxqpI0LA4Joyfrsw2v9QoZkhBh7x_jbBoz=w408-h544-k-no',
-                    lat: 37.5653574,
-                    lot: 126.9737866
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/%EC%8B%9C%EC%B2%AD%EC%97%AD_%EC%97%AD%EB%AA%85%ED%8C%90%282%ED%98%B8%EC%84%A0%29.JPG',
+                    lat: 37.565559,
+                    lot: 126.977173
                 },
                 {
                     id: '5895722f-f12a-4572-9260-888b5b3e2072',
@@ -53,9 +53,9 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 4,
-                    img: 'https://lh5.googleusercontent.com/p/AF1QipNLk6UTEICwua6OaWMv_p5yoEgGQlZmXwQGIXcP=w408-h306-k-no',
-                    lat: 37.5670347,
-                    lot: 126.9715391
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/USA_Embassy_Building_in_Seoul.jpg/270px-USA_Embassy_Building_in_Seoul.jpg',
+                    lat: 37.566940,
+                    lot: 126.972958
                 },
                 {
                     id: '9a9b35a1-d737-4c32-ad1d-0c9329bbd717',
@@ -65,7 +65,7 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 5,
-                    img: 'https://lh5.googleusercontent.com/p/AF1QipOf32XPC20NngLmrE5pXvARaWG739YfNfU9WYDv=w408-h306-k-no',
+                    img: 'https://ir.dwdfs.com/images/sub/about-ceo-visual.jpg',
                     lat: 37.569586,
                     lot: 126.976187
                 },
@@ -77,9 +77,9 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 6,
-                    img: 'https://lh5.googleusercontent.com/p/AF1QipOQEUNavSYAzsvwEGOc1tfRpL7cLT2PqNRYtOb3=w408-h544-k-no',
-                    lat: 37.5712125,
-                    lot: 126.9757963
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Bogot%C3%A1_embajada_de_Corea_del_Sur.JPG/270px-Bogot%C3%A1_embajada_de_Corea_del_Sur.JPG',
+                    lat: 37.570936,
+                    lot: 126.977952
                 },
                 {
                     id: '83775fa5-97b0-4dde-92f5-7721d52de1eb',
@@ -89,9 +89,9 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 7,
-                    img: 'https://user-images.githubusercontent.com/16532326/132641481-95f52b8d-5069-4c20-ad52-866b1276899c.png',
-                    lat: 37.572357,
-                    lot: 126.975124
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_South_Korea_on_building.jpg/300px-Flag_of_South_Korea_on_building.jpg',
+                    lat: 37.572008,
+                    lot: 126.977951
                 },
                 {
                     id: 'ae3f053e-e0d4-486b-af6e-3d6138d426f9',
@@ -101,9 +101,9 @@ export default {
                     profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
                     writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
                     good: 8,
-                    img: 'https://lh5.googleusercontent.com/p/AF1QipP6MopGbzD-G1ZyjsRS-QJdYORO0wGw-620RrQq=w408-h306-k-no',
-                    lat: 37.567963,
-                    lot: 126.969243
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Former_Russia_legation_of_Korea_01.JPG/272px-Former_Russia_legation_of_Korea_01.JPG',
+                    lat: 37.568178,
+                    lot: 126.971474
                 }
             ]
         }
