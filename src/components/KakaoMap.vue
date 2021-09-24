@@ -51,7 +51,7 @@ export default {
         }
     },
     mounted () {
-        this.kakaoMapInstance = new KakaoMapController(this.$refs.kakaomap)
+        this.kakaoMapInstance = new KakaoMapController(this.$refs.kakaomap, this.onMarkerClicked)
         this.initKakaoMap()
         .then(() => {
             this.kakaoMapInstance.initMap()
@@ -70,6 +70,12 @@ export default {
         })
     },
     methods: {
+        onMarkerClicked (id) {
+            const post = this.postList.find(item => item.id === id)
+            if (post) {
+                this.$emit('on-marker-clicked', post)
+            }
+        },
         initKakaoMap () {
             return this.kakaoMapInstance.loadScript()
         },

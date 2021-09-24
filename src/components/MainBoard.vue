@@ -1,6 +1,6 @@
 <template>
   <div id="mainboard">
-    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"></kakao-map>
+    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList" @on-marker-clicked="onMarkerClicked"></kakao-map>
     <b-container >
       <b-row align-h="end">
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
@@ -21,12 +21,12 @@
           Write post UI
         </b-col>
       </b-row>
-      <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList"></grid-board>
+      <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
     </b-container>
     <div class="wrapper" v-if="viewMode === 'map'" v-bind:style="openSideList ? 'transform: translateX(0px);' : 'transform: translateX(-300px);'">
       <div class="list">
         <b-container fluid>
-          <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true"></grid-board>
+          <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true" v-bind:focusedPostID="focusedPost.id"></grid-board>
         </b-container >
       </div>
       <div class="list-toggle" v-on:click="openSideList = !openSideList">
@@ -50,6 +50,7 @@ export default {
         msg: 'hello world',
         viewMode: 'grid',
         openSideList: false,
+        focusedPost: {},
         postList: [
                 {
                     id: '993915c4-878b-4486-b9a8-052971a9620d',
@@ -160,6 +161,11 @@ export default {
     onViewModeChanged: function (mode) {
       console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
       this.viewMode = mode
+    },
+    onMarkerClicked: function (post) {
+      console.log(`[MainBoard] [onMarkerClicked] post: `, post)
+      this.openSideList = true
+      this.focusedPost = post
     }
   }
 }
