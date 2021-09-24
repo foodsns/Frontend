@@ -46,7 +46,8 @@ npm run build
 
 #### 4-2. E2E 테스트
 
-![스크린샷 2021-09-09 오후 11 59 47](https://user-images.githubusercontent.com/16532326/132710797-63f2e67e-e579-40ee-9833-3fc6432aa437.png)
+https://user-images.githubusercontent.com/16532326/134619812-38ca40fe-71c8-4b43-85f7-0acd266c66d7.mp4
+
 
 `selenium` 활용 크롬브라우저로 테스트 진행 (`nightwatchjs` 사용)
 
