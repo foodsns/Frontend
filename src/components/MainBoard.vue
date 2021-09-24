@@ -181,7 +181,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #mainboard {
-  margin-top: 60px;
+  padding-top: 60px;
   position: relative;
 }
 #mainboard .wrapper {
