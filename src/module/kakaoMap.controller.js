@@ -6,13 +6,15 @@ export default class KakaoMapController {
     markerList = []
     beforeMarkerId = null
     prefix = 'id-'
+    onMarkerClicked = null
 
-    constructor (mapEle) {
+    constructor (mapEle, onMarkerClicked) {
         this.mapContainer = mapEle // document.querySelector(mapEleId)
 
         if (!this.mapContainer) {
             throw new Error(`Map container is null`)
         }
+        this.onMarkerClicked = onMarkerClicked
     }
 
     loadScript () {
@@ -248,12 +250,21 @@ export default class KakaoMapController {
         })
         this.kakao.maps.event.addListener(marker, 'click', () => {
             if (this.beforeMarkerId === id && document.querySelector(`#${this.prefix}${id}`)) {
-                document.querySelector(`#${this.prefix}${id}`).hasAttribute('hidden')
-                    ? document.querySelector(`#${this.prefix}${id}`).removeAttribute('hidden') : document.querySelector(`#${this.prefix}${id}`).setAttribute('hidden', 'hidden')
+                if (document.querySelector(`#${this.prefix}${id}`).hasAttribute('hidden')) {
+                    document.querySelector(`#${this.prefix}${id}`).removeAttribute('hidden')
+                    if (this.onMarkerClicked) {
+                        this.onMarkerClicked(id)
+                    }
+                } else {
+                    document.querySelector(`#${this.prefix}${id}`).setAttribute('hidden', 'hidden')
+                }
             } else {
                 if (document.querySelector(`#${this.prefix}${id}`)) {
                     document.querySelector(`#${this.prefix}${id}`).removeAttribute('hidden')
                     document.querySelector(`#${this.prefix}${id}`).parentNode.style.margin = '-195px 0px 0px -75px'
+                    if (this.onMarkerClicked) {
+                        this.onMarkerClicked(id)
+                    }
                 }
                 if (this.beforeMarkerId && document.querySelector(`#${this.prefix}${this.beforeMarkerId}`)) {
                     document.querySelector(`#${this.prefix}${this.beforeMarkerId}`).setAttribute('hidden', 'hidden')
