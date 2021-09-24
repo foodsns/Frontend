@@ -19,6 +19,10 @@ import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css'
+
 import PostBox from './components/PostBox'
 import GridMapToggle from './components/GridMapToggle'
 import GoogleSign from './components/GoogleSign'
@@ -54,6 +58,10 @@ Vue.component('kakao-map', KakaoMap)
 Vue.component('grid-board', GridBoard)
 Vue.component('map-board', MapBoard)
 Vue.component('goodlist-btn', GoodList)
+
+Vue.use(MdButton)
+Vue.use(MdContent)
+Vue.use(MdTabs)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {
