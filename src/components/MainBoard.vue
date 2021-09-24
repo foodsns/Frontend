@@ -16,7 +16,7 @@
         </b-col>
       </b-row>
       <b-row align-h="center">
-        <b-col style="margin-bottom:15px">
+        <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
           <div id="writePostUI" style="position: relative">
             <div>
               <textarea v-model="inputText" maxlength="280" placeholder="내용 입력" class="postBox"></textarea>
@@ -185,14 +185,14 @@ export default {
   position: relative;
 }
 #mainboard .wrapper {
-    position: absolute;
+    position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     max-width: 350px;
     z-index: 999;
     overflow-y: hidden;
-    height: calc(100vh - 90px);
+    height: 100vh;
     padding: 0;
     transition: .4s;
 }
@@ -249,7 +249,7 @@ export default {
 .postBox{
     resize : none;
     height : 100px;
-    width : 500px;
+    width : 100%;
 }
 
 .postbtn{
