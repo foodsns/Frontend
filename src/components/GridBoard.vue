@@ -1,15 +1,26 @@
 <template>
     <div id="gridboard">
-        <b-row v-if="!onlyOneLine">
-            <b-col xxl="3" xl="4" lg="6" cols="12" class="b-col" v-for="(post, index) in postList" :key="index" :ref="prefix + post.id">
-                <post-box v-bind:post="post" class="post-item"></post-box>
-            </b-col>
-        </b-row>
-        <b-row v-else>
-            <b-col cols="12" class="b-col" v-for="(post, index) in postList" :key="index" :ref="prefix + post.id">
-                <post-box v-bind:post="post" class="post-item"></post-box>
-            </b-col>
-        </b-row>
+        <template v-if="postList.length > 0">
+            <b-row v-if="!onlyOneLine">
+                <b-col xxl="3" xl="4" lg="6" cols="12" class="b-col" v-for="(post, index) in postList" :key="index" :ref="prefix + post.id">
+                    <post-box v-bind:post="post" class="post-item"></post-box>
+                </b-col>
+            </b-row>
+            <b-row v-else>
+                <b-col cols="12" class="b-col" v-for="(post, index) in postList" :key="index" :ref="prefix + post.id">
+                    <post-box v-bind:post="post" class="post-item"></post-box>
+                </b-col>
+            </b-row>
+        </template>
+        <template>
+            <b-row style="    height: 150px;
+    display: flex;
+    align-content: center;">
+                <b-col cols="12">
+                    <span style="font-size: 1.5em;font-weight: bold;">여긴 아무것도 없네요!</span>
+                </b-col>
+            </b-row>
+        </template>
     </div>
 </template>
 
