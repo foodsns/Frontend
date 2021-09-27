@@ -31,7 +31,7 @@
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
       <b-row v-if="viewMode === 'grid'">
         <b-col>
-          <infinite-scroll v-bind:clientHeight="clientHeight" v-bind:scrollHeight="scrollHeight" v-bind:scrollTop="scrollTop" v-bind:threshold="threshold"></infinite-scroll>
+          <infinite-scroll v-bind:clientHeight="clientHeight" v-bind:scrollHeight="scrollHeight" v-bind:scrollTop="scrollTop" v-bind:thresholdProp="threshold"></infinite-scroll>
         </b-col>
       </b-row>
     </b-container>
@@ -41,7 +41,7 @@
           <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true" v-bind:focusedPostID="focusedPost.id"></grid-board>
           <b-row>
             <b-col>
-              <infinite-scroll v-bind:clientHeight="clientHeight" v-bind:scrollHeight="scrollHeight" v-bind:scrollTop="scrollTop" v-bind:threshold="threshold"></infinite-scroll>
+              <infinite-scroll v-bind:clientHeight="clientHeight" v-bind:scrollHeight="scrollHeight" v-bind:scrollTop="scrollTop" v-bind:thresholdProp="threshold"></infinite-scroll>
             </b-col>
           </b-row>
         </b-container >
@@ -72,7 +72,7 @@ export default {
         clientHeight: 0,
         scrollHeight: 0,
         scrollTop: 0,
-        threshold: 0,
+        threshold: 200,
         postList: [
                 {
                     id: '993915c4-878b-4486-b9a8-052971a9620d',
@@ -192,6 +192,7 @@ export default {
     }
 
     this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
+    this.$refs.mainboard.addEventListener('resize', this.scrollHandler)
     this.scrollHandler()
   },
   methods: {

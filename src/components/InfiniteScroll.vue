@@ -1,5 +1,6 @@
 <template>
-  <div id="infinitescroll">
+  <div id="infinitescroll" v-bind:style="`height: ${threshold}px`">
+    Hello?
   </div>
 </template>
 
@@ -49,7 +50,7 @@ export default {
         }
     },
     mounted () {
-        console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+        console.log(`[mounted] clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
     }
 }
 </script>
