@@ -10,7 +10,9 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret, faHeart, faMap, faTh, faUser, faSignInAlt, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faHeart, faMap, faTh, faUser,
+        faSignInAlt, faArrowRight, faArrowLeft,
+        faSpinner, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -48,6 +50,8 @@ library.add(faUser)
 library.add(faSignInAlt)
 library.add(faArrowRight)
 library.add(faArrowLeft)
+library.add(faSpinner)
+library.add(faArrowDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)

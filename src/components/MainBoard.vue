@@ -31,7 +31,12 @@
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
       <b-row v-if="viewMode === 'grid'">
         <b-col>
-          <infinite-scroll v-bind:clientHeight="clientHeight" v-bind:scrollHeight="scrollHeight" v-bind:scrollTop="scrollTop" v-bind:thresholdProp="threshold"></infinite-scroll>
+          <infinite-scroll v-bind:clientHeight="clientHeight"
+                            v-bind:scrollHeight="scrollHeight"
+                            v-bind:scrollTop="scrollTop"
+                            v-bind:thresholdProp="threshold"
+                            v-bind:messageProp.sync="scrollMsg"
+                            @need-more="onScrollReachedBottom"></infinite-scroll>
         </b-col>
       </b-row>
     </b-container>
@@ -41,7 +46,12 @@
           <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true" v-bind:focusedPostID="focusedPost.id"></grid-board>
           <b-row>
             <b-col>
-              <infinite-scroll v-bind:clientHeight="clientHeight" v-bind:scrollHeight="scrollHeight" v-bind:scrollTop="scrollTop" v-bind:thresholdProp="threshold"></infinite-scroll>
+              <infinite-scroll v-bind:clientHeight="clientHeight"
+                            v-bind:scrollHeight="scrollHeight"
+                            v-bind:scrollTop="scrollTop"
+                            v-bind:thresholdProp="threshold"
+                            v-bind:messageProp.sync="scrollMsg"
+                            @need-more="onScrollReachedBottom"></infinite-scroll>
             </b-col>
           </b-row>
         </b-container >
@@ -73,6 +83,9 @@ export default {
         scrollHeight: 0,
         scrollTop: 0,
         threshold: 200,
+        scrollMsg: '',
+        isLoading: false,
+        dummyCnt: 0,
         postList: [
                 {
                     id: '993915c4-878b-4486-b9a8-052971a9620d',
@@ -196,6 +209,27 @@ export default {
     this.scrollHandler()
   },
   methods: {
+    onScrollReachedBottom () {
+      console.log(`[MainBoard] [onScrollReachedBottom] let's get more data`)
+      if (!this.isLoading) {
+        this.scrollMsg = ''
+        this.isLoading = true
+        setTimeout(() => {
+          this.isLoading = false
+          if (this.dummyCnt < 0) {
+            this.dummyCnt++
+            const dummy = JSON.parse(JSON.stringify(this.postList))
+            // this.postList = this.postList.concat(dummy)
+            dummy.forEach(item => {
+              this.postList.push(item)
+            })
+            console.log('concat', this.postList.length)
+          } else {
+            this.scrollMsg = '더 이상 리뷰가 없어요'
+          }
+        }, 5000)
+      }
+    },
     scrollHandler () {
       switch (this.viewMode) {
         case 'grid':
