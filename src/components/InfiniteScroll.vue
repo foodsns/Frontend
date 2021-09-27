@@ -88,7 +88,7 @@ export default {
                 return false
             }
             const height = (this.clientHeight + this.scrollTop) - (this.scrollHeight - this.threshold)
-            if (height >= this.threshold / 4 * 3 && !this.message) {
+            if (height >= this.threshold / 5 * 4 && !this.message) {
                 console.log('[InfiniteScroll] [appendHeightCalc] Call need more')
                 this.$emit('need-more')
                 return true
@@ -147,7 +147,7 @@ export default {
     align-items: center;
     justify-content: center;
     transition: all 0.8s ease-out;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
 }
 
 #infinitescroll span {
