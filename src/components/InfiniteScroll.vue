@@ -5,11 +5,52 @@
 
 <script>
 export default {
-  name: 'InfiniteScroll',
-  data () {
-    return {
+    name: 'InfiniteScroll',
+    props: {
+            clientHeight: {
+                type: Number,
+                default: function () {
+                    return 0
+                }
+            },
+            scrollHeight: {
+                type: Number,
+                default: function () {
+                    return 0
+                }
+            },
+            scrollTop: {
+                type: Number,
+                default: function () {
+                    return 0
+                }
+            },
+            thresholdProp: {
+                type: Number,
+                default: function () {
+                    return 0
+                }
+            }
+    },
+    watch: {
+        clientHeight: function (val) {
+            console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+        },
+        scrollHeight: function (val) {
+            console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+        },
+        scrollTop: function (val) {
+            console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+        }
+    },
+    data () {
+        return {
+            threshold: this.thresholdProp
+        }
+    },
+    mounted () {
+        console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
     }
-  }
 }
 </script>
 
