@@ -1,6 +1,6 @@
 <template>
     <div ref="infinitescroll" id="infinitescroll" v-bind:style="message ? `height: 50px` : `height: ${threshold}px`">
-        <template v-if="clientHeight < scrollHeight">
+        <template v-if="clientHeight + threshold < scrollHeight">
             <span v-if="appendHeightCalc">
                 <font-awesome-icon icon="spinner" />
                 <span class="txt">

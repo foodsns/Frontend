@@ -12,7 +12,7 @@
                 </b-col>
             </b-row>
         </template>
-        <template>
+        <template v-else>
             <b-row style="    height: 150px;
     display: flex;
     align-content: center;">
