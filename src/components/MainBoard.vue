@@ -251,6 +251,9 @@ export default {
           }
         break
       }
+      if (this.scrollMsg && this.clientHeight + this.scrollTop <= this.scrollHeight - this.threshold) {
+        this.scrollMsg = ''
+      }
     },
     onViewModeChanged: function (mode) {
       console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
