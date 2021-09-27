@@ -1,21 +1,23 @@
 <template>
-  <div ref="infinitescroll" id="infinitescroll" v-bind:style="message ? `height: 50px` : `height: ${threshold}px`">
-    <span v-if="appendHeightCalc">
-        <font-awesome-icon icon="spinner" />
-        <span class="txt">
-            새로운 리뷰가 있는지 찾아보는 중
-        </span>
-    </span>
-    <span v-else-if="message">
-        {{message}}
-    </span>
-    <span v-else>
-        <font-awesome-icon icon="arrow-down" />
-        <span class="txt">
-            아래로 내려 더 많은 리뷰를 확인하세요
-        </span>
-    </span>
-  </div>
+    <div ref="infinitescroll" id="infinitescroll" v-bind:style="message ? `height: 50px` : `height: ${threshold}px`">
+        <template v-if="clientHeight < scrollHeight">
+            <span v-if="appendHeightCalc">
+                <font-awesome-icon icon="spinner" />
+                <span class="txt">
+                    새로운 리뷰가 있는지 찾아보는 중
+                </span>
+            </span>
+            <span v-else-if="message">
+                {{message}}
+            </span>
+            <span v-else>
+                <font-awesome-icon icon="arrow-down" />
+                <span class="txt">
+                    아래로 내려 더 많은 리뷰를 확인하세요
+                </span>
+            </span>
+        </template>
+    </div>
 </template>
 
 <script>
