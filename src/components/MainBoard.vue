@@ -15,6 +15,9 @@
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
         </b-col>
       </b-row>
+      <b-col>
+        <hashtag class="hashtag"></hashtag>
+      </b-col>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
           <div id="writePostUI" style="position: relative">
@@ -48,10 +51,12 @@
 </template>
 
 <script>
+import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
 export default {
-  components: { Scrollbar },
-  name: 'MainBoard',
+  components: { Scrollbar, Hashtag },
+  name:
+    'MainBoard',
   data () {
     return {
         msg: 'hello world',

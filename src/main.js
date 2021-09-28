@@ -34,6 +34,7 @@ import GridBoard from './components/GridBoard'
 import MapBoard from './components/MapBoard'
 import GoodList from './components/GoodList'
 import GoodListPage from './components/GoodListPage'
+import Hashtag from './components/Hashtag'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -60,6 +61,7 @@ Vue.component('grid-board', GridBoard)
 Vue.component('map-board', MapBoard)
 Vue.component('goodlist-btn', GoodList)
 Vue.component('goodlist', GoodListPage)
+Vue.component('hash-tag', Hashtag)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
