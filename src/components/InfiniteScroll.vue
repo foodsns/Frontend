@@ -1,6 +1,6 @@
 <template>
     <div ref="infinitescroll" id="infinitescroll" v-bind:style="message ? `height: 50px` : `height: ${threshold}px`">
-        <template v-if="clientHeight + threshold < scrollHeight">
+        <template v-if="clientHeight + threshold < scrollHeight && threshold > 100">
             <span v-if="appendHeightCalc">
                 <font-awesome-icon icon="spinner" />
                 <span class="txt">
@@ -56,17 +56,17 @@ export default {
             }
     },
     watch: {
-        clientHeight: function (val) {
-            console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
-        },
-        scrollHeight: function (val) {
-            console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
-        },
-        scrollTop: function (val) {
-            console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
-            const height = (this.clientHeight + this.scrollTop) - (this.scrollHeight - this.threshold)
-            console.log(`ch + st >= sh - th == ${this.clientHeight + this.scrollTop} >= ${this.scrollHeight - this.threshold} : ${height}`)
-        },
+        // clientHeight: function (val) {
+        //     console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+        // },
+        // scrollHeight: function (val) {
+        //     console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+        // },
+        // scrollTop: function (val) {
+        //     console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+        //     const height = (this.clientHeight + this.scrollTop) - (this.scrollHeight - this.threshold)
+        //     console.log(`ch + st >= sh - th == ${this.clientHeight + this.scrollTop} >= ${this.scrollHeight - this.threshold} : ${height}`)
+        // },
         messageProp: function (val) {
             this.message = val
             console.log('?', this.message)
@@ -84,7 +84,7 @@ export default {
     },
     computed: {
         appendHeightCalc () {
-            if (this.sclientHeight > this.scrollHeight) {
+            if (this.clientHeight > this.scrollHeight) {
                 return false
             }
             const height = (this.clientHeight + this.scrollTop) - (this.scrollHeight - this.threshold)
@@ -99,16 +99,16 @@ export default {
     data () {
         return {
             threshold: this.thresholdProp,
-            message: this.messageProp,
-            closeForce: false,
-            isEmitted: false,
-            ref: this.refProp
+            message: this.messageProp
+            // closeForce: false,
+            // isEmitted: false,
+            // ref: this.refProp
         }
     },
     methods: {
-        setIsEmitted (isEmitted) {
-            this.isEmitted = isEmitted
-        }
+        // setIsEmitted (isEmitted) {
+        //     this.isEmitted = isEmitted
+        // }
     },
     mounted () {
         console.log(`[mounted] clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
