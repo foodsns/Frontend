@@ -10,7 +10,9 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret, faHeart, faMap, faTh, faUser, faSignInAlt, faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faHeart, faMap, faTh, faUser,
+        faSignInAlt, faArrowRight, faArrowLeft,
+        faSpinner, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -34,6 +36,7 @@ import GridBoard from './components/GridBoard'
 import MapBoard from './components/MapBoard'
 import GoodList from './components/GoodList'
 import GoodListPage from './components/GoodListPage'
+import InfiniteScroll from './components/InfiniteScroll'
 import Hashtag from './components/Hashtag'
 
 // Initialize Firebase
@@ -48,6 +51,8 @@ library.add(faUser)
 library.add(faSignInAlt)
 library.add(faArrowRight)
 library.add(faArrowLeft)
+library.add(faSpinner)
+library.add(faArrowDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
@@ -61,6 +66,7 @@ Vue.component('grid-board', GridBoard)
 Vue.component('map-board', MapBoard)
 Vue.component('goodlist-btn', GoodList)
 Vue.component('goodlist', GoodListPage)
+Vue.component('infinite-scroll', InfiniteScroll)
 Vue.component('hash-tag', Hashtag)
 
 Vue.use(MdButton)

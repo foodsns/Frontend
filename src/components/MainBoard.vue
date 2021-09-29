@@ -1,5 +1,5 @@
 <template>
-  <div id="mainboard">
+  <div id="mainboard" ref="mainboard">
     <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList" @on-marker-clicked="onMarkerClicked"></kakao-map>
     <b-container >
       <b-row align-h="end">
@@ -37,11 +37,31 @@
         </b-col>
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
+      <b-row v-if="viewMode === 'grid'">
+        <b-col>
+          <infinite-scroll v-bind:clientHeight="clientHeight"
+                            v-bind:scrollHeight="scrollHeight"
+                            v-bind:scrollTop="scrollTop"
+                            v-bind:thresholdProp="threshold"
+                            v-bind:messageProp.sync="scrollMsg"
+                            @need-more="onScrollReachedBottom"></infinite-scroll>
+        </b-col>
+      </b-row>
     </b-container>
     <div class="wrapper" v-if="viewMode === 'map'" v-bind:style="openSideList ? 'transform: translateX(0px);' : 'transform: translateX(-300px);'">
-      <div class="list">
+      <div id="sideList" ref="sidelist" class="list">
         <b-container fluid>
           <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true" v-bind:focusedPostID="focusedPost.id"></grid-board>
+          <b-row>
+            <b-col>
+              <infinite-scroll v-bind:clientHeight="clientHeight"
+                            v-bind:scrollHeight="scrollHeight"
+                            v-bind:scrollTop="scrollTop"
+                            v-bind:thresholdProp="threshold"
+                            v-bind:messageProp.sync="scrollMsg"
+                            @need-more="onScrollReachedBottom"></infinite-scroll>
+            </b-col>
+          </b-row>
         </b-container >
       </div>
       <div class="list-toggle" v-on:click="openSideList = !openSideList">
@@ -68,6 +88,14 @@ export default {
         viewMode: 'grid',
         openSideList: false,
         focusedPost: {},
+        inputText: '',
+        clientHeight: 0,
+        scrollHeight: 0,
+        scrollTop: 0,
+        threshold: 200,
+        scrollMsg: '',
+        isLoading: false,
+        dummyCnt: 0,
         postList: [
                 {
                     id: '993915c4-878b-4486-b9a8-052971a9620d',
@@ -168,13 +196,75 @@ export default {
             ]
     }
   },
+  watch: {
+    viewMode: {
+      immediate: true,
+      handler (val) {
+        this.$nextTick(() => {
+          if (this.$refs.sidelist) {
+            this.$refs.sidelist.addEventListener('scroll', this.scrollHandler)
+          }
+        })
+      }
+    }
+  },
   mounted () {
     const dev = localStorage.getItem('dev') || false
     if (dev) {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
     }
+
+    this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
+    this.$refs.mainboard.addEventListener('resize', this.scrollHandler)
+    this.scrollHandler()
   },
   methods: {
+    onScrollReachedBottom () {
+      console.log(`[MainBoard] [onScrollReachedBottom] let's get more data`)
+      if (!this.isLoading) {
+        this.scrollMsg = ''
+        this.isLoading = true
+        setTimeout(() => {
+          this.isLoading = false
+          if (this.dummyCnt < 1) {
+            this.dummyCnt++
+            const dummy = JSON.parse(JSON.stringify(this.postList))
+            // this.postList = this.postList.concat(dummy)
+            dummy.forEach(item => {
+              this.postList.push(item)
+            })
+            console.log('concat', this.postList.length)
+          } else {
+            this.scrollMsg = '더 이상 리뷰가 없어요'
+          }
+        }, 2000)
+      }
+    },
+    scrollHandler () {
+      switch (this.viewMode) {
+        case 'grid':
+          if (this.$refs.mainboard) {
+            this.clientHeight = this.$refs.mainboard.clientHeight
+            this.scrollHeight = this.$refs.mainboard.scrollHeight
+            this.scrollTop = this.$refs.mainboard.scrollTop
+          } else {
+            console.warn(`[MainBoard] [scrollHandler] Undefined mainboard ref`)
+          }
+        break
+        case 'map':
+          if (this.$refs.sidelist) {
+            this.clientHeight = this.$refs.sidelist.clientHeight
+            this.scrollHeight = this.$refs.sidelist.scrollHeight
+            this.scrollTop = this.$refs.sidelist.scrollTop
+          } else {
+            console.warn(`[MainBoard] [scrollHandler] Undefined sidelist ref`)
+          }
+        break
+      }
+      if (this.scrollMsg && this.clientHeight + this.scrollTop <= this.scrollHeight - this.threshold) {
+        this.scrollMsg = ''
+      }
+    },
     onViewModeChanged: function (mode) {
       console.log(`[MainBoard] [onViewModeChanged] mode: ${mode}`)
       this.viewMode = mode
@@ -193,6 +283,9 @@ export default {
 #mainboard {
   padding-top: 60px;
   position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
 }
 #mainboard .wrapper {
     position: fixed;
