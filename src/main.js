@@ -37,6 +37,7 @@ import MapBoard from './components/MapBoard'
 import GoodList from './components/GoodList'
 import GoodListPage from './components/GoodListPage'
 import InfiniteScroll from './components/InfiniteScroll'
+import Hashtag from './components/Hashtag'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -66,6 +67,7 @@ Vue.component('map-board', MapBoard)
 Vue.component('goodlist-btn', GoodList)
 Vue.component('goodlist', GoodListPage)
 Vue.component('infinite-scroll', InfiniteScroll)
+Vue.component('hash-tag', Hashtag)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
