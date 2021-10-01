@@ -1,19 +1,23 @@
  <template>
 <div>
-    <h4 class= "mx-auto" >좋아요 누른 목록 표시</h4>
-    <grid-board v-bind:postListProps="postList"/>
+     <b-container>
+         <h4 v-show="value" class= "mx-auto">좋아요 누른 목록 표시</h4>
+         <grid-board v-bind:postListProps="postList"/>
+     </b-container>
 </div>
 </template>
 
 <script>
 import GridBoard from './GridBoard.vue'
+// import {EventBus} from '../lib/event-bus.js'
 export default {
-
+    props: ['liked'],
     components: {
         GridBoard
     },
     data () {
         return {
+            value: false,
             postList: [
           {
              id: '993915c4-878b-4486-b9a8-052971a9620d',
@@ -42,6 +46,9 @@ export default {
                 }
             ]
         }
-    }
+    },
+    methods: {
+
+}
 }
 </script>

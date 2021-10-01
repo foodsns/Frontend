@@ -11,7 +11,7 @@
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
                     :variant="currentMode == 'grid' ? 'danger' : ''"
-                    v-on:click="[greet('grid'), increase(), decrease()]"
+                    v-on:click="[greet('grid'), increase(), decrease(), ture_not_liked()]"
             />
             <span class="good_num">{{postItem.good}}</span>
         </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {EventBus} from '../lib/event-bus.js'
 export default {
   name: 'postbox',
   props: {
@@ -41,7 +42,8 @@ export default {
   data () {
     return {
         postItem: this.post,
-        currentMode: this.mode
+        currentMode: this.mode,
+        liked: false
     }
   },
   computed: {
@@ -62,9 +64,15 @@ export default {
        },
        increase: function () {
            this.postItem.good++
-       },
+           },
        decrease: function () {
            this.postItem.good--
+       },
+       ture_not_liked: function () {
+           this.liked === true ? this.liked = false : this.liked = true
+           console.log('데이터 보냅니다: ', this.liked)
+           EventBus.$emit('use-eventBus', this.liked)
+           return this.liked
        }
   }
 }
