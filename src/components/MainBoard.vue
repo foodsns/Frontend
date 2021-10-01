@@ -29,13 +29,17 @@
           <div id="writePostUI" style="position: relative">
             <div>
               <div class="form-floating">
+<<<<<<< Updated upstream
                 <textarea class="form-control" id="floatingTextarea" style="resize:none; margin-bottom:5px; height:50%"></textarea>
+=======
+                <textarea class="form-control" id="floatingTextarea"></textarea>
+>>>>>>> Stashed changes
               </div>
             </div>
             <div class="Buttons">
               <form action="upload" id="uploadForm" method="post" style="display:inline; margin-right:5px">
                 <input type="file" name="file" style="display:none"/>
-                <b-icon icon="camera-fill" type="button" class="camerabtn" onclick="onclick=document.all.file.click()"></b-icon>
+                <b-icon icon="camera-fill" type="button" class="camerabtn" onclick=document.all.file.click()></b-icon>
               </form>
               <b-button type="submit" pill variant="primary" class="postbtn">확인</b-button>
             </div>
@@ -146,6 +150,62 @@ export default {
 #mainboard {
   margin-top: 60px;
 }
+<<<<<<< Updated upstream
+=======
+#mainboard .wrapper {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    max-width: 350px;
+    z-index: 999;
+    overflow-y: hidden;
+    height: 100vh;
+    padding: 0;
+    transition: .4s;
+}
+
+#mainboard .wrapper .list {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  width: 300px;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  overflow-y: auto;
+  height: 100%;
+  padding: 5px 0px;
+}
+
+#mainboard .wrapper .list-toggle {
+  position: fixed;
+  left: 300px;
+  top: 50%;
+  width: 40px;
+  height: 80px;
+  background-color: white;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  z-index: 999;
+  cursor: pointer;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#mainboard .wrapper .list-toggle svg {
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 1.2em;
+}
+.form-control{
+    resize : none;
+    margin-bottom : 5px;
+    height:50%;
+}
+
+>>>>>>> Stashed changes
 .b-col {
   text-align: center;
   margin: 20px 0;

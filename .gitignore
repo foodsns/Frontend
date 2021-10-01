@@ -116,3 +116,4 @@ dist
 .firebase/
 
 # End of https://www.toptal.com/developers/gitignore/api/firebase
+src/components/MainBoard.vue
