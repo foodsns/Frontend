@@ -28,9 +28,9 @@
             </div>
             <div class="Buttons">
               <form action="upload" id="uploadForm" method="post" style="display:inline; margin-right:5px">
-                <input type="file" name="file" style="display:none"/>
-                <b-icon icon="camera-fill" type="button" class="camerabtn" onclick="onclick=document.all.file.click()"></b-icon>
-              </form>
+                <input type="file" name="files" style="display:none" accept="image/jpeg, image/png, image/jpg"/>
+                <b-icon icon="camera-fill" type="button" class="camerabtn" onclick=document.all.file.click()></b-icon>
+            </form>
               <b-button type="submit" pill variant="primary" class="postbtn">확인</b-button>
             </div>
           </div>
@@ -335,6 +335,14 @@ export default {
   font-size: 1.2em;
 }
 
+#form-control{
+    resize : none;
+    margin-bottom : 5px;
+    height:50%;
+    position : relative;
+
+}
+
 .b-col {
   text-align: center;
   margin: 20px 0;
@@ -347,16 +355,6 @@ export default {
 
 .toggle-btn {
   text-align: right;
-}
-
-.postBox{
-    resize : none;
-    height : 100px;
-    width : 100%;
-}
-
-.postbtn{
-    margin : 2px;
 }
 
 </style>
