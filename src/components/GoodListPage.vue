@@ -4,16 +4,21 @@
          <h4 v-show="value" class= "mx-auto">좋아요 누른 목록 표시</h4>
          <grid-board v-bind:postListProps="postList"/>
      </b-container>
+     <div>
+    <b-button  v-on:click="back()" class="back-btn" pill variant="outline-danger">
+        <b-icon icon="arrow90deg-left" ></b-icon> Back
+    </b-button>
+</div>
 </div>
 </template>
 
 <script>
-import GridBoard from './GridBoard.vue'
+
 // import {EventBus} from '../lib/event-bus.js'
 export default {
     props: ['liked'],
     components: {
-        GridBoard
+
     },
     data () {
         return {
@@ -48,7 +53,21 @@ export default {
         }
     },
     methods: {
-
+        back: function () {
+            this.$router.push('MainBoard')
+        }
 }
 }
 </script>
+
+<style scoped>
+
+.back-btn{
+    position : fixed;
+    bottom : 130px;
+    width : 90px;
+    right : 30px;
+    border: 5px;
+    }
+
+</style>
