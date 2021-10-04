@@ -7,14 +7,16 @@ export default class KakaoMapController {
     beforeMarkerId = null
     prefix = 'id-'
     onMarkerClicked = null
+    onCustomOverlayClicked = null
 
-    constructor (mapEle, onMarkerClicked) {
+    constructor (mapEle, onMarkerClicked = null, onCustomOverlayClicked = null) {
         this.mapContainer = mapEle // document.querySelector(mapEleId)
 
         if (!this.mapContainer) {
             throw new Error(`Map container is null`)
         }
         this.onMarkerClicked = onMarkerClicked
+        this.onCustomOverlayClicked = onCustomOverlayClicked
     }
 
     loadScript () {
@@ -202,6 +204,12 @@ export default class KakaoMapController {
             xAnchor: 0.5,
             yAnchor: 1.3,
             ...item
+        })
+        // https://devtalk.kakao.com/t/topic/44205/8
+        customOverlay.a.addEventListener('click', (e) => {
+            if (this.onCustomOverlayClicked) {
+                this.onCustomOverlayClicked(item.id)
+            }
         })
         customOverlay.setMap(this.map)
         this.customOverlayList.push(customOverlay)
