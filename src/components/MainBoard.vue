@@ -1,6 +1,8 @@
 <template>
   <div id="mainboard" ref="mainboard">
-    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList" @on-marker-clicked="onMarkerClicked"></kakao-map>
+    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"
+              @on-marker-clicked="onMarkerClicked"
+              @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
     <b-container >
       <b-row align-h="end">
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
@@ -271,6 +273,10 @@ export default {
     },
     onMarkerClicked: function (post) {
       console.log(`[MainBoard] [onMarkerClicked] post: `, post)
+      this.focusedPost = post
+    },
+    onCustomOverlayClicked: function (post) {
+      console.log(`[MainBoard] [onCustomOverlayClicked] post: `, post)
       this.openSideList = true
       this.focusedPost = post
     }

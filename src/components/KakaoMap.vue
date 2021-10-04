@@ -49,7 +49,7 @@ export default {
         }
     },
     mounted () {
-        this.kakaoMapInstance = new KakaoMapController(this.$refs.kakaomap, this.onMarkerClicked)
+        this.kakaoMapInstance = new KakaoMapController(this.$refs.kakaomap, this.onMarkerClicked, this.onCustomOverlayClicked)
         this.initKakaoMap()
         .then(() => {
             if (!this.dev) {
@@ -76,6 +76,12 @@ export default {
             const post = this.postList.find(item => item.id === id)
             if (post) {
                 this.$emit('on-marker-clicked', post)
+            }
+        },
+        onCustomOverlayClicked (id) {
+            const post = this.postList.find(item => item.id === id)
+            if (post) {
+                this.$emit('on-custom-overlay-clicked', post)
             }
         },
         initKakaoMap () {
