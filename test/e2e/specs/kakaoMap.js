@@ -122,9 +122,9 @@ module.exports = {
         })
         .execute(() => {
             // console.assert(document.querySelectorAll('#kakaomap > div:nth-child(1) > div > div:nth-child(6) > div > img:nth-child(1)').length === 9, 'Test data & marker should be exist 9 items')
-            return document.querySelector('#id-525d7948-d35a-4104-8cbb-ab70f0ced1d1').hasAttribute('hidden')
+            return document.querySelector('#id-525d7948-d35a-4104-8cbb-ab70f0ced1d1')
         }, (result) => {
-            browser.assert.equal(result.value, true)
+            browser.assert.equal(result.value, null)
         })
         .pause(1000)
         .execute(() => {
@@ -134,7 +134,7 @@ module.exports = {
         .execute(() => {
             return document.querySelectorAll('div[data-overlay]')
         }, (result) => {
-            browser.assert.equal(result.value.length, 8)
+            browser.assert.equal(result.value.length, 0)
         })
         .pause(1000)
         .perform(() => {

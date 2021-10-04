@@ -141,7 +141,7 @@ export default class KakaoMapController {
     // }
     customOverlayTemplate (item) {
         return `
-            <div id="${this.prefix}${item.id}" hidden="hidden" style="
+            <div id="${this.prefix}${item.id}" style="
             background-image: url(${item.img});
             width: 150px;
             height: 150px;
@@ -205,6 +205,8 @@ export default class KakaoMapController {
             yAnchor: 1.3,
             ...item
         })
+        customOverlay.data = item
+        customOverlay.setVisible(false)
         // https://devtalk.kakao.com/t/topic/44205/8
         customOverlay.a.addEventListener('click', (e) => {
             if (this.onCustomOverlayClicked) {
@@ -262,26 +264,26 @@ export default class KakaoMapController {
             position: markerPosition
         })
         this.kakao.maps.event.addListener(marker, 'click', () => {
-            if (this.beforeMarkerId === id && document.querySelector(`#${this.prefix}${id}`)) {
-                if (document.querySelector(`#${this.prefix}${id}`).hasAttribute('hidden')) {
-                    document.querySelector(`#${this.prefix}${id}`).removeAttribute('hidden')
-                    if (this.onMarkerClicked) {
-                        this.onMarkerClicked(id)
-                    }
-                } else {
-                    document.querySelector(`#${this.prefix}${id}`).setAttribute('hidden', 'hidden')
+            const linkedCustomOverlay = this.customOverlayList.find(overlay => overlay.data.id === id)
+
+            if (id === this.beforeMarkerId) {
+                this.beforeMarkerId = null
+            }
+            if (linkedCustomOverlay) {
+                if (!linkedCustomOverlay.getVisible()) {
+                    this.onMarkerClicked(id)
                 }
+                linkedCustomOverlay.setVisible(!linkedCustomOverlay.getVisible())
+            } else if (!linkedCustomOverlay) {
+                console.warn(`[kakaoMap.controller] [addMarker.addListener] Cannot find clicked overlay id: ${id}`)
+            }
+
+            const previousCustomOverlay = this.customOverlayList.find(overlay => overlay.data.id === this.beforeMarkerId)
+
+            if (previousCustomOverlay) {
+                previousCustomOverlay.setVisible(false)
             } else {
-                if (document.querySelector(`#${this.prefix}${id}`)) {
-                    document.querySelector(`#${this.prefix}${id}`).removeAttribute('hidden')
-                    document.querySelector(`#${this.prefix}${id}`).parentNode.style.margin = '-195px 0px 0px -75px'
-                    if (this.onMarkerClicked) {
-                        this.onMarkerClicked(id)
-                    }
-                }
-                if (this.beforeMarkerId && document.querySelector(`#${this.prefix}${this.beforeMarkerId}`)) {
-                    document.querySelector(`#${this.prefix}${this.beforeMarkerId}`).setAttribute('hidden', 'hidden')
-                }
+                console.warn(`[kakaoMap.controller] [addMarker.addListener] Cannot find previous overlay id: ${this.beforeMarkerId}`)
             }
             this.beforeMarkerId = id
         })
