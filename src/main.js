@@ -38,6 +38,7 @@ import GoodList from './components/GoodList'
 import GoodListPage from './components/GoodListPage'
 import InfiniteScroll from './components/InfiniteScroll'
 import Hashtag from './components/Hashtag'
+import MainLogo from './components/MainLogo'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -68,6 +69,7 @@ Vue.component('goodlist-btn', GoodList)
 Vue.component('goodlist', GoodListPage)
 Vue.component('infinite-scroll', InfiniteScroll)
 Vue.component('hash-tag', Hashtag)
+Vue.component('main-logo', MainLogo)
 
 Vue.use(MdButton)
 Vue.use(MdContent)

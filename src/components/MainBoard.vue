@@ -1,9 +1,10 @@
 <template>
   <div id="mainboard" ref="mainboard">
+    <main-logo></main-logo>
     <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"
               @on-marker-clicked="onMarkerClicked"
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
-    <b-container >
+    <b-container class="body">
       <b-row align-h="end">
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
           <profile-icon style="position: relative"></profile-icon>
@@ -287,11 +288,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #mainboard {
-  padding-top: 60px;
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
+}
+#mainboard .body {
+  padding-top: 160px;
 }
 #mainboard .wrapper {
     position: fixed;
