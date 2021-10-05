@@ -8,7 +8,7 @@
         <label class="btn btn-primary" pill variant="primary" for="filebtn">
         사진
         </label>
-        <input type="file" id="filebtn" @change="uploadPhoto()" style="display:none" accept="image/*" multiple/>
+        <input type="file" id="filebtn" @change="uploadPhoto" style="display:none" accept="image/*" multiple/>
       </form>
       <button type="submit" class="btn btn-success" id="postbtn">확인</button>
     </div>
