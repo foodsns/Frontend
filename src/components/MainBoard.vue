@@ -24,17 +24,17 @@
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
           <div id="writePostUI" style="position: relative">
-            <div>
-              <div class="form-floating">
-                <textarea class="form-control" id="floatingTextarea" style="resize:none; margin-bottom:5px"></textarea>
-              </div>
+            <div class="form-floating">
+              <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
             </div>
             <div class="Buttons">
               <form action="upload" id="uploadForm" method="post" style="display:inline; margin-right:5px">
-                <input type="file" name="files" style="display:none" accept="image/jpeg, image/png, image/jpg"/>
-                <b-icon icon="camera-fill" type="button" class="camerabtn" onclick=document.all.file.click()></b-icon>
-            </form>
-              <b-button type="submit" pill variant="primary" class="postbtn">확인</b-button>
+                <label class="btn btn-primary" pill variant="primary" for="filebtn">
+                사진
+                </label>
+                <input type="file" id="filebtn" @change="uploadPhoto" style="display:none" accept="image/*" multiple/>
+              </form>
+              <button type="submit" class="btn btn-success" id="postbtn">확인</button>
             </div>
           </div>
         </b-col>
@@ -280,6 +280,19 @@ export default {
       console.log(`[MainBoard] [onCustomOverlayClicked] post: `, post)
       this.openSideList = true
       this.focusedPost = post
+    },
+    uploadPhoto: function (e) {
+      console.log('uploadPhoto :', e)
+        if (e.target.files) {
+          var fileList = e.target.files
+          var maxSize = 3 * 1024 * 1024
+          for (const file of fileList) {
+            if (file.size > maxSize) {
+              alert(file.name + ' : 3MB이하 이미지만 가능합니다.')
+              return false
+          }
+        }
+      }
     }
   }
 }
