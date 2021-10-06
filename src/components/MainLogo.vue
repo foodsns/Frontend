@@ -26,5 +26,6 @@ export default {
     padding-top: 60px;
     padding-bottom: 60px;
     background: goldenrod;
+    z-index: 1;
 }
 </style>
