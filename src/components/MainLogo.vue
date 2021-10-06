@@ -9,9 +9,7 @@ export default {
     name: 'main-logo',
     methods: {
         greet: function () {
-            //document.documentElement.scrollTop = 0
-            //window.scrollTo(0, 0)
-            //document.body.scrollTop = 0
+            window.scrollTo(0, 0)
 
             console.log('click')
         }
