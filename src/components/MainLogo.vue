@@ -9,9 +9,7 @@ export default {
     name: 'main-logo',
     methods: {
         greet: function () {
-            //document.documentElement.scrollTop = 0
-            //window.scrollTo(0, 0)
-            //document.body.scrollTop = 0
+            window.scrollTo(0, 0)
 
             console.log('click')
         }
@@ -26,5 +24,6 @@ export default {
     padding-top: 60px;
     padding-bottom: 60px;
     background: goldenrod;
+    z-index: 1;
 }
 </style>
