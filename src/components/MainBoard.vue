@@ -1,6 +1,6 @@
 <template>
   <div id="mainboard" ref="mainboard">
-    <main-logo></main-logo>
+    <main-logo v-on:scrollMainboard="scrollMainboard"></main-logo>
     <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"
               @on-marker-clicked="onMarkerClicked"
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
@@ -293,6 +293,9 @@ export default {
           }
         }
       }
+    },
+    scrollMainboard: function () {
+        this.$refs.mainboard.scrollTo(0, 0)
     }
   }
 }
