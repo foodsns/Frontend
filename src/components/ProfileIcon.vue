@@ -1,7 +1,8 @@
 <template>
   <div id="profileicon">
-    <img v-if="profileImg" :src="profileImg" v-on:click="firebaseSignOut"/>
-    <div v-else v-on:click="onSignInUpClicked">
+    <img v-if="profileImg" :src="profileImg" />
+    <b-button class="logoutBtn" v-show="isLogin" v-on:click="firebaseSignOut" size="sm">로그아웃</b-button>
+    <div v-if="!profileImg" v-on:click="onSignInUpClicked">
         <span>Sign in / up</span><font-awesome-icon icon="sign-in-alt" />
     </div>
   </div>
@@ -16,7 +17,8 @@ export default {
     data () {
         return {
             msg: 'hello world',
-            profileImg: ''
+            profileImg: '',
+            isLogin: false
         }
     },
     mounted () {
@@ -29,6 +31,7 @@ export default {
                 if (user) {
                     console.log('[ProfileIcon] [authStateChangeListener] user:', user)
                     this.profileImg = user.photoURL
+                    this.isLogin = true
                 } else {
                     // User is signed out
                     // ...
@@ -45,6 +48,7 @@ export default {
             // Sign-out successful.
                 console.log('[GoogleSign] [firebaseSignOut]: auth', auth)
                 this.profileImg = ''
+                this.isLogin = false
             }).catch((error) => {
             // An error happened.
                 console.log('[GoogleSign] [firebaseSignOut]: error', error)
@@ -67,4 +71,5 @@ div {
 div span {
     margin-right: 5px;
 }
+
 </style>

@@ -9,9 +9,7 @@ export default {
     name: 'main-logo',
     methods: {
         greet: function () {
-            window.scrollTo(0, 0)
-
-            console.log('click')
+            this.$emit('scrollMainboard')
         }
     }
 }
