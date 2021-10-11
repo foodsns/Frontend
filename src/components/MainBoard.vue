@@ -228,16 +228,16 @@ export default {
         lat: 37.566227,
         lot: 126.977966,
         distance: 1,
-        orderByKey: 'goods',
-        orderByDir: 'desc',
-        page: 0,
+        goodOrderByDir: 'desc',
+        dateOrderByDir: 'desc',
+        fromLast: true,
         pageSize: 8,
         includeMine: false,
         country: 'Korea',
         city: '서울특별시',
         state: '중구',
         street: '정동',
-        undefined
+        uid: 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
     })
   },
   methods: {
