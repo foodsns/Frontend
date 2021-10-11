@@ -11,7 +11,7 @@
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
                     :variant="currentMode == 'grid' ? 'danger' : ''"
-                    v-on:click="[greet('grid'), increase(), decrease(), ture_not_liked()]"
+                    v-on:click="[greet('grid'), ture_not_liked()]"
             />
             <span class="good_num">{{postItem.good}}</span>
         </div>
@@ -63,9 +63,11 @@ export default {
            this.currentMode === 'grid' ? this.increase() : this.decrease()
        },
        increase: function () {
+           console.log('좋아요 +')
            this.postItem.good++
            },
        decrease: function () {
+           console.log('좋아요 -')
            this.postItem.good--
        },
        ture_not_liked: function () {
