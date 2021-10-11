@@ -81,6 +81,8 @@
 <script>
 import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
+import FirestoreDao from '../module/firestore.dao'
+
 export default {
   components: { Scrollbar, Hashtag },
   name:
@@ -220,6 +222,23 @@ export default {
     this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
     this.$refs.mainboard.addEventListener('resize', this.scrollHandler)
     this.scrollHandler()
+
+    const dao = new FirestoreDao()
+    dao.selectPosts({
+        lat: 37.566227,
+        lot: 126.977966,
+        distance: 1,
+        orderByKey: 'goods',
+        orderByDir: 'desc',
+        page: 0,
+        pageSize: 8,
+        includeMine: false,
+        country: 'Korea',
+        city: '서울특별시',
+        state: '중구',
+        street: '정동',
+        undefined
+    })
   },
   methods: {
     onScrollReachedBottom () {
