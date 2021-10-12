@@ -81,6 +81,8 @@
 <script>
 import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
+import FirestoreDao from '../module/firestore.dao'
+
 export default {
   components: { Scrollbar, Hashtag },
   name:
@@ -99,6 +101,7 @@ export default {
         scrollMsg: '',
         isLoading: false,
         dummyCnt: 0,
+        firestoreDao: new FirestoreDao(),
         postList: [
                 {
                     id: '993915c4-878b-4486-b9a8-052971a9620d',
@@ -215,6 +218,8 @@ export default {
     const dev = localStorage.getItem('dev') || false
     if (dev) {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
+    } else {
+      this.searchPosts()
     }
 
     this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
@@ -222,25 +227,43 @@ export default {
     this.scrollHandler()
   },
   methods: {
+    searchPosts (isInfinite = false) {
+      this.firestoreDao.selectPosts({
+          lat: 37.566227,
+          lot: 126.977966,
+          distance: 1,
+          sortBy: 'best',
+          pageSize: 8,
+          includeMine: false,
+          country: 'Korea',
+          city: '서울특별시',
+          state: '중구',
+          street: '정동',
+          uid: 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
+      })
+      // https://stackoverflow.com/a/59289650/7270469
+      .then(postList => {
+        if (!isInfinite) {
+          this.postList.splice(0)
+        }
+        return postList
+      })
+      .then(_postList => {
+        setTimeout(() => {
+          this.isLoading = false
+        }, 800)
+        if (!_postList || _postList.length <= 0) {
+          this.scrollMsg = '더 이상 리뷰가 없어요'
+        }
+        _postList.forEach(post => this.postList.push(post))
+      })
+    },
     onScrollReachedBottom () {
       console.log(`[MainBoard] [onScrollReachedBottom] let's get more data`)
       if (!this.isLoading) {
         this.scrollMsg = ''
         this.isLoading = true
-        setTimeout(() => {
-          this.isLoading = false
-          if (this.dummyCnt < 1) {
-            this.dummyCnt++
-            const dummy = JSON.parse(JSON.stringify(this.postList))
-            // this.postList = this.postList.concat(dummy)
-            dummy.forEach(item => {
-              this.postList.push(item)
-            })
-            console.log('concat', this.postList.length)
-          } else {
-            this.scrollMsg = '더 이상 리뷰가 없어요'
-          }
-        }, 2000)
+        this.searchPosts(true)
       }
     },
     scrollHandler () {
