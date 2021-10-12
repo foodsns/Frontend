@@ -113,21 +113,15 @@ export default class FirestoreDao {
         // ]
         return Promise.all((await getDocs(queryRef)).docs.map(async item => {
             this._lastSelectPostsDoc = item
+            const data = item.data()
             return {
-                ...item.data(),
-                goodMarked: uid ? !(await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false
+                ...data,
+                goodMarked: uid ? !(await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false,
+                img: `${data.img}?_${Math.random()}`,
+                profileImg: `${data.profileImg}?_${Math.random()}`,
+                date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
-        .then(posts => {
-            return posts.map(item => {
-                return {
-                    ...item,
-                    img: `${item.img}?_${Math.random()}`,
-                    profileImg: `${item.profileImg}?_${Math.random()}`,
-                    date: new Date(item.date.seconds * 1000).toLocaleDateString()
-                }
-            })
-        })
         .catch(err => {
             console.error(`[firestore.dao] [selectPosts] Cannot get post list: ${err.message}`)
         })
