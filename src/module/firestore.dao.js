@@ -1,6 +1,9 @@
-import { getFirestore, collection, query, where, getDocs, FieldValue, orderBy, limit } from 'firebase/firestore'
+import { getFirestore, collection, query, startAfter, where, getDocs, FieldValue, orderBy, limit } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
+    _lastSelectPostsOptions = {}
+    _lastSelectPostsDoc = null
+
     generateGuid () {
         var result, i, j
         result = ''
@@ -28,7 +31,6 @@ export default class FirestoreDao {
         lot = 126.977966,
         distance = 1,
         sortBy = 'best',
-        fromLast = false,
         pageSize = 8,
         includeMine = false,
         country,
@@ -37,7 +39,6 @@ export default class FirestoreDao {
         street,
         uid
     } = {}) {
-        const db = getFirestore()
         let goodOrderByDir = 'desc'
         let dateOrderByDir = 'desc'
         switch (sortBy) {
@@ -50,13 +51,43 @@ export default class FirestoreDao {
                 dateOrderByDir = 'desc'
                 break
         }
-        const queryRef = query(collection(db, 'posts'),
-                                orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
-                                where('visibility', '==', 'public'),
-                                where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street),
-                                limit(pageSize))
-                                // https://firebase.google.com/docs/firestore/query-data/query-cursors?hl=ko#paginate_a_query
-                                // startAfter 는 마지막 문서를 기준
+        const db = getFirestore()
+        const constraints = [
+            orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
+            where('visibility', '==', 'public'),
+            where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+
+        if (JSON.stringify(this._lastSelectPostsOptions) !== JSON.stringify({
+            lat,
+            lot,
+            distance,
+            sortBy,
+            pageSize,
+            includeMine,
+            country,
+            city,
+            state,
+            street,
+            uid
+        }) || !this._lastSelectPostsDoc) {
+            this._lastSelectPostsOptions = {
+                lat,
+                lot,
+                distance,
+                sortBy,
+                pageSize,
+                includeMine,
+                country,
+                city,
+                state,
+                street,
+                uid
+            }
+        } else {
+            constraints.push(startAfter(this._lastSelectPostsDoc))
+        }
+        constraints.push(limit(pageSize))
+        const queryRef = query(collection(db, 'posts'), ...constraints)
         // [
         //     {
         //         authorId: "vQKAPO2qdNKUn5zn5Ahi"
@@ -81,11 +112,25 @@ export default class FirestoreDao {
         //     ...
         // ]
         return Promise.all(await (await getDocs(queryRef)).docs.map(async item => {
+            this._lastSelectPostsDoc = item
             return {
                 ...await (item.data()),
                 goodMarked: uid ? !await (await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false
             }
         }))
+        .then(posts => {
+            return posts.map(item => {
+                return {
+                    ...item,
+                    img: `${item.img}?_${Math.random()}`,
+                    profileImg: `${item.profileImg}?_${Math.random()}`,
+                    date: new Date(item.date.seconds * 1000).toLocaleDateString()
+                }
+            })
+        })
+        .catch(err => {
+            console.error(`[firestore.dao] [selectPosts] Cannot get post list: ${err.message}`)
+        })
     }
 
     selectMyThumbsUpPosts ({
