@@ -52,6 +52,7 @@ export default class FirestoreDao {
                 break
         }
         const db = getFirestore()
+        // https://stackoverflow.com/a/50658718/7270469
         const constraints = [
             orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
             where('visibility', '==', 'public'),
