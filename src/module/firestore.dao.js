@@ -111,11 +111,11 @@ export default class FirestoreDao {
         //     },
         //     ...
         // ]
-        return Promise.all(await (await getDocs(queryRef)).docs.map(async item => {
+        return Promise.all((await getDocs(queryRef)).docs.map(async item => {
             this._lastSelectPostsDoc = item
             return {
-                ...await (item.data()),
-                goodMarked: uid ? !await (await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false
+                ...item.data(),
+                goodMarked: uid ? !(await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false
             }
         }))
         .then(posts => {
