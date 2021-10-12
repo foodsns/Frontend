@@ -218,12 +218,13 @@ export default {
     const dev = localStorage.getItem('dev') || false
     if (dev) {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
+    } else {
+      this.searchPosts()
     }
 
     this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
     this.$refs.mainboard.addEventListener('resize', this.scrollHandler)
     this.scrollHandler()
-    this.searchPosts()
   },
   methods: {
     searchPosts (isInfinite = false) {
