@@ -27,8 +27,7 @@ export default class FirestoreDao {
         lat = 37.566227,
         lot = 126.977966,
         distance = 1,
-        goodOrderByDir = 'desc',
-        dateOrderByDir = 'desc',
+        sortBy = 'best',
         fromLast = false,
         pageSize = 8,
         includeMine = false,
@@ -39,40 +38,54 @@ export default class FirestoreDao {
         uid
     } = {}) {
         const db = getFirestore()
+        let goodOrderByDir = 'desc'
+        let dateOrderByDir = 'desc'
+        switch (sortBy) {
+            case 'best':
+                goodOrderByDir = 'desc'
+                dateOrderByDir = 'desc'
+                break
+            case 'recent':
+                goodOrderByDir = 'asc'
+                dateOrderByDir = 'desc'
+                break
+        }
         const queryRef = query(collection(db, 'posts'),
                                 orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
                                 where('visibility', '==', 'public'),
                                 where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street),
-                                // where('authorId', '!=', uid),
-                                // where('lat', '>', lat - this.km2Lat(distance)), where('lat', '<', lat - this.km2Lat(distance)),
-                                // where('lot', '>', lot - this.km2Lot(lat, distance)), where('lot', '<', lot - this.km2Lot(lat, distance)),
                                 limit(pageSize))
                                 // https://firebase.google.com/docs/firestore/query-data/query-cursors?hl=ko#paginate_a_query
                                 // startAfter 는 마지막 문서를 기준
-        // console.log(await (await getDocs(queryRef)).data())
-        // console.log(await (await getDocs(queryRef)).docs, await (await getDocs(queryRef)).query)
-        console.log(await Promise.all(await (await getDocs(queryRef)).docs.map(async item => {
+        // [
+        //     {
+        //         authorId: "vQKAPO2qdNKUn5zn5Ahi"
+        //         city: "서울특별시"
+        //         country: "Korea"
+        //         date: nt {seconds: 1633867884, nanoseconds: 893000000}
+        //         descript: "37.075, 127.527"
+        //         good: 999602
+        //         goodMarked: false
+        //         hashtag: "DarkMagenta"
+        //         id: "dummy_vQKAPO2qdNKUn5zn5Ahi"
+        //         img: "https://picsum.photos/200/300"
+        //         lat: 33.35329404385084
+        //         lot: 126.23775929756054
+        //         profileImg: "https://picsum.photos/64/64"
+        //         state: "중구"
+        //         street: "정동"
+        //         title: "dummy"
+        //         visibility: "public"
+        //         writer: "vQKAPO2qdNKUn5zn5Ahi"
+        //     },
+        //     ...
+        // ]
+        return Promise.all(await (await getDocs(queryRef)).docs.map(async item => {
             return {
                 ...await (item.data()),
-                goodMarked: !await (await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty
+                goodMarked: uid ? !await (await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false
             }
-        })))
-        // const [checkGoodMarkedAndPublicOtherPostList, checkGoodMarkedMyPostList] = await Promise.all([
-        //     // 내가 쓴게 아니고 공개 게시물이고, 내가 좋아요를 표시했었는지
-        //     Promise.all(await (await getFirestore(myAuth).collection("posts").where("authorId", "!=", myAuth.uid).where("visibility", "==", "public").get()).docs.map(async item => {
-        //         return {
-        //             ...(await item.data()),
-        //             goodMarked: !await (await item.ref.collection("goods").where("authorId", "==", myAuth.uid).get()).empty
-        //         }
-        //     })),
-        //     // 내가 썼지만 위의 데이터 포맷을 맞추기 위함
-        //     Promise.all((await getFirestore(myAuth).collection("posts").where("authorId", "==", myAuth.uid).get()).docs.map(async item => {
-        //         return {
-        //             ...(await item.data()),
-        //             goodMarked: false
-        //         }
-        //     }))
-        // ])
+        }))
     }
 
     selectMyThumbsUpPosts ({
