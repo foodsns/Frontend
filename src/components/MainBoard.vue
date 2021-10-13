@@ -1,6 +1,6 @@
 <template>
   <div id="mainboard" ref="mainboard">
-    <main-logo v-on:scrollMainboard="scrollMainboard"></main-logo>
+    <main-logo v-if="viewMode === 'grid'" v-on:scrollMainboard="scrollMainboard"></main-logo>
     <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"
               @on-marker-clicked="onMarkerClicked"
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
