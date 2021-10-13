@@ -13,7 +13,7 @@
 </template>
 
 <script>
-
+import FirestoreDao from '../module/firestore.dao'
 // import {EventBus} from '../lib/event-bus.js'
 export default {
     props: ['liked'],
@@ -23,40 +23,39 @@ export default {
     data () {
         return {
             value: false,
-            postList: [
-          {
-             id: '993915c4-878b-4486-b9a8-052971a9620d',
-                    title: '서울 시청',
-                    descript: '2012년에 세운 정부의 현대적인 명소로, 1925년에 지었으며 현재는 도서관이 된 옛 시청 건물 옆에 있습니다.',
-                    date: '2021년 9월 4일',
-                    profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
-                    writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
-                    good: 1,
-                    img: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Seoul_City_Hall_20190608_001.jpg',
-                    lat: 37.566543,
-                    lot: 126.978421
-        },
-
-        {
-                    id: '525d7948-d35a-4104-8cbb-ab70f0ced1d1',
-                    title: '덕수궁',
-                    descript: '서울의 심장부에 있는 유서 깊은 궁전으로 왕궁수문장 교대 의식을 볼 수 있습니다.',
-                    date: '2021년 9월 4일',
-                    profileImg: 'https://avatars.githubusercontent.com/u/16532326?v=4',
-                    writer: 'stories2stories2stories2stories2stories2stories2stories2stories2stories2',
-                    good: 2,
-                    img: 'https://www.heritage.go.kr/images/content/palaces/pd_pic01.jpg',
-                    lat: 37.565772,
-                    lot: 126.975160
-                }
-            ]
+            firestoreDao: new FirestoreDao(),
+            postList: []
         }
+    },
+    mounted () {
+        this.selectMyThumbsUpPosts()
     },
     methods: {
         back: function () {
             this.$router.push('MainBoard')
+        },
+        selectMyThumbsUpPosts: function () {
+            this.firestoreDao.selectMyThumbsUpPosts({
+                lat: 37.566227,
+                lot: 126.977966,
+                distance: 1,
+                sortByRecently: true,
+                pageSize: 8,
+                // country = null,
+                // city = null,
+                // state = null,
+                // street = null,
+                uid: 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
+            })
+            .then(postList => {
+                this.postList.splice(0)
+                return postList
+            })
+            .then(_postList => {
+                _postList.forEach(post => this.postList.push(post))
+            })
         }
-}
+    }
 }
 </script>
 
