@@ -177,22 +177,16 @@ export default class FirestoreDao {
         const db = getFirestore()
         return Promise.allSettled((await getDocs(query(collectionGroup(db, 'goods'), ...constraints))).docs.map(async item => {
             this._lastSelectThumbsUpPostsDoc = item
+            const data = (await getDoc(item.ref.parent.parent)).data()
             return {
-                ...(await getDoc(item.ref.parent.parent)).data(),
-                goodMarked: true
+                ...data,
+                goodMarked: true,
+                img: `${data.img}?_${Math.random()}`,
+                profileImg: `${data.profileImg}?_${Math.random()}`,
+                date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
-        .then(result => {
-            return result.filter(item => item.status === 'fulfilled').map(item => {
-                const data = item.value
-                return {
-                    ...item.value,
-                    img: `${data.img}?_${Math.random()}`,
-                    profileImg: `${data.profileImg}?_${Math.random()}`,
-                    date: new Date(data.date.seconds * 1000).toLocaleDateString()
-                }
-            })
-        })
+        .then(result => result.filter(item => item.status === 'fulfilled').map(item => item.value))
         .catch(err => {
             console.error(`[firestore.dao] [selectMyThumbsUpPosts] Cannot get my thumbs up post list: ${err.message}`)
         })
