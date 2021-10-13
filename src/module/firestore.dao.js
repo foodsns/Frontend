@@ -119,6 +119,7 @@ export default class FirestoreDao {
             const data = item.data()
             return {
                 ...data,
+                docID: item.id,
                 goodMarked: uid ? !(await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false,
                 img: `${data.img}?_${Math.random()}`,
                 profileImg: `${data.profileImg}?_${Math.random()}`,
@@ -177,10 +178,12 @@ export default class FirestoreDao {
         const db = getFirestore()
         return Promise.allSettled((await getDocs(query(collectionGroup(db, 'goods'), ...constraints))).docs.map(async item => {
             this._lastSelectThumbsUpPostsDoc = item
-            const data = (await getDoc(item.ref.parent.parent)).data()
+            const docRef = (await getDoc(item.ref.parent.parent))
+            const data = docRef.data()
             return {
                 ...data,
                 goodMarked: true,
+                docID: docRef.id,
                 img: `${data.img}?_${Math.random()}`,
                 profileImg: `${data.profileImg}?_${Math.random()}`,
                 date: new Date(data.date.seconds * 1000).toLocaleDateString()
