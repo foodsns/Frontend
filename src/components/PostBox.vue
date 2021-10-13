@@ -10,8 +10,8 @@
             <img class="profile-img" :src="postItem.profileImg"/>
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
-                    :variant="currentMode == 'grid' ? 'danger' : ''"
-                    v-on:click="[greet('grid'), ture_not_liked()]"
+                    :variant="postItem.goodMarked ? 'danger' : ''"
+                    v-on:click="[onGoodBtnClicked(postItem), ture_not_liked()]"
             />
             <span class="good_num">{{postItem.good}}</span>
         </div>
@@ -57,26 +57,27 @@ export default {
       }
   },
   methods: {
-       greet: function (mode) {
-           this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
-
-           this.currentMode === 'grid' ? this.increase() : this.decrease()
-       },
-       increase: function () {
-           console.log('좋아요 +')
+        onGoodBtnClicked: function (post) {
+            if (post.goodMarked) {
+                this.decrease()
+            } else {
+                this.increase()
+            }
+            post.goodMarked = !post.goodMarked
+        },
+        increase: function () {
            this.postItem.good++
-           },
-       decrease: function () {
-           console.log('좋아요 -')
+        },
+        decrease: function () {
            this.postItem.good--
-       },
-       ture_not_liked: function () {
+        },
+        ture_not_liked: function () {
            this.liked === true ? this.liked = false : this.liked = true
            console.log('데이터 보냅니다: ', this.liked)
            EventBus.$emit('use-eventBus', this.liked)
            return this.liked
-       }
-  }
+        }
+    }
 }
 </script>
 
