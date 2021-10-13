@@ -182,6 +182,20 @@ export default class FirestoreDao {
                 goodMarked: true
             }
         }))
+        .then(result => {
+            return result.filter(item => item.status === 'fulfilled').map(item => {
+                const data = item.value
+                return {
+                    ...item.value,
+                    img: `${data.img}?_${Math.random()}`,
+                    profileImg: `${data.profileImg}?_${Math.random()}`,
+                    date: new Date(data.date.seconds * 1000).toLocaleDateString()
+                }
+            })
+        })
+        .catch(err => {
+            console.error(`[firestore.dao] [selectMyThumbsUpPosts] Cannot get my thumbs up post list: ${err.message}`)
+        })
     }
 
     selectMyPosts ({
