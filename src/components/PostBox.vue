@@ -10,8 +10,8 @@
             <img class="profile-img" :src="postItem.profileImg"/>
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
-                    :variant="currentMode == 'grid' ? 'danger' : ''"
-                    v-on:click="[greet('grid'), increase(), decrease(), ture_not_liked()]"
+                    :variant="postItem.goodMarked ? 'danger' : ''"
+                    v-on:click="[onGoodBtnClicked(postItem), ture_not_liked()]"
             />
             <span class="good_num">{{postItem.good}}</span>
         </div>
@@ -57,13 +57,18 @@ export default {
       }
   },
   methods: {
-       greet: function (mode) {
-           this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
-
-           this.currentMode === 'grid' ? this.increase() : this.decrease()
-       },
+        onGoodBtnClicked: function (post) {
+            if (post.goodMarked) {
+                this.decrease()
+            } else {
+                this.increase()
+            }
+            post.goodMarked = !post.goodMarked
+        },
        increase: function () {
+           console.log('hello?', this.postItem.good)
            this.postItem.good++
+           console.log('hello?', this.postItem.good)
            },
        decrease: function () {
            this.postItem.good--
