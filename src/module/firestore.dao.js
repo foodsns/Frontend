@@ -1,8 +1,10 @@
-import { getFirestore, collection, query, startAfter, where, getDocs, FieldValue, orderBy, limit } from 'firebase/firestore'
+import { getFirestore, collection, collectionGroup, query, startAfter, where, getDocs, getDoc, FieldValue, orderBy, limit } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
     _lastSelectPostsDoc = null
+    _lastSelectThumbsUpPostsOptions = {}
+    _lastSelectThumbsUpPostsDoc = null
 
     generateGuid () {
         var result, i, j
@@ -128,14 +130,58 @@ export default class FirestoreDao {
         })
     }
 
-    selectMyThumbsUpPosts ({
+    // 내가 좋아요 표시한 게시물을 최근 혹은 예전에 추가했었는지로 정렬하는 쿼리
+    async selectMyThumbsUpPosts ({
         lat = 37.566227,
         lot = 126.977966,
         distance = 1,
-        orderBy = 'goods',
-        page = 0,
-        pageSize = 8
+        sortByRecently = true,
+        pageSize = 8,
+        // country = null,
+        // city = null,
+        // state = null,
+        // street = null,
+        uid
     } = {}) {
+        const constraints = [
+            orderBy('setTime', sortByRecently ? 'desc' : 'asc'),
+            where('authorId', '==', uid)]
+        if (JSON.stringify(this._lastSelectThumbsUpPostsOptions) !== JSON.stringify({
+            lat,
+            lot,
+            distance,
+            sortByRecently,
+            pageSize,
+            // country,
+            // city,
+            // state,
+            // street,
+            uid
+        }) || !this._lastSelectThumbsUpPostsDoc) {
+            this._lastSelectThumbsUpPostsOptions = {
+                lat,
+                lot,
+                distance,
+                sortByRecently,
+                pageSize,
+                // country,
+                // city,
+                // state,
+                // street,
+                uid
+            }
+        } else {
+            constraints.push(startAfter(this._lastSelectThumbsUpPostsDoc))
+        }
+        constraints.push(limit(pageSize))
+        const db = getFirestore()
+        return Promise.allSettled((await getDocs(query(collectionGroup(db, 'goods'), ...constraints))).docs.map(async item => {
+            this._lastSelectThumbsUpPostsDoc = item
+            return {
+                ...(await getDoc(item.ref.parent.parent)).data(),
+                goodMarked: true
+            }
+        }))
     }
 
     selectMyPosts ({
