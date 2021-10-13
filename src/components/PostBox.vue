@@ -65,21 +65,19 @@ export default {
             }
             post.goodMarked = !post.goodMarked
         },
-       increase: function () {
-           console.log('hello?', this.postItem.good)
+        increase: function () {
            this.postItem.good++
-           console.log('hello?', this.postItem.good)
-           },
-       decrease: function () {
+        },
+        decrease: function () {
            this.postItem.good--
-       },
-       ture_not_liked: function () {
+        },
+        ture_not_liked: function () {
            this.liked === true ? this.liked = false : this.liked = true
            console.log('데이터 보냅니다: ', this.liked)
            EventBus.$emit('use-eventBus', this.liked)
            return this.liked
-       }
-  }
+        }
+    }
 }
 </script>
 
