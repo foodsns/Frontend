@@ -1,10 +1,14 @@
-import { getFirestore, collection, collectionGroup, query, startAfter, where, getDocs, getDoc, FieldValue, orderBy, limit } from 'firebase/firestore'
+import { getFirestore, collection, collectionGroup, query,
+        startAfter, where, getDocs, getDoc,
+        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
     _lastSelectPostsDoc = null
     _lastSelectThumbsUpPostsOptions = {}
     _lastSelectThumbsUpPostsDoc = null
+    _lastSelectMyPostsOptions = {}
+    _lastSelectMyPostsDoc = null
 
     generateGuid () {
         var result, i, j
@@ -119,6 +123,7 @@ export default class FirestoreDao {
             const data = item.data()
             return {
                 ...data,
+                docID: item.id,
                 goodMarked: uid ? !(await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false,
                 img: `${data.img}?_${Math.random()}`,
                 profileImg: `${data.profileImg}?_${Math.random()}`,
@@ -177,54 +182,106 @@ export default class FirestoreDao {
         const db = getFirestore()
         return Promise.allSettled((await getDocs(query(collectionGroup(db, 'goods'), ...constraints))).docs.map(async item => {
             this._lastSelectThumbsUpPostsDoc = item
+            const docRef = (await getDoc(item.ref.parent.parent))
+            const data = docRef.data()
             return {
-                ...(await getDoc(item.ref.parent.parent)).data(),
-                goodMarked: true
+                ...data,
+                goodMarked: true,
+                docID: docRef.id,
+                img: `${data.img}?_${Math.random()}`,
+                profileImg: `${data.profileImg}?_${Math.random()}`,
+                date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
-        .then(result => {
-            return result.filter(item => item.status === 'fulfilled').map(item => {
-                const data = item.value
-                return {
-                    ...item.value,
-                    img: `${data.img}?_${Math.random()}`,
-                    profileImg: `${data.profileImg}?_${Math.random()}`,
-                    date: new Date(data.date.seconds * 1000).toLocaleDateString()
-                }
-            })
-        })
+        .then(result => result.filter(item => item.status === 'fulfilled').map(item => item.value))
         .catch(err => {
             console.error(`[firestore.dao] [selectMyThumbsUpPosts] Cannot get my thumbs up post list: ${err.message}`)
         })
     }
 
-    selectMyPosts ({
+    async selectMyPosts ({
         lat = 37.566227,
         lot = 126.977966,
         distance = 1,
-        orderBy = 'goods',
-        page = 0,
-        pageSize = 8
+        orderType = 'recent' | 'best' | 'older',
+        pageSize = 8,
+        uid
     } = {}) {
+        const constraints = [where('authorId', '==', uid), limit(pageSize)]
+        if (JSON.stringify(this._lastSelectMyPostsOptions) !== JSON.stringify({
+            lat,
+            lot,
+            distance,
+            orderType,
+            pageSize,
+            uid
+        }) || !this._lastSelectMyPostsDoc) {
+            this._lastSelectMyPostsOptions = {
+                lat,
+                lot,
+                distance,
+                orderType,
+                pageSize,
+                uid
+            }
+        } else {
+            constraints.splice(1, 0, startAfter(this._lastSelectMyPostsDoc))
+        }
+        switch (orderType) {
+            case 'recent':
+                constraints.splice(0, 0, orderBy('date', 'desc'))
+                break
+            case 'best':
+                constraints.splice(0, 0, orderBy('good', 'desc'))
+                break
+            case 'older':
+                constraints.splice(0, 0, orderBy('date', 'asc'))
+                break
+            default:
+                throw new Error(`Unsupported order type: ${orderType}`)
+        }
+        const db = getFirestore()
+        return Promise.all((await getDocs(query(collection(db, 'posts'), ...constraints))).docs.map(item => {
+            const data = item.data()
+            this._lastSelectMyPostsDoc = item
+            return {
+                ...data,
+                goodMarked: false,
+                docID: item.id,
+                img: `${data.img}?_${Math.random()}`,
+                profileImg: `${data.profileImg}?_${Math.random()}`,
+                date: new Date(data.date.seconds * 1000).toLocaleDateString()
+            }
+        }))
+        .catch(err => {
+            console.error(`[firestore.dao] [selectMyPosts] Cannot get my post list: ${err.message}`)
+        })
     }
 
     signUpMyInfo ({
         displayName,
         email,
         emailVerified = false,
+        phoneNumber,
         photoURL,
-        lastLogin
+        uid
     } = {}) {
+        const db = getFirestore()
+        return setDoc(doc(db, 'users', uid), {
+            displayName,
+            email,
+            emailVerified,
+            // phoneNumber,
+            photoURL,
+            lastLogin: serverTimestamp()
+        })
     }
 
     insertPost ({
-        id = this.generateGuid(),
         title,
         descript,
-        date = FieldValue.serverTimestamp(),
         profileImg,
         writer,
-        good = 0,
         img,
         lat,
         lot,
@@ -236,12 +293,32 @@ export default class FirestoreDao {
         street,
         hashtag
     } = {}) {
+        const db = getFirestore()
+        return addDoc(collection(db, 'posts'), {
+            id: this.generateGuid(),
+            title,
+            descript,
+            date: serverTimestamp(),
+            profileImg,
+            writer,
+            good: 0,
+            img,
+            lat,
+            lot,
+            visibility,
+            authorId,
+            country,
+            city,
+            state,
+            street,
+            hashtag
+        })
     }
 
     updatePost ({
+        docID,
         title,
         descript,
-        date = FieldValue.serverTimestamp(),
         profileImg,
         writer,
         img,
@@ -254,14 +331,51 @@ export default class FirestoreDao {
         street,
         hashtag
     } = {}) {
+        const db = getFirestore()
+        return updateDoc(doc(db, 'posts', docID), {
+            title,
+            descript,
+            date: serverTimestamp(),
+            profileImg,
+            writer,
+            img,
+            lat,
+            lot,
+            visibility,
+            country,
+            city,
+            state,
+            street,
+            hashtag
+        })
     }
 
-    deletePost (postId) {
+    deletePost (docID) {
+        const db = getFirestore()
+        return deleteDoc(doc(db, 'posts', docID))
     }
 
-    thumbsUpPost (postId, uid) {
+    thumbsUpPost (docID, uid) {
+        // const db = getFirestore()
+        // const docRef = getDoc(doc(db, 'posts', docID))
+
+        // await runTransaction(db, async (transaction) => {
+        // const sfDoc =  await transaction.get(docRef)
+
+        // const newgood = sfDoc.data().good + 1;
+        // transaction.update(docRef, { good: newgood })
+        // })
     }
 
-    thumbsDownPost (postId, uid) {
+    thumbsDownPost (docID, uid) {
+        // const db = getFirestore()
+        // const docRef = getDoc(doc(db, 'posts', docID))
+
+        // await runTransaction(db, async (transaction) => {
+        // const sfDoc =  await transaction.get(docRef)
+
+        //  const newgood = sfDoc.data().good - 1;
+        //  transaction.update(docRef, { good: newgood })
+        //  })
     }
 }

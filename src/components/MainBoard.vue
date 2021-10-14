@@ -28,6 +28,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
+          <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file"></crop-modal>
           <div id="writePostUI" style="position: relative">
             <div class="form-floating">
               <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
@@ -37,7 +38,7 @@
                 <label class="btn btn-primary" pill variant="primary" for="filebtn">
                 사진
                 </label>
-                <input type="file" id="filebtn" @change="uploadPhoto" style="display:none" accept="image/*" multiple/>
+                <input type="file" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*" multiple/>
               </form>
               <button type="submit" class="btn btn-success" id="postbtn">확인</button>
             </div>
@@ -84,6 +85,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
 import FirestoreDao from '../module/firestore.dao'
@@ -107,7 +109,11 @@ export default {
         isLoading: false,
         dummyCnt: 0,
         firestoreDao: new FirestoreDao(),
-        postList: []
+        postList: [],
+        cropModal: {
+          show: false,
+          file: null
+        }
     }
   },
   watch: {
@@ -128,6 +134,11 @@ export default {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
     } else {
       this.searchPosts()
+      if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
+        Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+          this.searchPosts()
+        })
+      }
     }
 
     this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
@@ -147,7 +158,7 @@ export default {
           city: '서울특별시',
           state: '중구',
           street: '정동',
-          uid: 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
+          uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
       })
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
@@ -216,6 +227,8 @@ export default {
       this.openSideList = true
       this.focusedPost = post
     },
+    // 현재 DB 모델이 한개의 파일만 입력하게끔 되어 있어,
+    // 멀티 이미지 지원은 마지막 스프린트에 작업하는걸로
     uploadPhoto: function (e) {
       console.log('uploadPhoto :', e)
         if (e.target.files) {
@@ -227,6 +240,20 @@ export default {
               return false
           }
         }
+      }
+    },
+    uploadOnePhoto: function (e) {
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0]
+        const maxSize = 3 * 1024 * 1024
+        if (file.size <= maxSize) {
+          this.cropModal.show = true
+          this.cropModal.file = file
+        } else {
+          console.warn(`Maximum file size: ${maxSize}, current: ${file.size}`)
+        }
+      } else {
+        console.warn('Empty file detected')
       }
     },
     scrollMainboard: function () {

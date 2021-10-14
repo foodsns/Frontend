@@ -9,8 +9,8 @@
         <button type="button" class="btn-close" @click="$emit('close-modal')" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="croparea">
-          <img v-bind:class="image" src="">
+        <div class="img-container">
+          <img v-bind:class="image" v-bind:src="img">
         </div>
       </div>
       <div class="modal-footer">
@@ -37,8 +37,6 @@
     </div>
   </div>
 </div>
-
-
 <!--last modal-->
 <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -61,15 +59,30 @@
 
 <script>
 import {EventBus} from '../lib/event-bus.js'
-import VueCropper from 'vue-cropperjs'
+// 지금 당장 소스상에 사용된 기록이 없었기 때문에 es-lint 오류가
+// 나서 임시로 주석처리함, 나중에 쓸때 다시 주석 해제하고 쓰면 됨
+// import VueCropper from 'vue-cropperjs'
 
 export default {
+    props: {
+      fileProp: {
+        type: File,
+        default: function () {
+            return null
+        }
+      }
+    },
+    watch: {
+      fileProp: function (val) {
+      }
+    },
     data () {
         return {
-            fileList: {},  // fileList
+            fileList: [],
             active: false,
             croppedImg: [],
-            beforecrop: null
+            beforecrop: null,
+            image: null
         }
     },
     created () {
@@ -78,22 +91,25 @@ export default {
             this.active = true
         })
     },
+    mounted () {
+      this.$refs['cropper-modal'].show()
+    },
     method: {
-      cropui: function(index) {
-          if (fileList) {
-            const reader = new Filereader()
-            reader.readAsDataURL(fileList[index])
-            reader.onload = function(event) {
-              image.attr("src", e.target.result)
-              cropper = image.cropper( {
-                dragMode: 'move',
-                vieMode: 1,
-                autoCropArea: 0.7,
-                guides: false
-            })
-          }
-        }
-      }
-    }
+    // cropui: function(index) {
+    //     if (fileList) {
+    //       const reader = new Filereader()
+    //       reader.readAsDataURL(fileList[index])
+    //       reader.onload = function(event) {
+    //         image.attr("src", e.target.result)
+    //         cropper = image.cropper( {
+    //           dragMode: 'move',
+    //           vieMode: 1,
+    //           autoCropArea: 0.7,
+    //           guides: false
+    //       })
+    //     }
+    //   }
+    // }
+  }
 }
 </script>
