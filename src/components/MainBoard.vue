@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
 import FirestoreDao from '../module/firestore.dao'
@@ -123,6 +124,9 @@ export default {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
     } else {
       this.searchPosts()
+      Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+        this.searchPosts()
+      })
     }
 
     this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
@@ -142,7 +146,7 @@ export default {
           city: '서울특별시',
           state: '중구',
           street: '정동',
-          uid: 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
+          uid: Vue.prototype.$firebaseAuth.getCurrentUserUid()
       })
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
