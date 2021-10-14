@@ -355,9 +355,9 @@ export default class FirestoreDao {
         return deleteDoc(doc(db, 'posts', docID))
     }
 
-    thumbsUpPost (postId, uid) {
+    thumbsUpPost (docID, uid) {
     }
 
-    thumbsDownPost (postId, uid) {
+    thumbsDownPost (docID, uid) {
     }
 }
