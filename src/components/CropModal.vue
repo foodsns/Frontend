@@ -9,8 +9,8 @@
         <button type="button" class="btn-close" @click="$emit('close-modal')" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="croparea">
-          <img v-bind:class="image" src="">
+        <div class="img-container">
+          <img v-bind:class="image" v-bind:src="img">
         </div>
       </div>
       <div class="modal-footer">
@@ -37,8 +37,6 @@
     </div>
   </div>
 </div>
-
-
 <!--last modal-->
 <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -61,36 +59,32 @@
 
 <script>
 import {EventBus} from '../lib/event-bus.js'
-import VueCropper from 'vue-cropperjs'
 
 export default {
     data () {
         return {
-            fileList: {},  // fileList
+            fileList: [],
             active: false,
             croppedImg: [],
-            beforecrop: null
+            beforecrop: null,
+            image: null 
         }
     },
     created () {
         EventBus.$on('crop-eventbus', function (fileList) {
             this.fileList = fileList
             this.active = true
+            cropui()
         })
     },
     method: {
-      cropui: function(index) {
-          if (fileList) {
-            const reader = new Filereader()
+      cropui: function (index) {
+          if (this.fileList) {
+            const reader = new FileReader()
             reader.readAsDataURL(fileList[index])
-            reader.onload = function(event) {
-              image.attr("src", e.target.result)
-              cropper = image.cropper( {
-                dragMode: 'move',
-                vieMode: 1,
-                autoCropArea: 0.7,
-                guides: false
-            })
+            reader.onload = function (event) {
+              this.image.attr("src", event.target.result)
+
           }
         }
       }

@@ -48,7 +48,7 @@ export default {
                     }
                 }
                 EventBus.$emit('crop-eventbus', this.fileList)
-                this.isCropModal = true;
+                this.isCropModal = true
             }
         },
         /* updateInput: function(e) {
