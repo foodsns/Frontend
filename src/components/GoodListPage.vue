@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import FirestoreDao from '../module/firestore.dao'
 // import {EventBus} from '../lib/event-bus.js'
 export default {
@@ -45,7 +46,7 @@ export default {
                 // city = null,
                 // state = null,
                 // street = null,
-                uid: 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
+                uid: Vue.prototype.$firebaseAuth.getCurrentUserUid()
             })
             .then(postList => {
                 this.postList.splice(0)
