@@ -1,6 +1,6 @@
 import { getFirestore, collection, collectionGroup, query,
-        startAfter, where, getDocs, getDoc, FieldValue,
-        orderBy, limit, addDoc, updateDoc, doc, deleteDoc } from 'firebase/firestore'
+        startAfter, where, getDocs, getDoc,
+        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
@@ -262,15 +262,18 @@ export default class FirestoreDao {
         displayName,
         email,
         emailVerified = false,
-        photoURL
+        phoneNumber,
+        photoURL,
+        uid
     } = {}) {
         const db = getFirestore()
-        return addDoc(collection(db, 'users'), {
+        return setDoc(doc(db, 'users', uid), {
             displayName,
             email,
             emailVerified,
+            // phoneNumber,
             photoURL,
-            lastLogin: FieldValue.serverTimestamp()
+            lastLogin: serverTimestamp()
         })
     }
 
@@ -295,7 +298,7 @@ export default class FirestoreDao {
             id: this.generateGuid(),
             title,
             descript,
-            date: FieldValue.serverTimestamp(),
+            date: serverTimestamp(),
             profileImg,
             writer,
             good: 0,
@@ -332,7 +335,7 @@ export default class FirestoreDao {
         return updateDoc(doc(db, 'posts', docID), {
             title,
             descript,
-            date: FieldValue.serverTimestamp(),
+            date: serverTimestamp(),
             profileImg,
             writer,
             img,
@@ -352,9 +355,9 @@ export default class FirestoreDao {
         return deleteDoc(doc(db, 'posts', docID))
     }
 
-    thumbsUpPost (postId, uid) {
+    thumbsUpPost (docID, uid) {
     }
 
-    thumbsDownPost (postId, uid) {
+    thumbsDownPost (docID, uid) {
     }
 }
