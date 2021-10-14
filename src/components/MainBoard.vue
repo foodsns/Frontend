@@ -23,6 +23,7 @@
       </b-col>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
+          <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file"></crop-modal>
           <div id="writePostUI" style="position: relative">
             <div class="form-floating">
               <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
@@ -103,7 +104,11 @@ export default {
         isLoading: false,
         dummyCnt: 0,
         firestoreDao: new FirestoreDao(),
-        postList: []
+        postList: [],
+        cropModal: {
+          show: false,
+          file: null
+        }
     }
   },
   watch: {
@@ -233,7 +238,8 @@ export default {
         const file = e.target.files[0]
         const maxSize = 3 * 1024 * 1024
         if (file.size <= maxSize) {
-          console.log(file)
+          this.cropModal.show = true
+          this.cropModal.file = file
         } else {
           console.warn(`Maximum file size: ${maxSize}, current: ${file.size}`)
         }
