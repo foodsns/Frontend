@@ -5,6 +5,8 @@ export default class FirestoreDao {
     _lastSelectPostsDoc = null
     _lastSelectThumbsUpPostsOptions = {}
     _lastSelectThumbsUpPostsDoc = null
+    _lastSelectMyPostsOptions = {}
+    _lastSelectMyPostsDoc = null
 
     generateGuid () {
         var result, i, j
@@ -195,14 +197,63 @@ export default class FirestoreDao {
         })
     }
 
-    selectMyPosts ({
+    async selectMyPosts ({
         lat = 37.566227,
         lot = 126.977966,
         distance = 1,
-        orderBy = 'goods',
-        page = 0,
-        pageSize = 8
+        orderType = 'recent' | 'best' | 'older',
+        pageSize = 8,
+        uid
     } = {}) {
+        const constraints = [where('authorId', '==', uid), limit(pageSize)]
+        if (JSON.stringify(this._lastSelectMyPostsOptions) !== JSON.stringify({
+            lat,
+            lot,
+            distance,
+            orderType,
+            pageSize,
+            uid
+        }) || !this._lastSelectMyPostsDoc) {
+            this._lastSelectMyPostsOptions = {
+                lat,
+                lot,
+                distance,
+                orderType,
+                pageSize,
+                uid
+            }
+        } else {
+            constraints.splice(1, 0, startAfter(this._lastSelectMyPostsDoc))
+        }
+        switch (orderType) {
+            case 'recent':
+                constraints.splice(0, 0, orderBy('date', 'desc'))
+                break
+            case 'best':
+                constraints.splice(0, 0, orderBy('good', 'desc'))
+                break
+            case 'older':
+                constraints.splice(0, 0, orderBy('date', 'asc'))
+                break
+            default:
+                throw new Error(`Unsupported order type: ${orderType}`)
+        }
+        const db = getFirestore()
+        return Promise.all((await getDocs(query(collection(db, 'posts'), ...constraints))).docs.map(item => {
+            const data = item.data()
+            this._lastSelectMyPostsDoc = item
+            return {
+                ...data,
+                goodMarked: false,
+                docID: item.id,
+                img: `${data.img}?_${Math.random()}`,
+                profileImg: `${data.profileImg}?_${Math.random()}`,
+                date: new Date(data.date.seconds * 1000).toLocaleDateString()
+            }
+        }))
+        .catch(err => {
+            console.error(`[firestore.dao] [selectMyPosts] Cannot get my post list: ${err.message}`)
+        })
     }
 
     signUpMyInfo ({
