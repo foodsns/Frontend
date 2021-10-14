@@ -11,48 +11,33 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import app from '../firebaseApp'
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import Vue from 'vue'
 export default {
     name: 'ProfileIcon',
     data () {
         return {
             msg: 'hello world',
-            profileImg: '',
-            isLogin: false
+            profileImg: Vue.prototype.$firebaseAuth.currentUser ? Vue.prototype.$firebaseAuth.currentUser.photoURL : '',
+            isLogin: Vue.prototype.$firebaseAuth.currentUser != null
         }
     },
     mounted () {
-        this.authStateChangeListener()
+        Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+            if (isLoggedIn && Vue.prototype.$firebaseAuth.currentUser) {
+                this.profileImg = `${Vue.prototype.$firebaseAuth.currentUser.photoURL}`
+                this.isLogin = true
+            } else {
+                this.profileImg = ''
+                this.isLogin = false
+            }
+        })
     },
     methods: {
-        authStateChangeListener: function () {
-            const auth = getAuth()
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    console.log('[ProfileIcon] [authStateChangeListener] user:', user)
-                    this.profileImg = user.photoURL
-                    this.isLogin = true
-                } else {
-                    // User is signed out
-                    // ...
-                    console.log('[ProfileIcon] [authStateChangeListener] User not signed in')
-                }
-            })
-        },
         onSignInUpClicked: function () {
             this.$router.push('/login')
         },
         firebaseSignOut: function () {
-            const auth = getAuth()
-            signOut(auth).then(() => {
-            // Sign-out successful.
-                console.log('[GoogleSign] [firebaseSignOut]: auth', auth)
-                this.profileImg = ''
-                this.isLogin = false
-            }).catch((error) => {
-            // An error happened.
-                console.log('[GoogleSign] [firebaseSignOut]: error', error)
-            })
+            Vue.prototype.$firebaseAuth.signOut()
         }
     }
 }
