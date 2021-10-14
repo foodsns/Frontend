@@ -1,4 +1,6 @@
-import { getFirestore, collection, collectionGroup, query, startAfter, where, getDocs, getDoc, FieldValue, orderBy, limit } from 'firebase/firestore'
+import { getFirestore, collection, collectionGroup, query,
+        startAfter, where, getDocs, getDoc, FieldValue,
+        orderBy, limit, addDoc, updateDoc, doc, deleteDoc } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
@@ -260,19 +262,23 @@ export default class FirestoreDao {
         displayName,
         email,
         emailVerified = false,
-        photoURL,
-        lastLogin
+        photoURL
     } = {}) {
+        const db = getFirestore()
+        return addDoc(collection(db, 'users'), {
+            displayName,
+            email,
+            emailVerified,
+            photoURL,
+            lastLogin: FieldValue.serverTimestamp()
+        })
     }
 
     insertPost ({
-        id = this.generateGuid(),
         title,
         descript,
-        date = FieldValue.serverTimestamp(),
         profileImg,
         writer,
-        good = 0,
         img,
         lat,
         lot,
@@ -284,12 +290,32 @@ export default class FirestoreDao {
         street,
         hashtag
     } = {}) {
+        const db = getFirestore()
+        return addDoc(collection(db, 'posts'), {
+            id: this.generateGuid(),
+            title,
+            descript,
+            date: FieldValue.serverTimestamp(),
+            profileImg,
+            writer,
+            good: 0,
+            img,
+            lat,
+            lot,
+            visibility,
+            authorId,
+            country,
+            city,
+            state,
+            street,
+            hashtag
+        })
     }
 
     updatePost ({
+        docID,
         title,
         descript,
-        date = FieldValue.serverTimestamp(),
         profileImg,
         writer,
         img,
@@ -302,9 +328,28 @@ export default class FirestoreDao {
         street,
         hashtag
     } = {}) {
+        const db = getFirestore()
+        return updateDoc(doc(db, 'posts', docID), {
+            title,
+            descript,
+            date: FieldValue.serverTimestamp(),
+            profileImg,
+            writer,
+            img,
+            lat,
+            lot,
+            visibility,
+            country,
+            city,
+            state,
+            street,
+            hashtag
+        })
     }
 
-    deletePost (postId) {
+    deletePost (docID) {
+        const db = getFirestore()
+        return deleteDoc(doc(db, 'posts', docID))
     }
 
     thumbsUpPost (postId, uid) {
