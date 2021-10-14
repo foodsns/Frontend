@@ -1,13 +1,13 @@
 <template>
     <div id="googlesign">
-        <b-button variant="outline-danger" v-on:click="onGoogleSignInUpBtnClicked">
+        <b-button variant="outline-danger" v-on:click="onGoogleSignInUpBtnClicked()">
             <font-awesome-icon :icon="['fab', 'google']" /> Google Sign in / up
         </b-button>
     </div>
 </template>
 
 <script>
-import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
+import Vue from 'vue'
 export default {
     name: 'GoogleSign',
     data () {
@@ -16,46 +16,13 @@ export default {
         }
     },
     mounted () {
-        this.authStateChangeListener()
+        Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+            this.$emit('sign-state', isLoggedIn)
+        })
     },
     methods: {
         onGoogleSignInUpBtnClicked: function () {
-            const provider = new GoogleAuthProvider()
-            const auth = getAuth()
-            signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                console.log('result', GoogleAuthProvider.credentialFromResult(result))
-                // ...
-            }).catch((error) => {
-                console.log('err', error)
-                this.$emit('sign-error', error.message)
-            })
-        },
-        firebaseSignOut: function () {
-            const auth = getAuth()
-            signOut(auth).then(() => {
-            // Sign-out successful.
-                console.log('[GoogleSign] [firebaseSignOut]: auth', auth)
-            }).catch((error) => {
-            // An error happened.
-                console.log('[GoogleSign] [firebaseSignOut]: error', error)
-                this.$emit('sign-error', error.message)
-            })
-        },
-        authStateChangeListener: function () {
-            const auth = getAuth()
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    console.log('[GoogleSign] [authStateChangeListener] user:', user)
-                    this.$emit('sign-state', true)
-                } else {
-                    // User is signed out
-                    // ...
-                    console.log('[GoogleSign] [authStateChangeListener] User not signed in')
-                    this.$emit('sign-state', false)
-                }
-            })
+            Vue.prototype.$firebaseAuth.googleSignUp()
         }
     }
 }
