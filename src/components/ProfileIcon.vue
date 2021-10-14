@@ -17,20 +17,22 @@ export default {
     data () {
         return {
             msg: 'hello world',
-            profileImg: Vue.prototype.$firebaseAuth.currentUser ? Vue.prototype.$firebaseAuth.currentUser.photoURL : '',
-            isLogin: Vue.prototype.$firebaseAuth.currentUser != null
+            profileImg: Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.currentUser ? Vue.prototype.$firebaseAuth.currentUser.photoURL : '',
+            isLogin: Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.currentUser
         }
     },
     mounted () {
-        Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
-            if (isLoggedIn && Vue.prototype.$firebaseAuth.currentUser) {
-                this.profileImg = `${Vue.prototype.$firebaseAuth.currentUser.photoURL}`
-                this.isLogin = true
-            } else {
-                this.profileImg = ''
-                this.isLogin = false
-            }
-        })
+        if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
+            Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+                if (isLoggedIn && Vue.prototype.$firebaseAuth.currentUser) {
+                    this.profileImg = `${Vue.prototype.$firebaseAuth.currentUser.photoURL}`
+                    this.isLogin = true
+                } else {
+                    this.profileImg = ''
+                    this.isLogin = false
+                }
+            })
+        }
     },
     methods: {
         onSignInUpClicked: function () {
