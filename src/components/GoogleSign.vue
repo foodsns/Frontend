@@ -8,11 +8,13 @@
 
 <script>
 import Vue from 'vue'
+import FirestoreDao from '../module/firestore.dao'
 export default {
     name: 'GoogleSign',
     data () {
         return {
-            msg: 'hello world'
+            msg: 'hello world',
+            firestoreDao: new FirestoreDao()
         }
     },
     mounted () {
@@ -23,6 +25,29 @@ export default {
     methods: {
         onGoogleSignInUpBtnClicked: function () {
             Vue.prototype.$firebaseAuth.googleSignUp()
+            .then(result => result.user)
+            .then(user => {
+                const {
+                    displayName,
+                    email,
+                    emailVerified,
+                    phoneNumber,
+                    photoURL,
+                    uid
+                } = user
+
+                return this.firestoreDao.signUpMyInfo({
+                    displayName,
+                    email,
+                    emailVerified,
+                    phoneNumber,
+                    photoURL,
+                    uid
+                })
+            })
+            .then(result => {
+                console.log(`[GoogleSign] [onGoogleSignInUpBtnClicked.signUpMyInfo] result: `, result)
+            })
         }
     }
 }
