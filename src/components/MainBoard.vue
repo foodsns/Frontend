@@ -32,7 +32,7 @@
                 <label class="btn btn-primary" pill variant="primary" for="filebtn">
                 사진
                 </label>
-                <input type="file" id="filebtn" @change="uploadPhoto" style="display:none" accept="image/*" multiple/>
+                <input type="file" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*" multiple/>
               </form>
               <button type="submit" class="btn btn-success" id="postbtn">확인</button>
             </div>
@@ -213,6 +213,8 @@ export default {
       this.openSideList = true
       this.focusedPost = post
     },
+    // 현재 DB 모델이 한개의 파일만 입력하게끔 되어 있어,
+    // 멀티 이미지 지원은 마지막 스프린트에 작업하는걸로
     uploadPhoto: function (e) {
       console.log('uploadPhoto :', e)
         if (e.target.files) {
@@ -224,6 +226,19 @@ export default {
               return false
           }
         }
+      }
+    },
+    uploadOnePhoto: function (e) {
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0]
+        const maxSize = 3 * 1024 * 1024
+        if (file.size <= maxSize) {
+          console.log(file)
+        } else {
+          console.warn(`Maximum file size: ${maxSize}, current: ${file.size}`)
+        }
+      } else {
+        console.warn('Empty file detected')
       }
     },
     scrollMainboard: function () {
