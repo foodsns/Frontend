@@ -39,6 +39,7 @@ import GoodListPage from './components/GoodListPage'
 import InfiniteScroll from './components/InfiniteScroll'
 import Hashtag from './components/Hashtag'
 import MainLogo from './components/MainLogo'
+import CropModal from './components/CropModal'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -70,6 +71,7 @@ Vue.component('goodlist', GoodListPage)
 Vue.component('infinite-scroll', InfiniteScroll)
 Vue.component('hash-tag', Hashtag)
 Vue.component('main-logo', MainLogo)
+Vue.component('crop-modal', CropModal)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
