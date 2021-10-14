@@ -12,7 +12,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, faHeart, faMap, faTh, faUser,
         faSignInAlt, faArrowRight, faArrowLeft,
-        faSpinner, faArrowDown } from '@fortawesome/free-solid-svg-icons'
+        faSpinner, faArrowDown, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -39,6 +39,7 @@ import GoodListPage from './components/GoodListPage'
 import InfiniteScroll from './components/InfiniteScroll'
 import Hashtag from './components/Hashtag'
 import MainLogo from './components/MainLogo'
+import UserGps from './components/userGps'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -54,6 +55,7 @@ library.add(faArrowRight)
 library.add(faArrowLeft)
 library.add(faSpinner)
 library.add(faArrowDown)
+library.add(faMapMarkerAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
@@ -70,6 +72,7 @@ Vue.component('goodlist', GoodListPage)
 Vue.component('infinite-scroll', InfiniteScroll)
 Vue.component('hash-tag', Hashtag)
 Vue.component('main-logo', MainLogo)
+Vue.component('user-gps-logo', UserGps)
 
 Vue.use(MdButton)
 Vue.use(MdContent)

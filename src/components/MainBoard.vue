@@ -6,6 +6,9 @@
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
     <b-container class="body">
       <b-row align-h="end">
+        <b-col>
+          <user-gps-logo class="user-gps-btn"></user-gps-logo>
+        </b-col>
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
           <profile-icon style="position: relative"></profile-icon>
         </b-col>
@@ -18,9 +21,11 @@
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
         </b-col>
       </b-row>
-      <b-col>
-        <hashtag class="hashtag"></hashtag>
-      </b-col>
+      <b-row>
+        <b-col>
+          <hashtag class="hashtag"></hashtag>
+        </b-col>
+      </b-row>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
           <div id="writePostUI" style="position: relative">
@@ -157,6 +162,10 @@ export default {
         }, 800)
         if (!_postList || _postList.length <= 0) {
           this.scrollMsg = '더 이상 리뷰가 없어요'
+        }
+        // 게시물 200개 보여주고 멈춤
+        if (_postList && _postList.length >= 8) {
+          this.scrollMsg = '리뷰 있음'
         }
         _postList.forEach(post => this.postList.push(post))
       })
@@ -306,6 +315,10 @@ export default {
 
 .toggle-btn {
   text-align: right;
+}
+
+.user-gps-btn {
+  text-align: left;
 }
 
 </style>
