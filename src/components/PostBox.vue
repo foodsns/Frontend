@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import FirestoreDao from '../module/firestore.dao'
 import {EventBus} from '../lib/event-bus.js'
 export default {
   name: 'postbox',
@@ -28,6 +30,7 @@ export default {
           type: Object,
           default: function () {
               return {
+                  docID: '',
                   title: 'Undefined',
                   descript: 'This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.',
                   date: '----년 --월 --일',
@@ -43,7 +46,8 @@ export default {
     return {
         postItem: this.post,
         currentMode: this.mode,
-        liked: false
+        liked: false,
+        firestoreDao: new FirestoreDao()
     }
   },
   computed: {
@@ -67,9 +71,11 @@ export default {
         },
         increase: function () {
            this.postItem.good++
+           this.firestoreDao.thumbsUpPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
         },
         decrease: function () {
            this.postItem.good--
+           this.firestoreDao.thumbsDownPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
         },
         ture_not_liked: function () {
            this.liked === true ? this.liked = false : this.liked = true
