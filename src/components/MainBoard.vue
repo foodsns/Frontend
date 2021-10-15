@@ -163,13 +163,14 @@ export default {
         return postList
       })
       .then(_postList => {
-        setTimeout(() => {
-          this.isLoading = false
-        }, 800)
         if (!_postList || _postList.length <= 0) {
           this.scrollMsg = '더 이상 리뷰가 없어요'
         }
         _postList.forEach(post => this.postList.push(post))
+        return true
+      })
+      .then(() => {
+          this.isLoading = false
       })
     },
     onScrollReachedBottom () {
@@ -211,7 +212,7 @@ export default {
     },
     onMarkerClicked: function (post) {
       console.log(`[MainBoard] [onMarkerClicked] post: `, post)
-      this.focusedPost = post
+      // this.focusedPost = post
     },
     onCustomOverlayClicked: function (post) {
       console.log(`[MainBoard] [onCustomOverlayClicked] post: `, post)
