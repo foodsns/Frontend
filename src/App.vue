@@ -6,8 +6,13 @@
 </template>
 
 <script>
+import FirebaseAuth from './module/firebaseAuth.controller'
+import Vue from 'vue'
 export default {
-  name: 'App'
+    name: 'App',
+    beforeCreate () {
+      Vue.prototype.$firebaseAuth = new FirebaseAuth()
+    }
 }
 </script>
 

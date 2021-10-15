@@ -1,7 +1,8 @@
 <template>
   <div id="profileicon">
-    <img v-if="profileImg" :src="profileImg" v-on:click="firebaseSignOut"/>
-    <div v-else v-on:click="onSignInUpClicked">
+    <img v-if="profileImg" :src="profileImg" />
+    <b-button class="logoutBtn" v-show="isLogin" v-on:click="firebaseSignOut" size="sm">로그아웃</b-button>
+    <div v-if="!profileImg" v-on:click="onSignInUpClicked">
         <span>Sign in / up</span><font-awesome-icon icon="sign-in-alt" />
     </div>
   </div>
@@ -10,45 +11,35 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import app from '../firebaseApp'
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import Vue from 'vue'
 export default {
     name: 'ProfileIcon',
     data () {
         return {
             msg: 'hello world',
-            profileImg: ''
+            profileImg: Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.currentUser ? Vue.prototype.$firebaseAuth.currentUser.photoURL : '',
+            isLogin: Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.currentUser
         }
     },
     mounted () {
-        this.authStateChangeListener()
-    },
-    methods: {
-        authStateChangeListener: function () {
-            const auth = getAuth()
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    console.log('[ProfileIcon] [authStateChangeListener] user:', user)
-                    this.profileImg = user.photoURL
+        if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
+            Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+                if (isLoggedIn && Vue.prototype.$firebaseAuth.currentUser) {
+                    this.profileImg = `${Vue.prototype.$firebaseAuth.currentUser.photoURL}`
+                    this.isLogin = true
                 } else {
-                    // User is signed out
-                    // ...
-                    console.log('[ProfileIcon] [authStateChangeListener] User not signed in')
+                    this.profileImg = ''
+                    this.isLogin = false
                 }
             })
-        },
+        }
+    },
+    methods: {
         onSignInUpClicked: function () {
             this.$router.push('/login')
         },
         firebaseSignOut: function () {
-            const auth = getAuth()
-            signOut(auth).then(() => {
-            // Sign-out successful.
-                console.log('[GoogleSign] [firebaseSignOut]: auth', auth)
-                this.profileImg = ''
-            }).catch((error) => {
-            // An error happened.
-                console.log('[GoogleSign] [firebaseSignOut]: error', error)
-            })
+            Vue.prototype.$firebaseAuth.signOut()
         }
     }
 }
@@ -67,4 +58,5 @@ div {
 div span {
     margin-right: 5px;
 }
+
 </style>

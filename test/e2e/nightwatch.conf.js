@@ -26,12 +26,15 @@ module.exports = {
         devServerURL: 'http://localhost:' + (process.env.PORT || config.dev.port)
       }
     },
-
+// https://stackoverflow.com/questions/66721907/nightwatch-e2e-browsers-dont-work-on-github-actions
     chrome: {
       desiredCapabilities: {
         browserName: 'chrome',
         javascriptEnabled: true,
-        acceptSslCerts: true
+        acceptSslCerts: true,
+        chromeOptions: {
+          args: ['--headless', '--no-sandbox', '--window-size=1920,1080']
+        }
       }
     },
 

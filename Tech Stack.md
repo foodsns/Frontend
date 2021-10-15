@@ -4,6 +4,10 @@
 
 * 단위 테스트 `jest`
 
+<img src="https://miro.medium.com/max/660/1*PMx1-QDiFpgPkP4n-o6NyQ.png" width="320"/>
+
+* E2E 테스트 `nightwatchjs`
+
 <img src="https://media.vlpt.us/post-images/katanazero86/aba9c930-4af7-11ea-b431-d56bc1d096a4/vuejs-tutorial2d2a853c-aa2f-44b0-80df-933b495f77f8.png" width="320"/>
 
 * 웹 프레임워크 `Vue.js 2.x`
@@ -11,6 +15,10 @@
 <img src="https://media.vlpt.us/images/hanei100/post/3fd2beb9-fb77-4040-b1ef-d1bf66c9ad04/zz.jpg" width="320"/>
 
 * 반응형 웹 / 컴포넌트 라이브러리 `Bootstrap`
+
+<img src="https://madewithnetworkfra.fra1.digitaloceanspaces.com/spatie-space-production/1090/vue-material.jpg" width="320" />
+
+* Vue.js 머테리얼 디자인 컴포넌트 라이브러리 `Vue.js Material`
 
 <img src="https://joshua1988.github.io/webpack-guide/logo.png" width="320" />
 
@@ -34,6 +42,6 @@
 
 * CI & CD 자동화 스크립트 or 워크 플로우 제공
 
-<img src="https://lh3.googleusercontent.com/proxy/y4t1ArKSfJrbFA9plDQ_Qzk9IU6E38KaZFYZGyPcPSwTko4FThfWrt2q9g8U-IX-qj6ywvx9Y_r-Dj3NdV_Chho9YBTwy2ydopaug6Ok2q_viWVceDx9LythFuAn-ic4h6y48xbDcdL_2Vf6UCF0kvN-nE9vlLMhkCkTT7q9pET-b1QbuI4YH3In9YBNn4Nuq5RWYkigAsr4uhqApSi7iDfjMe4l-RDJXUoBcFLmjBgwNtbRqSXUXKY6TbZ0o9T2TkrUUgi_C_jdpd9BgWLiZw" width="320" />
+<img src="https://w.namu.la/s/9b7194fc88bd6c36c484273bf153f116e47df16d8112691483123c8832bd9f7203a2964ad8f2293fe540e5c939f917d6084b3b7c23aad1c5523e4198ba7d317aa5d18f9aad63e7716c7b547fba411204" width="320" />
 
 * 카카오 지도 라이브러리 사용

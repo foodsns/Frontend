@@ -10,8 +10,8 @@
             <img class="profile-img" :src="postItem.profileImg"/>
             <span class="writer">by <span class="bold">{{postItem.writer}}</span></span>
             <b-icon icon="heart-fill" class="gap_margin_5px_horizontal"
-                    :variant="currentMode == 'grid' ? 'danger' : ''"
-                    v-on:click="[greet('grid'), increase(), decrease()]"
+                    :variant="postItem.goodMarked ? 'danger' : ''"
+                    v-on:click="[onGoodBtnClicked(postItem), ture_not_liked()]"
             />
             <span class="good_num">{{postItem.good}}</span>
         </div>
@@ -20,6 +20,9 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import FirestoreDao from '../module/firestore.dao'
+import {EventBus} from '../lib/event-bus.js'
 export default {
   name: 'postbox',
   props: {
@@ -27,6 +30,7 @@ export default {
           type: Object,
           default: function () {
               return {
+                  docID: '',
                   title: 'Undefined',
                   descript: 'This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.This is description.',
                   date: '----년 --월 --일',
@@ -41,7 +45,9 @@ export default {
   data () {
     return {
         postItem: this.post,
-        currentMode: this.mode
+        currentMode: this.mode,
+        liked: false,
+        firestoreDao: new FirestoreDao()
     }
   },
   computed: {
@@ -55,18 +61,29 @@ export default {
       }
   },
   methods: {
-       greet: function (mode) {
-           this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
-
-           this.currentMode === 'grid' ? this.increase() : this.decrease()
-       },
-       increase: function () {
+        onGoodBtnClicked: function (post) {
+            if (post.goodMarked) {
+                this.decrease()
+            } else {
+                this.increase()
+            }
+            post.goodMarked = !post.goodMarked
+        },
+        increase: function () {
            this.postItem.good++
-       },
-       decrease: function () {
+           this.firestoreDao.thumbsUpPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
+        },
+        decrease: function () {
            this.postItem.good--
-       }
-  }
+           this.firestoreDao.thumbsDownPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
+        },
+        ture_not_liked: function () {
+           this.liked === true ? this.liked = false : this.liked = true
+           console.log('데이터 보냅니다: ', this.liked)
+           EventBus.$emit('use-eventBus', this.liked)
+           return this.liked
+        }
+    }
 }
 </script>
 
