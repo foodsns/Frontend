@@ -51,12 +51,12 @@ export default {
                 this.isCropModal = true
             }
         },
-        /* updateInput: function(e) {
+        /* updateInput: function (e) {
           var updateInput = e.target.value
           var splited
           if (splited = updateInput.split(' ')) { // if user type a spacebar
-            if (splited.index('#')!=-1){ // if there is a hashtag
-            } 
+            if (splited.index('#')!=-1) { // if there is a hashtag
+            }
           }
           this.inputText = updateInput
         } */

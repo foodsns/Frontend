@@ -28,7 +28,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
-          <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file"></crop-modal>
+          <CropModal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></CropModal>
           <div id="writePostUI" style="position: relative">
             <div class="form-floating">
               <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
@@ -89,9 +89,10 @@ import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
 import FirestoreDao from '../module/firestore.dao'
+import CropModal from './CropModal.vue'
 
 export default {
-  components: { Scrollbar, Hashtag },
+  components: { Scrollbar, Hashtag, CropModal },
   name:
     'MainBoard',
   data () {

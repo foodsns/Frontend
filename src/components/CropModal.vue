@@ -1,16 +1,16 @@
 <template>
-<div class="CropModalUI" v-if="active">
+<div class="CropModalUI">
 <!--first modal-->
-    <div class="modal fade" v-if="active" id="firstModalToggle" aria-hidden="true" aria-labelledby="firstModalToggleLabel" tabindex="-1">
+  <div class="modal fade" id="firstModalToggle" aria-labelledby="firstModalToggleLabel" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="firstModalToggle">{{fileList[0].name}}</h5>
+        <h5 class="modal-title" id="firstModalToggle"></h5>
         <button type="button" class="btn-close" @click="$emit('close-modal')" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="img-container">
-          <img v-bind:class="image" v-bind:src="img">
+          <img v-bind:src="img">
         </div>
       </div>
       <div class="modal-footer">
@@ -21,11 +21,11 @@
 </div>
 
 <!--mid modals-->
-<div class="modal fade" v-if="active" id="midModalToggle" aria-hidden="true" aria-labelledby="midModalToggleLabel" tabindex="-1">
+<div class="modal fade" id="midModalToggle" aria-hidden="true" aria-labelledby="midModalToggleLabel" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="firstModalToggle">{{fileList[0].name}}</h5>
+        <h5 class="modal-title" id="firstModalToggle">{{fileProp.name}}</h5>
         <button type="button" class="btn-close" @click="$emit('close-modal')" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import {EventBus} from '../lib/event-bus.js'
 // 지금 당장 소스상에 사용된 기록이 없었기 때문에 es-lint 오류가
 // 나서 임시로 주석처리함, 나중에 쓸때 다시 주석 해제하고 쓰면 됨
 // import VueCropper from 'vue-cropperjs'
@@ -82,17 +81,11 @@ export default {
             active: false,
             croppedImg: [],
             beforecrop: null,
-            image: null
+            img: null
         }
     },
-    created () {
-        EventBus.$on('crop-eventbus', function (fileList) {
-            this.fileList = fileList
-            this.active = true
-        })
-    },
     mounted () {
-      this.$refs['cropper-modal'].show()
+      this.$refs['crop-modal'].show()
     },
     method: {
     // cropui: function(index) {
