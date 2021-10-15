@@ -9,59 +9,53 @@
         사진
         </label>
         <input type="file" id="filebtn" @change="uploadPhoto" v-bind:imgList="imgtogo" style="display:none" accept="image/*" multiple/>
-        <CropModal v-if="isCropModal" @close-modal="isCropModal=false"></CropModal>
+        <crop-modal v-if="isCropModal" @close-modal="isCropModal=false"></crop-modal>
       </form>
       <button type="submit" class="btn btn-success" id="postbtn">확인</button>
     </div>
   </div>
 </template>
 <script>
-import {EventBus} from '../lib/event-bus.js'
-import {CropModal} from './component/CropModal.vue'
 
 export default {
     name: 'WritePostUI',
-    components: {
-      CropModal
-    },
     data () {
-        return {
-            inputText: '',
-            isCropModal: false,
-            hashTag: []
-        }
+      return {
+        inputText: '',
+        isCropModal: false,
+        hashTag: []
+      }
     },
     methods: {
-        uploadPhoto: function (e) {
-            if (e.target.files) {
-                var fileList = e.target.files
-                var maxamount = 15
-                var maxSize = 3 * 1024 * 1024
-                if (fileList.length > maxamount) {
-                  alert('15개 이하만 업로드 가능합니다.')
-                  return false
-                }
-                for (const file of fileList) {
-                    if (file.size > maxSize) {
-                        alert(file.name + ' : 3MB이하 이미지만 가능합니다.')
-                        return false
-                    }
-                }
-                EventBus.$emit('crop-eventbus', this.fileList)
-                this.isCropModal = true
-            }
-        },
-        /* updateInput: function (e) {
-          var updateInput = e.target.value
-          var splited
-          if (splited = updateInput.split(' ')) { // if user type a spacebar
-            if (splited.index('#')!=-1) { // if there is a hashtag
+      uploadPhoto: function (e) {
+        if (e.target.files) {
+          var fileList = e.target.files
+          var maxamount = 15
+          var maxSize = 3 * 1024 * 1024
+          if (fileList.length > maxamount) {
+            alert('15개 이하만 업로드 가능합니다.')
+            return false
+          }
+          for (const file of fileList) {
+            if (file.size > maxSize) {
+              alert(file.name + ' : 3MB이하 이미지만 가능합니다.')
+              return false
             }
           }
-          this.inputText = updateInput
+          this.isCropModal = true
+        }
+      }
+    /* updateInput: function (e) {
+        var updateInput = e.target.value
+        var splited
+        if (splited = updateInput.split(' ')) { // if user type a spacebar
+            if (splited.index('#') != -1) { // if there is a hashtag
+            }
+        }
+        this.inputText = updateInput
         } */
+      }
     }
-}
 
 </script>
 <style>

@@ -28,7 +28,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
-          <CropModal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></CropModal>
+          <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></crop-modal>
           <div id="writePostUI" style="position: relative">
             <div class="form-floating">
               <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
@@ -89,10 +89,9 @@ import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
 import FirestoreDao from '../module/firestore.dao'
-import CropModal from './CropModal.vue'
 
 export default {
-  components: { Scrollbar, Hashtag, CropModal },
+  components: { Scrollbar, Hashtag },
   name:
     'MainBoard',
   data () {
@@ -169,6 +168,9 @@ export default {
         return postList
       })
       .then(_postList => {
+        setTimeout(() => {
+          this.isLoading = false
+        }, 800)
         if (!_postList || _postList.length <= 0) {
           this.scrollMsg = '더 이상 리뷰가 없어요'
         }
@@ -177,10 +179,6 @@ export default {
           this.scrollMsg = '리뷰 있음'
         }
         _postList.forEach(post => this.postList.push(post))
-        return true
-      })
-      .then(() => {
-          this.isLoading = false
       })
     },
     onScrollReachedBottom () {
@@ -222,7 +220,7 @@ export default {
     },
     onMarkerClicked: function (post) {
       console.log(`[MainBoard] [onMarkerClicked] post: `, post)
-      // this.focusedPost = post
+      this.focusedPost = post
     },
     onCustomOverlayClicked: function (post) {
       console.log(`[MainBoard] [onCustomOverlayClicked] post: `, post)
