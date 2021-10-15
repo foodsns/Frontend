@@ -1,6 +1,6 @@
 import { getFirestore, collection, collectionGroup, query,
         startAfter, where, getDocs, getDoc,
-        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp } from 'firebase/firestore'
+        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
@@ -356,26 +356,26 @@ export default class FirestoreDao {
     }
 
     thumbsUpPost (docID, uid) {
-        // const db = getFirestore()
-        // const docRef = getDoc(doc(db, 'posts', docID))
+        const db = getFirestore()
+        const docRef = getDoc(doc(db, 'posts', docID))
 
-        // await runTransaction(db, async (transaction) => {
-        // const sfDoc =  await transaction.get(docRef)
+        runTransaction(db, (transaction) => {
+        const sfDoc = transaction.get(docRef)
 
-        // const newgood = sfDoc.data().good + 1;
-        // transaction.update(docRef, { good: newgood })
-        // })
+        const newgood = sfDoc.data().good + 1
+        transaction.update(docRef, { good: newgood })
+        })
     }
 
-    thumbsDownPost (docID, uid) {
-        // const db = getFirestore()
-        // const docRef = getDoc(doc(db, 'posts', docID))
+    async thumbsDownPost (docID, uid) {
+        const db = getFirestore()
+        const docRef = getDoc(doc(db, 'posts', docID))
 
-        // await runTransaction(db, async (transaction) => {
-        // const sfDoc =  await transaction.get(docRef)
+        await runTransaction(db, async (transaction) => {
+        const sfDoc = await transaction.get(docRef)
 
-        //  const newgood = sfDoc.data().good - 1;
-        //  transaction.update(docRef, { good: newgood })
-        //  })
+         const newgood = sfDoc.data().good - 1
+         transaction.update(docRef, { good: newgood })
+         })
     }
 }
