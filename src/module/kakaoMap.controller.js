@@ -249,15 +249,18 @@ export default class KakaoMapController {
     }
 
     resetCustomOverlayList () {
+        let removeExcludeFocusedItem = false
         this.validateKakaoMapInstance()
         this.customOverlayList.forEach((item, idx) => {
             if (!this.focusedCustomOverlayID && item.data.id !== this.focusedCustomOverlayID) {
                 this.deleteCustomOverlay(idx, 0)
             } else if (this.focusedCustomOverlayID && item.data.id === this.focusedCustomOverlayID) {
                 this.customOverlayList[0] = this.customOverlayList[idx]
+                removeExcludeFocusedItem = true
             }
         })
-        this.customOverlayList.length = this.focusedCustomOverlayID ? 1 : 0
+        console.log(this.focusedCustomOverlayID && removeExcludeFocusedItem)
+        this.customOverlayList.length = this.focusedCustomOverlayID && removeExcludeFocusedItem ? 1 : 0
     }
 
     testClick () {
