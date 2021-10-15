@@ -357,25 +357,23 @@ export default class FirestoreDao {
 
     thumbsUpPost (docID, uid) {
         const db = getFirestore()
-        const docRef = getDoc(doc(db, 'posts', docID))
+        const docRef = (doc(db, 'posts', docID))
 
-        runTransaction(db, (transaction) => {
-        const sfDoc = transaction.get(docRef)
-
-        const newgood = sfDoc.data().good + 1
-        transaction.update(docRef, { good: newgood })
+        runTransaction(db, async (transaction) => {
+            const sfDoc = await transaction.get(docRef)
+            const newgood = sfDoc.data().good + 1
+            transaction.update(docRef, { good: newgood })
         })
     }
 
     async thumbsDownPost (docID, uid) {
         const db = getFirestore()
-        const docRef = getDoc(doc(db, 'posts', docID))
+        const docRef = (doc(db, 'posts', docID))
 
-        await runTransaction(db, async (transaction) => {
-        const sfDoc = await transaction.get(docRef)
-
-         const newgood = sfDoc.data().good - 1
-         transaction.update(docRef, { good: newgood })
-         })
+        runTransaction(db, async (transaction) => {
+            const sfDoc = await transaction.get(docRef)
+            const newgood = sfDoc.data().good - 1
+            transaction.update(docRef, { good: newgood })
+        })
     }
 }
