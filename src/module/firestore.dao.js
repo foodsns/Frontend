@@ -1,6 +1,6 @@
 import { getFirestore, collection, collectionGroup, query,
         startAfter, where, getDocs, getDoc,
-        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp } from 'firebase/firestore'
+        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
@@ -356,26 +356,31 @@ export default class FirestoreDao {
     }
 
     thumbsUpPost (docID, uid) {
-        // const db = getFirestore()
-        // const docRef = getDoc(doc(db, 'posts', docID))
+        const db = getFirestore()
+        const docRef = (doc(db, 'posts', docID))
 
-        // await runTransaction(db, async (transaction) => {
-        // const sfDoc =  await transaction.get(docRef)
-
-        // const newgood = sfDoc.data().good + 1;
-        // transaction.update(docRef, { good: newgood })
-        // })
+        runTransaction(db, async (transaction) => {
+            const sfDoc = await transaction.get(docRef)
+            const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
+            const newgood = sfDoc.data().good + 1
+            transaction.update(docRef, { good: newgood })
+            transaction.set(goodLogRef, {
+                authorId: uid,
+                setTime: serverTimestamp()
+            })
+        })
     }
 
-    thumbsDownPost (docID, uid) {
-        // const db = getFirestore()
-        // const docRef = getDoc(doc(db, 'posts', docID))
+    async thumbsDownPost (docID, uid) {
+        const db = getFirestore()
+        const docRef = (doc(db, 'posts', docID))
 
-        // await runTransaction(db, async (transaction) => {
-        // const sfDoc =  await transaction.get(docRef)
-
-        //  const newgood = sfDoc.data().good - 1;
-        //  transaction.update(docRef, { good: newgood })
-        //  })
+        runTransaction(db, async (transaction) => {
+            const sfDoc = await transaction.get(docRef)
+            const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
+            const newgood = sfDoc.data().good - 1
+            transaction.update(docRef, { good: newgood })
+            transaction.delete(goodLogRef)
+        })
     }
 }
