@@ -251,9 +251,9 @@ export default class KakaoMapController {
     resetCustomOverlayList () {
         this.validateKakaoMapInstance()
         this.customOverlayList.forEach((item, idx) => {
-            if (!this.focusedCustomOverlayID) {
+            if (!this.focusedCustomOverlayID && item.data.id !== this.focusedCustomOverlayID) {
                 this.deleteCustomOverlay(idx, 0)
-            } else {
+            } else if (this.focusedCustomOverlayID && item.data.id === this.focusedCustomOverlayID) {
                 this.customOverlayList[0] = this.customOverlayList[idx]
             }
         })
