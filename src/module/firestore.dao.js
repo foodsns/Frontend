@@ -361,8 +361,13 @@ export default class FirestoreDao {
 
         runTransaction(db, async (transaction) => {
             const sfDoc = await transaction.get(docRef)
+            const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
             const newgood = sfDoc.data().good + 1
             transaction.update(docRef, { good: newgood })
+            transaction.set(goodLogRef, {
+                authorId: uid,
+                setTime: serverTimestamp()
+            })
         })
     }
 
@@ -372,8 +377,10 @@ export default class FirestoreDao {
 
         runTransaction(db, async (transaction) => {
             const sfDoc = await transaction.get(docRef)
+            const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
             const newgood = sfDoc.data().good - 1
             transaction.update(docRef, { good: newgood })
+            transaction.delete(goodLogRef)
         })
     }
 }
