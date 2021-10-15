@@ -62,15 +62,24 @@ export default {
         // scrollHeight: function (val) {
         //     console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
         // },
-        // scrollTop: function (val) {
-        //     console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
-        //     const height = (this.clientHeight + this.scrollTop) - (this.scrollHeight - this.threshold)
-        //     console.log(`ch + st >= sh - th == ${this.clientHeight + this.scrollTop} >= ${this.scrollHeight - this.threshold} : ${height}`)
-        // },
+        scrollTop: function (val) {
+            // console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
+            const height = this.calcCurrentScrollHeight()
+            // console.log(`ch + st >= sh - th == ${this.clientHeight + this.scrollTop} >= ${this.scrollHeight - this.threshold} : ${height}`)
+            if (height >= this.refreshBaseline && !this.message && !this.isReachedBottom) {
+                console.log('[InfiniteScroll] [watch.scrollTop] Call need more')
+                this.$emit('need-more')
+            } else {
+                this.isReachedBottom = false
+            }
+        },
         messageProp: function (val) {
             this.message = val
             console.log('?', this.message)
             // this.closeForce = true
+        },
+        thresholdProp: function (val) {
+            this.refreshBaseline = val / 5 * 4
         }
         // appendHeightCalc: function (conditional) {
         //     console.log(`appendHeightCalc: ${conditional}, emit: ${this.isEmitted}`)
@@ -87,10 +96,11 @@ export default {
             if (this.clientHeight > this.scrollHeight) {
                 return false
             }
-            const height = (this.clientHeight + this.scrollTop) - (this.scrollHeight - this.threshold)
-            if (height >= this.threshold / 5 * 4 && !this.message) {
+            const height = this.calcCurrentScrollHeight()
+            // console.log(`[InfiniteScroll] [appendHeightCalc] ${height} >= ${this.refreshBaseline}, ${height >= this.refreshBaseline}, ${!this.message}, ${!this.isReachedBottom}`)
+            if (height >= this.refreshBaseline && !this.message && !this.isReachedBottom) {
                 console.log('[InfiniteScroll] [appendHeightCalc] Call need more')
-                this.$emit('need-more')
+                // this.$emit('need-more')
                 return true
             }
             return false
@@ -99,7 +109,9 @@ export default {
     data () {
         return {
             threshold: this.thresholdProp,
-            message: this.messageProp
+            message: this.messageProp,
+            isReachedBottom: false,
+            refreshBaseline: this.thresholdProp / 5 * 4
             // closeForce: false,
             // isEmitted: false,
             // ref: this.refProp
@@ -109,6 +121,9 @@ export default {
         // setIsEmitted (isEmitted) {
         //     this.isEmitted = isEmitted
         // }
+        calcCurrentScrollHeight () {
+            return (this.clientHeight + this.scrollTop) - (this.scrollHeight - this.threshold)
+        }
     },
     mounted () {
         console.log(`[mounted] clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
