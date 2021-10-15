@@ -9,6 +9,9 @@ export default class KakaoMapController {
     onMarkerClicked = null
     onCustomOverlayClicked = null
 
+    focusedMarkerID = null
+    focusedCustomOverlayID = null
+
     constructor (mapEle, onMarkerClicked = null, onCustomOverlayClicked = null) {
         this.mapContainer = mapEle // document.querySelector(mapEleId)
 
@@ -247,8 +250,14 @@ export default class KakaoMapController {
 
     resetCustomOverlayList () {
         this.validateKakaoMapInstance()
-        this.customOverlayList.forEach((item, idx) => this.deleteCustomOverlay(idx, 0))
-        this.customOverlayList.length = 0
+        this.customOverlayList.forEach((item, idx) => {
+            if (!this.focusedCustomOverlayID) {
+                this.deleteCustomOverlay(idx, 0)
+            } else {
+                this.customOverlayList[0] = this.customOverlayList[idx]
+            }
+        })
+        this.customOverlayList.length = this.focusedCustomOverlayID ? 1 : 0
     }
 
     testClick () {
@@ -272,10 +281,17 @@ export default class KakaoMapController {
             if (linkedCustomOverlay) {
                 if (!linkedCustomOverlay.getVisible()) {
                     this.onMarkerClicked(id)
+                    this.focusedMarkerID = id
+                    this.focusedCustomOverlayID = linkedCustomOverlay.data.id
+                } else {
+                    this.focusedMarkerID = null
+                    this.focusedCustomOverlayID = null
                 }
                 linkedCustomOverlay.setVisible(!linkedCustomOverlay.getVisible())
             } else if (!linkedCustomOverlay) {
                 console.warn(`[kakaoMap.controller] [addMarker.addListener] Cannot find clicked overlay id: ${id}`)
+                this.focusedMarkerID = null
+                this.focusedCustomOverlayID = null
             }
 
             const previousCustomOverlay = this.customOverlayList.find(overlay => overlay.data.id === this.beforeMarkerId)
