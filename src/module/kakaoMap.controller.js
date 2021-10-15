@@ -259,7 +259,6 @@ export default class KakaoMapController {
                 removeExcludeFocusedItem = true
             }
         })
-        console.log(this.focusedCustomOverlayID && removeExcludeFocusedItem)
         this.customOverlayList.length = this.focusedCustomOverlayID && removeExcludeFocusedItem ? 1 : 0
     }
 
