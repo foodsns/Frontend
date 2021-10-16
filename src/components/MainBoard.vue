@@ -158,7 +158,7 @@ export default {
           city: '서울특별시',
           state: '중구',
           street: '정동',
-          uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : 'TKIUHqXJ6vRyVSfsvJ0fUvBXcYW2'
+          uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
       })
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
