@@ -1,6 +1,6 @@
 <template>
-    <div class = "main-logo">
-        <b-button class = "logo-img" pill variant="danger" v-on:click="greet()">메인로고입니다</b-button>
+    <div>
+        <img src="../assets/logo.jpeg" v-on:click="greet()">
     </div>
 </template>
 
@@ -16,12 +16,19 @@ export default {
 </script>
 
 <style scoped>
-.main-logo {
+img {
+    width: 48px;
+    height: 48px;
+    border-radius: 5px;
     position: fixed;
-    width: 100vw;
-    padding-top: 60px;
-    padding-bottom: 60px;
-    background: goldenrod;
-    z-index: 1;
+    left: calc(50vw - 24px);
+    top: 12px;
+    z-index: 1000;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+img:hover {
+    transform: scale(1.2);
+    transition: .4s;
 }
 </style>
