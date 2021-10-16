@@ -168,17 +168,14 @@ export default {
         return postList
       })
       .then(_postList => {
-        setTimeout(() => {
-          this.isLoading = false
-        }, 800)
         if (!_postList || _postList.length <= 0) {
           this.scrollMsg = '더 이상 리뷰가 없어요'
         }
-        // 게시물 200개 보여주고 멈춤
-        if (_postList && _postList.length >= 8) {
-          this.scrollMsg = '리뷰 있음'
-        }
         _postList.forEach(post => this.postList.push(post))
+        return true
+      })
+      .then(() => {
+          this.isLoading = false
       })
     },
     onScrollReachedBottom () {
