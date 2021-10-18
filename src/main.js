@@ -21,7 +21,7 @@ import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
+import { MdButton, MdContent, MdTabs, MdChips } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
@@ -85,6 +85,7 @@ Vue.component('crop-modal', CropModal)
 Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
+Vue.use(MdChips)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {
