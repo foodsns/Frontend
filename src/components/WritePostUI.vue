@@ -24,7 +24,8 @@
       </b-row>
       <b-row align-h="between" style="padding: 0 0 5px">
         <b-col style="text-align:left;">
-          <b-button pill variant="outline-secondary"><font-awesome-icon icon="camera-retro" /></b-button>
+          <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
+          <b-button pill variant="outline-secondary"><font-awesome-icon icon="camera-retro" @click="$refs.fileInput.click()"/></b-button>
         </b-col>
         <b-col style="text-align:right;">
           <b-button pill variant="outline-secondary">게시하기</b-button>
