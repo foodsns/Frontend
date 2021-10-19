@@ -9,7 +9,12 @@
             placeholder="식사는 어떠셨나요?"
             rows="3"
             max-rows="6"
+            v-model="post.descript"
+            :state="validateTextArea"
           ></b-form-textarea>
+          <b-form-invalid-feedback :state="validateTextArea" style="text-align:left;padding-left: 10px">
+            해시태그 1개, 200자 미만의 내용이 필요합니다.
+          </b-form-invalid-feedback>
         </b-col>
       </b-row>
       <b-row style="padding: 10px">
@@ -28,7 +33,14 @@
           <b-button pill variant="outline-secondary"><font-awesome-icon icon="camera-retro" @click="$refs.fileInput.click()"/></b-button>
         </b-col>
         <b-col style="text-align:right;">
-          <b-button pill variant="outline-secondary">게시하기</b-button>
+          <b-button pill variant="outline-secondary" :disabled="!validateForm">게시하기</b-button>
+        </b-col>
+      </b-row>
+      <b-row style="padding: 0 0 5px">
+        <b-col>
+          <b-form-invalid-feedback :state="validateForm" style="text-align:left;padding-left: 10px">
+            자세한 리뷰, 위치, 사진이 필요합니다.
+          </b-form-invalid-feedback>
         </b-col>
       </b-row>
     </b-form>
@@ -106,6 +118,14 @@ export default {
       } else {
         console.warn('Empty file detected')
       }
+    }
+  },
+  computed: {
+    validateTextArea: function () {
+      return false
+    },
+    validateForm: function () {
+      return false
     }
   }
 }
