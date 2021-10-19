@@ -12,7 +12,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, faHeart, faMap, faTh, faUser,
         faSignInAlt, faArrowRight, faArrowLeft,
-        faSpinner, faArrowDown, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons'
+        faSpinner, faArrowDown, faMapMarkerAlt,
+        faCameraRetro, faGlobeAsia, faLock} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -41,6 +42,7 @@ import Hashtag from './components/Hashtag'
 import MainLogo from './components/MainLogo'
 import UserGps from './components/userGps'
 import CropModal from './components/CropModal'
+import WritePostUI from './components/WritePostUI'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -57,6 +59,9 @@ library.add(faArrowLeft)
 library.add(faSpinner)
 library.add(faArrowDown)
 library.add(faMapMarkerAlt)
+library.add(faCameraRetro)
+library.add(faGlobeAsia)
+library.add(faLock)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
@@ -75,6 +80,7 @@ Vue.component('hash-tag', Hashtag)
 Vue.component('main-logo', MainLogo)
 Vue.component('user-gps-logo', UserGps)
 Vue.component('crop-modal', CropModal)
+Vue.component('write-post-ui', WritePostUI)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
