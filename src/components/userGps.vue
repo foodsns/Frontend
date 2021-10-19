@@ -1,6 +1,6 @@
 <template>
     <span class = "userGps">
-        <b-button pill variant="outline-secondary" @click="onLocationLoaderClicked()"><font-awesome-icon icon="map-marker-alt"/></b-button>
+        <b-button pill variant="outline-secondary" @click="onLocationLoaderClicked()" :disabled="processing"><font-awesome-icon icon="map-marker-alt"/></b-button>
         <div ref="hiddenMap"></div>
     </span>
 </template>
@@ -11,19 +11,19 @@ export default {
     name: 'userGps',
     data () {
         return {
-            addr1: '',
-            addr2: '',
-            addr3: '',
-            lat: 0,
-            lot: 0,
-            msg: '',
+            processing: true,
             kakaoMapInstance: null
         }
     },
     mounted () {
         this.kakaoMapInstance = new KakaoMapController(this.$refs.hiddenMap)
         this.kakaoMapInstance.loadScript()
-        .then(() => this.kakaoMapInstance.initMap())
+        .then(() => {
+            this.kakaoMapInstance.initMap()
+            this.$nextTick(() => {
+                this.processing = false
+            })
+        })
     },
     methods: {
         getLocation: function () {
@@ -43,13 +43,24 @@ export default {
             })
         },
         onLocationLoaderClicked: function () {
+            this.processing = true
             this.getLocation()
             .then(latLot => this.kakaoMapInstance.latLot2Addr(latLot.lat, latLot.lot))
             .then(data => {
-                console.log(data)
+                this.$emit('location', {
+                    addr1: this.addr1,
+                    addr2: this.addr2,
+                    addr3: this.addr3,
+                    lat: this.lat,
+                    lot: this.lot
+                })
+                this.$nextTick(() => {
+                    this.processing = false
+                })
             })
             .catch(err => {
-                console.error('err', err)
+                console.error('[userGps] [onLocationLoaderClicked] Error', err)
+                this.$emit('err-msg', err.message)
             })
         }
     }
