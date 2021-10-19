@@ -6,8 +6,8 @@
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
     <b-container class="body">
       <b-row align-h="end">
-        <b-col>
-          <user-gps-logo class="user-gps-btn"></user-gps-logo>
+        <b-col style="text-align: left;">
+          <b-button pill variant="outline-secondary"><font-awesome-icon icon="dice" style="margin-right: 5px"/>랜덤 선택</b-button>
         </b-col>
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
           <profile-icon style="position: relative"></profile-icon>
@@ -15,7 +15,6 @@
       </b-row>
       <b-row>
         <b-col cols="6" style="text-align: left">
-          <scrollbar style="position: relative"></scrollbar>
         </b-col>
         <b-col cols="6" class="toggle-btn">
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
@@ -64,7 +63,7 @@
         <font-awesome-icon icon="arrow-left" v-else/>
       </div>
     </div>
-    <random-btn></random-btn>
+    <!--<random-btn></random-btn>-->
     <goodlist-btn></goodlist-btn>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
@@ -73,11 +72,10 @@
 <script>
 import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
-import Scrollbar from './Scrollbar.vue'
 import FirestoreDao from '../module/firestore.dao'
 
 export default {
-  components: { Scrollbar, Hashtag },
+  components: { Hashtag },
   name:
     'MainBoard',
   data () {

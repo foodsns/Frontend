@@ -31,9 +31,15 @@
         <b-col style="text-align:left;">
           <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
           <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button>
+          <user-gps-logo></user-gps-logo>
         </b-col>
         <b-col style="text-align:right;">
           <b-button pill variant="outline-secondary" :disabled="!validateForm">게시하기</b-button>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col style="text-align:left;padding-left: 10px">
+          {{post.country}}{{post.city}}{{post.state}}{{post.street}}
         </b-col>
       </b-row>
       <b-row style="padding: 0 0 5px">
