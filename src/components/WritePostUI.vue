@@ -18,7 +18,7 @@
         </b-col>
       </b-row>
       <b-row style="padding: 10px">
-        <b-col style="text-align:left;cursor: pointer;" v-on:click="post.visibility = (post.visibility == 'public' ? 'private' : 'public')">
+        <b-col style="text-align:left;cursor: pointer;user-select: none;" v-on:click="post.visibility = (post.visibility == 'public' ? 'private' : 'public')">
           <template v-if="post.visibility == 'public'">
             <font-awesome-icon icon="globe-asia" style="margin-right: 5px"/>모든 사람이 볼 수 있습니다.
           </template>
