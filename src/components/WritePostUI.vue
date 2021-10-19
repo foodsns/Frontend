@@ -31,7 +31,7 @@
         <b-col style="text-align:left;">
           <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
           <span><b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button></span>
-          <span><user-gps-logo @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
+          <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
           <span v-if="!addrEditExpand && (post.country && post.city && post.state && post.street)" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
           <span v-else-if="addrEditExpand && (post.country && post.city && post.state && post.street)" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
@@ -53,7 +53,7 @@
                 ></b-form-input>
                 <b-input-group-append>
                   <b-button variant="outline-secondary" v-if="!addrEdit" @click="addrEdit = !addrEdit"><font-awesome-icon icon="edit"/></b-button>
-                  <b-button variant="outline-secondary" v-if="addrEdit" @click="addrEdit = !addrEdit"><font-awesome-icon icon="check"/></b-button>
+                  <b-button variant="outline-secondary" v-if="addrEdit" @click="addrEdit = !addrEdit;$refs.userGps.getLatLotUsingAddr(fullAddr)"><font-awesome-icon icon="check"/></b-button>
                 </b-input-group-append>
               </b-input-group>
             </template>
