@@ -8,6 +8,7 @@
       <b-row align-h="end">
         <b-col style="text-align: left;position:relative;">
           <b-button pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="dice" style="margin-right: 5px"/>랜덤 선택</b-button>
+          <goodlist-btn></goodlist-btn>
         </b-col>
         <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
           <profile-icon style="position: relative"></profile-icon>
@@ -98,7 +99,6 @@
       </div>
     </div>
     <!--<random-btn></random-btn>-->
-    <goodlist-btn></goodlist-btn>
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
 </template>
