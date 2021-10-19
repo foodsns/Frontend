@@ -93,6 +93,8 @@ export default {
       const hashtag = val.match(/#([\p{L}]{2,50})/u)
       if (hashtag) {
         this.post.hashtag = hashtag[0]
+      } else {
+        this.post.hashtag = null
       }
     }
   },
