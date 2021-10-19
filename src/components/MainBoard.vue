@@ -16,7 +16,7 @@
       </b-row>
       <b-row>
         <b-col cols="8" style="text-align: left">
-          <b-row>
+          <b-row style="margin-top: 5px;">
             <b-col style="position:relative">
               <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
               <span v-if="!addrEditExpand && fullAddr" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
