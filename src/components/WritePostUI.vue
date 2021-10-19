@@ -31,15 +31,23 @@
         <b-col style="text-align:left;">
           <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
           <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button>
-          <user-gps-logo></user-gps-logo>
+          <user-gps-logo @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo>
         </b-col>
         <b-col style="text-align:right;">
           <b-button pill variant="outline-secondary" :disabled="!validateForm">게시하기</b-button>
         </b-col>
       </b-row>
       <b-row>
-        <b-col style="text-align:left;padding-left: 10px">
-          {{post.country}}{{post.city}}{{post.state}}{{post.street}}
+        <b-col style="text-align:left;padding-left: 15px">
+          <template v-if="!gpsAddrFailMsg">
+            <span style="margin-right:2px">{{post.country}}</span>
+            <span style="margin-right:2px">{{post.city}}</span>
+            <span style="margin-right:2px">{{post.state}}</span>
+            <span>{{post.street}}</span>
+          </template>
+          <template v-else>
+            <span style="color:red">{{gpsAddrFailMsg}}</span>
+          </template>
         </b-col>
       </b-row>
       <b-row style="padding: 0 0 5px">
@@ -73,6 +81,7 @@ export default {
       type: Object,
       default: function () {
         return {
+          id: '',
           docID: '',
           title: '',
           descript: '',
@@ -85,10 +94,10 @@ export default {
           lot: 0,
           visibility: 'public',
           authorId: '',
-          country: '',
-          city: '',
-          state: '',
-          street: '',
+          country: null,
+          city: null,
+          state: null,
+          street: null,
           hashtag: null
         }
       }
@@ -113,7 +122,8 @@ export default {
         show: false,
         file: null
       },
-      post: this.postProp
+      post: this.postProp,
+      gpsAddrFailMsg: null
     }
   },
   methods: {
@@ -134,6 +144,17 @@ export default {
       } else {
         console.warn('Empty file detected')
       }
+    },
+    onGpsAddrLoaded: function (location) {
+      this.post.country = '대한민국'
+      this.post.city = location.addr1
+      this.post.state = location.addr2
+      this.post.street = location.addr3
+      this.post.lat = location.lat
+      this.post.lot = location.lot
+    },
+    onGpsAddrFailed: function (errMsg) {
+      this.gpsAddrFailMsg = errMsg
     }
   },
   computed: {

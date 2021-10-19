@@ -48,11 +48,11 @@ export default {
             .then(latLot => this.kakaoMapInstance.latLot2Addr(latLot.lat, latLot.lot))
             .then(data => {
                 this.$emit('location', {
-                    addr1: this.addr1,
-                    addr2: this.addr2,
-                    addr3: this.addr3,
-                    lat: this.lat,
-                    lot: this.lot
+                    addr1: data.region_1depth_name,
+                    addr2: data.region_2depth_name,
+                    addr3: data.region_3depth_name,
+                    lat: data.y,
+                    lot: data.x
                 })
                 this.$nextTick(() => {
                     this.processing = false
