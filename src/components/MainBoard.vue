@@ -23,7 +23,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <hashtag class="hashtag"></hashtag>
+          <hashtag v-bind:postListProps="postList"></hashtag>
         </b-col>
       </b-row>
       <b-row align-h="center">
