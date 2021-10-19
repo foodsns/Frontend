@@ -1,12 +1,7 @@
 <template>
 
 <div class="box">
-    <md-chip class="md-primary" md-deletable md-clickable>해시태그1</md-chip>
-    <md-chip class="md-primary" md-deletable md-clickable>해시태그2</md-chip>
-    <md-chip class="md-primary" md-deletable md-clickable>해시태그3</md-chip>
-    <md-chip class="md-accent" md-deletable md-clickable>해시태그4</md-chip>
-    <md-chip class="md-accent" md-deletable md-clickable>해시태그5</md-chip>
-    <md-chip class="md-accent" md-deletable md-clickable>해시태그6</md-chip>
+    <md-chip v-for = "post in postList" :key="post.id" class="md-primary" md-deletable md-clickable>{{post.hashtag}}</md-chip>
 </div>
 </template>
 
