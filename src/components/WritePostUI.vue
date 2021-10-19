@@ -83,8 +83,16 @@ export default {
           city: '',
           state: '',
           street: '',
-          hashtag: ''
+          hashtag: null
         }
+      }
+    }
+  },
+  watch: {
+    'post.descript': function (val) {
+      const hashtag = val.match(/#([\p{L}]{2,50})/u)
+      if (hashtag) {
+        this.post.hashtag = hashtag[0]
       }
     }
   },
@@ -121,8 +129,11 @@ export default {
     }
   },
   computed: {
+    // https://stackoverflow.com/a/29743813/7270469
     validateTextArea: function () {
-      return false
+      const descriptRegex = this.post.descript.match(/^[\p{L}\t\n\r\s\\#]{2,200}$/u)
+      console.log(descriptRegex, this.post.hashtag)
+      return descriptRegex != null && this.post.hashtag != null
     },
     validateForm: function () {
       return false
