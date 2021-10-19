@@ -41,6 +41,7 @@ import Hashtag from './components/Hashtag'
 import MainLogo from './components/MainLogo'
 import UserGps from './components/userGps'
 import CropModal from './components/CropModal'
+import WritePostUI from './components/WritePostUI'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -75,6 +76,7 @@ Vue.component('hash-tag', Hashtag)
 Vue.component('main-logo', MainLogo)
 Vue.component('user-gps-logo', UserGps)
 Vue.component('crop-modal', CropModal)
+Vue.component('write-post-ui', WritePostUI)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
