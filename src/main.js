@@ -13,7 +13,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, faHeart, faMap, faTh, faUser,
         faSignInAlt, faArrowRight, faArrowLeft,
         faSpinner, faArrowDown, faMapMarkerAlt,
-        faCameraRetro, faGlobeAsia, faLock, faDice} from '@fortawesome/free-solid-svg-icons'
+        faCameraRetro, faGlobeAsia, faLock, faDice,
+        faEdit, faCheck, faSortDown, faSortUp} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -63,6 +64,10 @@ library.add(faCameraRetro)
 library.add(faGlobeAsia)
 library.add(faLock)
 library.add(faDice)
+library.add(faEdit)
+library.add(faCheck)
+library.add(faSortDown)
+library.add(faSortUp)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)

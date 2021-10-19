@@ -30,8 +30,10 @@
       <b-row align-h="between" style="padding: 0 0 5px">
         <b-col style="text-align:left;">
           <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
-          <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button>
-          <user-gps-logo @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo>
+          <span><b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button></span>
+          <span><user-gps-logo @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
+          <span v-if="!addrEditExpand && (post.country && post.city && post.state && post.street)" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
+          <span v-else-if="addrEditExpand && (post.country && post.city && post.state && post.street)" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
         <b-col style="text-align:right;">
           <b-button pill variant="outline-secondary" :disabled="!validateForm">게시하기</b-button>
@@ -40,10 +42,26 @@
       <b-row>
         <b-col style="text-align:left;padding-left: 15px">
           <template v-if="!gpsAddrFailMsg">
-            <span style="margin-right:2px">{{post.country}}</span>
-            <span style="margin-right:2px">{{post.city}}</span>
-            <span style="margin-right:2px">{{post.state}}</span>
-            <span>{{post.street}}</span>
+            <template v-if="addrEditExpand && post.country && post.city && post.state && post.street">
+              <b-input-group>
+                <b-form-input
+                  v-model="fullAddr"
+                  type="text"
+                  placeholder="정확한 주소를 입력해주세요"
+                  required
+                  :disabled="!addrEdit"
+                ></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="outline-secondary" v-if="!addrEdit" @click="addrEdit = !addrEdit"><font-awesome-icon icon="edit"/></b-button>
+                  <b-button variant="outline-secondary" v-if="addrEdit" @click="addrEdit = !addrEdit"><font-awesome-icon icon="check"/></b-button>
+                </b-input-group-append>
+              </b-input-group>
+            </template>
+            <template v-if="!addrEditExpand && post.country && post.city && post.state && post.street">
+              <span style="margin-right:2px">{{post.city}}</span>
+              <span style="margin-right:2px">{{post.state}}</span>
+              <span style="margin-right:2px">{{post.street}}</span>
+            </template>
           </template>
           <template v-else>
             <span style="color:red">{{gpsAddrFailMsg}}</span>
@@ -123,7 +141,10 @@ export default {
         file: null
       },
       post: this.postProp,
-      gpsAddrFailMsg: null
+      gpsAddrFailMsg: null,
+      fullAddr: null,
+      addrEdit: false,
+      addrEditExpand: false
     }
   },
   methods: {
@@ -152,6 +173,7 @@ export default {
       this.post.street = location.addr3
       this.post.lat = location.lat
       this.post.lot = location.lot
+      this.fullAddr = `${this.post.city} ${this.post.state} ${this.post.street}`
     },
     onGpsAddrFailed: function (errMsg) {
       this.gpsAddrFailMsg = errMsg

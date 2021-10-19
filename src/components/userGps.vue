@@ -1,7 +1,7 @@
 <template>
     <span class = "userGps">
         <b-button pill variant="outline-secondary" @click="onLocationLoaderClicked()" :disabled="processing"><font-awesome-icon icon="map-marker-alt"/></b-button>
-        <div ref="hiddenMap"></div>
+        <div ref="hiddenMap" style="display:none"></div>
     </span>
 </template>
 
