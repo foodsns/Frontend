@@ -23,7 +23,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <hashtag v-bind:postListProps="postList"></hashtag>
+          <hashtag class="hashtag"></hashtag>
         </b-col>
       </b-row>
       <b-row align-h="center">
@@ -110,7 +110,6 @@ export default {
         dummyCnt: 0,
         firestoreDao: new FirestoreDao(),
         postList: [],
-        postlist: [],
         cropModal: {
           show: false,
           file: null
@@ -145,7 +144,6 @@ export default {
     this.$refs.mainboard.addEventListener('scroll', this.scrollHandler)
     this.$refs.mainboard.addEventListener('resize', this.scrollHandler)
     this.scrollHandler()
-    console.log(this.postList[0])
   },
   methods: {
     searchPosts (isInfinite = false) {
