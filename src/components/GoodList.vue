@@ -32,13 +32,8 @@ export default {
 </script>
 
 <style scoped>
-
-.goodlist-btn{
-    position : fixed;
-    bottom : 130px;
-    width : 90px;
-    right : 30px;
-    border: 5px;
-    }
-
+div {
+    display: inline-block;
+    margin-left: 5px;
+}
 </style>
