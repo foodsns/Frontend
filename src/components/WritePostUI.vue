@@ -1,7 +1,37 @@
 <template>
   <div id="writePostUI" style="position: relative">
     <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></crop-modal>
-    <div class="form-floating">
+    <b-form @submit.stop.prevent class="form-box">
+      <b-row>
+        <b-col>
+          <b-form-textarea
+            id="textarea"
+            placeholder="식사는 어떠셨나요?"
+            rows="3"
+            max-rows="6"
+          ></b-form-textarea>
+        </b-col>
+      </b-row>
+      <b-row style="padding: 10px">
+        <b-col style="text-align:left;cursor: pointer;" v-on:click="post.visible = (post.visible == 'public' ? 'private' : 'public')">
+          <template v-if="post.visible == 'public'">
+            <font-awesome-icon icon="globe-asia" style="margin-right: 5px"/>모든 사람이 볼 수 있습니다.
+          </template>
+          <template v-else>
+            <font-awesome-icon icon="lock" style="margin-right: 5px"/>나만이 볼 수 있습니다.
+          </template>
+        </b-col>
+      </b-row>
+      <b-row align-h="between" style="padding: 0 0 5px">
+        <b-col style="text-align:left;">
+          <b-button pill variant="outline-secondary"><font-awesome-icon icon="camera-retro" /></b-button>
+        </b-col>
+        <b-col style="text-align:right;">
+          <b-button pill variant="outline-secondary">게시하기</b-button>
+        </b-col>
+      </b-row>
+    </b-form>
+    <!--<div class="form-floating">
       <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
     </div>
     <div class="Buttons">
@@ -12,7 +42,7 @@
         <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*" multiple/>
       </form>
       <button type="submit" class="btn btn-success" id="postbtn">확인</button>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -27,6 +57,9 @@ export default {
       cropModal: {
         show: false,
         file: null
+      },
+      post: {
+        visible: 'public'
       }
     }
   },
@@ -52,7 +85,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 #form-control{
     resize : none;
     margin-bottom : 5px;
@@ -68,4 +101,21 @@ export default {
   cursor: pointer;
 }
 
+.form-box {
+  background-color:white;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+textarea {
+  border-style: none;
+  border-color: Transparent;
+  overflow: auto;
+  outline: none;
+}
+input:focus, textarea:focus, select:focus{
+    outline: none;
+    border: 0 none #FFF;
+}
 </style>
