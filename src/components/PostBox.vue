@@ -2,7 +2,7 @@
   <div id="postbox">
     <div class="thumbnail-img" v-bind:style="{ backgroundImage: 'url(' + postItem.img + ')'}"></div>
     <div>
-        <h4>{{postItem.title}}</h4>
+        <h4>{{postItem.hashtag}}</h4>
         <p>{{ cutDescript }}</p>
         <div class="text-date">{{postItem.date}}</div>
         <hr>
@@ -37,7 +37,8 @@ export default {
                   profileImg: '../assets/logo.png',
                   writer: 'unknown',
                   good: 0,
-                  img: '../assets/logo.png'
+                  img: '../assets/logo.png',
+                  hashtag: ''
               }
           }
       }
