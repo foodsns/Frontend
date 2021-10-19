@@ -24,7 +24,7 @@
             </b-col>
           </b-row>
           <b-row style="margin-top:5px">
-            <b-col lg="6" cols="12">
+            <b-col lg="6" cols="12" style="position:relative">
               <template v-if="!gpsAddrFailMsg">
                 <template v-if="addrEditExpand && fullAddr">
                   <b-input-group>
