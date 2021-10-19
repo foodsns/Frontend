@@ -6,6 +6,25 @@
 </template>
 
 <script>
+export default {
+    name: 'Hashtag',
+    props: {
+        postListProps: {
+            type: Array,
+            default: function () {
+                return []
+            }
+        }
+    },
+    method: {
+
+    },
+    data () {
+            return {
+                postList: this.postListProps
+            }
+        }
+}
 </script>
 
 <style scoped>
