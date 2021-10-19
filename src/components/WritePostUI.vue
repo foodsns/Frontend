@@ -38,7 +38,7 @@
       </b-row>
       <b-row style="padding: 0 0 5px">
         <b-col>
-          <b-form-invalid-feedback :state="validateForm" style="text-align:left;padding-left: 10px">
+          <b-form-invalid-feedback :state="validateForm" style="text-align:right;padding-left: 10px">
             자세한 리뷰, 위치, 사진이 필요합니다.
           </b-form-invalid-feedback>
         </b-col>
