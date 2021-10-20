@@ -31,7 +31,7 @@
         <b-col style="text-align:left;">
           <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
           <span>
-            <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="!isLoggedIn"><font-awesome-icon icon="camera-retro"/></b-button>
+            <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button>
           </span>
           <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
           <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
@@ -151,18 +151,6 @@ export default {
     }
   },
   mounted () {
-    if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
-      Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
-        this.isLoggedIn = isLoggedIn
-        setTimeout(() => {
-          this.$forceUpdate()
-        }, 1)
-        this.$nextTick(() => {
-          this.isLoggedIn = isLoggedIn
-          console.log('isloggedin', this.isLoggedIn, isLoggedIn)
-        })
-      })
-    }
   },
   methods: {
     uploadOnePhoto: function (e) {
