@@ -49,7 +49,7 @@ export default class FirestoreDao {
         state,
         street,
         uid
-    } = {}) {
+    } = {}, forceUpdate = false) {
         let goodOrderByDir = 'desc'
         let dateOrderByDir = 'desc'
         switch (sortBy) {
@@ -68,6 +68,9 @@ export default class FirestoreDao {
             orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
             where('visibility', '==', 'public'),
             where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+        if (forceUpdate) {
+            this._lastSelectPostsOptions = {}
+        }
 
         if (JSON.stringify(this._lastSelectPostsOptions) !== JSON.stringify({
             lat,

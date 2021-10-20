@@ -64,7 +64,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
-          <write-post-ui></write-post-ui>
+          <write-post-ui @submit-success="onSubmitPostSuccess"></write-post-ui>
         </b-col>
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
@@ -133,7 +133,12 @@ export default {
         gpsAddrFailMsg: null,
         fullAddr: null,
         addrEdit: false,
-        addrEditExpand: false
+        addrEditExpand: false,
+        lastLoc: {
+          addr1: null,
+          addr2: null,
+          addr3: null
+        }
     }
   },
   watch: {
@@ -153,10 +158,20 @@ export default {
     if (dev) {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
     } else {
-      this.searchPosts()
+      if (!this.fullAddr) {
+        this.searchPosts()
+      } else {
+        this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+      }
       if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
         Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
-          this.searchPosts()
+          this.$nextTick(() => {
+            if (!this.fullAddr) {
+              this.searchPosts()
+            } else {
+              this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+            }
+          })
         })
       }
     }
@@ -179,7 +194,7 @@ export default {
           state,
           street,
           uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
-      })
+      }, true)
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
         if (!isInfinite) {
@@ -249,12 +264,18 @@ export default {
     },
     onGpsAddrLoaded: function (location) {
       this.fullAddr = `${location.addr1} ${location.addr2} ${location.addr3}`
+      this.lastLoc = location
       this.$nextTick(() => {
         this.searchPosts(false, '대한민국', location.addr1, location.addr2, location.addr3)
       })
     },
     onGpsAddrFailed: function (errMsg) {
       this.gpsAddrFailMsg = errMsg
+    },
+    onSubmitPostSuccess: function () {
+      this.$nextTick(() => {
+        this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
+      })
     }
   }
 }
