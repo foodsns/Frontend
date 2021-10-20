@@ -1,6 +1,17 @@
 <template>
   <div id="postbox">
-    <div class="thumbnail-img" v-bind:style="{ backgroundImage: 'url(' + postItem.img + ')'}"></div>
+    <div class="thumbnail-img" v-bind:style="{ backgroundImage: 'url(' + postItem.img + ')'}">
+        <template v-if="$firebaseAuth && $firebaseAuth.getCurrentUserUid() && $firebaseAuth.getCurrentUserUid() === postItem.authorId">
+            <b-row style="padding: 0 15px">
+                <b-col>
+                    <b-button pill variant="outline-secondary" @click="onBtnUpdateClicked()"><font-awesome-icon icon="edit" style="margin-right: 5px"/></b-button>
+                </b-col>
+                <b-col style="text-align:right">
+                    <b-button pill variant="outline-secondary" @click="onBtnDeleteClicked()"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
+                </b-col>
+            </b-row>
+        </template>
+    </div>
     <div>
         <h4>{{postItem.hashtag}}</h4>
         <p>{{ cutDescript }}</p>
@@ -68,6 +79,12 @@ export default {
             } else {
                 this.increase()
             }
+        },
+        onBtnUpdateClicked: function () {
+
+        },
+        onBtnDeleteClicked: function () {
+
         },
         increase: function () {
            this.firestoreDao.thumbsUpPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
@@ -176,5 +193,8 @@ h4 {
 
 .gap_margin_5px_horizontal:hover {
     color:palevioletred;
+}
+button > svg {
+    margin: 0 !important;
 }
 </style>
