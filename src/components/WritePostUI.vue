@@ -225,9 +225,11 @@ export default {
           })
         })
         .catch(err => {
-          console.log('err', err)
+          console.log('[WritePostUI] [onSubmit] Error: ', err.message)
+          this.errorMsg = '게시물 업로드 중 문제가 발생하였습니다.'
           this.$nextTick(() => {
             this.submitProcessing = false
+            this.file = null
           })
         })
       } else if (this.post.docID) {
@@ -244,7 +246,8 @@ export default {
           })
         })
         .catch(err => {
-          console.log('err', err)
+          console.log('[WritePostUI] [onSubmit] Error: ', err.message)
+          this.errorMsg = '게시물 업로드 중 문제가 발생하였습니다.'
           this.$nextTick(() => {
             this.submitProcessing = false
           })
