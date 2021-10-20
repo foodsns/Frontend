@@ -57,6 +57,7 @@ export default {
                 this.$nextTick(() => {
                     this.processing = false
                 })
+                this.$emit('err-msg', null)
             })
             .catch(err => {
                 console.error('[userGps] [onLocationLoaderClicked] Error', err)
@@ -78,6 +79,7 @@ export default {
                 this.$nextTick(() => {
                     this.processing = false
                 })
+                this.$emit('err-msg', null)
             })
             .catch(err => {
                 console.error('[userGps] [onLocationLoaderClicked] Error', err)
