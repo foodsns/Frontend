@@ -66,15 +66,21 @@ export default {
         },
         getLatLotUsingAddr: function (addr) {
             this.processing = true
+            let lat = 0
+            let lot = 0
             this.kakaoMapInstance.addr2LatLot(addr)
-            .then(data => this.kakaoMapInstance.latLot2Addr(data.lat, data.lot))
+            .then(data => {
+                lat = data.lat
+                lot = data.lot
+                return this.kakaoMapInstance.latLot2Addr(data.lat, data.lot)
+            })
             .then(data => {
                 this.$emit('location', {
                     addr1: data.region_1depth_name,
                     addr2: data.region_2depth_name,
                     addr3: data.region_3depth_name,
-                    lat: data.y,
-                    lot: data.x
+                    lat,
+                    lot
                 })
                 this.$nextTick(() => {
                     this.processing = false
