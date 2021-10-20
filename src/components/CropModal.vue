@@ -6,9 +6,11 @@
       ref="cropper-modal"
       title="Submit Your Name"
     >
-      <vue-cropper ref="cropper" :img="option.img" :autoCrop="option.autoCrop" :autoCropWidth="option.autoCropWidth"
-        :autoCropHeight="option.autoCropHeight">
-      </vue-cropper>
+      <template v-if="option.img">
+        <vue-cropper ref="cropper" :src="option.img" :autoCrop="option.autoCrop" :autoCropWidth="option.autoCropWidth"
+          :autoCropHeight="option.autoCropHeight">
+        </vue-cropper>
+      </template>
     </b-modal>
   </div>
 </template>
