@@ -120,6 +120,26 @@ export default {
         viewMode: 'grid',
         openSideList: false,
         focusedPost: {},
+        focusedEditPost: {
+          id: '',
+          docID: '',
+          title: '',
+          descript: '',
+          date: '',
+          profileImg: '',
+          writer: '',
+          good: 0,
+          img: null,
+          lat: 0,
+          lot: 0,
+          visibility: 'public',
+          authorId: '',
+          country: null,
+          city: null,
+          state: null,
+          street: null,
+          hashtag: null
+        },
         inputText: '',
         clientHeight: 0,
         scrollHeight: 0,
@@ -172,6 +192,15 @@ export default {
               this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
             }
           })
+        })
+      }
+      if (Vue.prototype.$notify) {
+        Vue.prototype.$notify.$on('Need refresh', () => {
+          if (!this.fullAddr) {
+            this.searchPosts()
+          } else {
+            this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+          }
         })
       }
     }

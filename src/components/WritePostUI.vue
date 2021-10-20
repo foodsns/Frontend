@@ -142,6 +142,9 @@ export default {
       } else {
         this.post.hashtag = null
       }
+    },
+    post: function (val) {
+      console.log('current post', val)
     }
   },
   data () {
@@ -167,29 +170,48 @@ export default {
     }
   },
   mounted () {
+    if (Vue.prototype.$notify) {
+      Vue.prototype.$notify.$on('onFocusedPostChanged', post => {
+        this.post = post
+      })
+    }
   },
   methods: {
     onSubmit: function () {
       const docID = this.firestoreDao.getDocumentID()
-      console.log('docID', docID)
-      this.uploadFileToServer(docID, this.file)
-      .then(url => {
-        this.post.img = url
+      if (this.file) {
+        this.uploadFileToServer(docID, this.file)
+        .then(url => {
+          this.post.img = url
+          const currentUser = Vue.prototype.$firebaseAuth.currentUser
+          this.post.authorId = currentUser.uid
+          this.post.profileImg = currentUser.photoURL
+          this.post.writer = currentUser.displayName
+          return this.post.docID ? this.firestoreDao.updatePost(this.post) : this.firestoreDao.insertPost({
+            ...this.post
+          }, docID)
+        })
+        .then(result => {
+          console.log('result', result)
+          this.$emit('submit-success')
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+      } else if (this.post.docID) {
         const currentUser = Vue.prototype.$firebaseAuth.currentUser
         this.post.authorId = currentUser.uid
         this.post.profileImg = currentUser.photoURL
         this.post.writer = currentUser.displayName
-        return this.firestoreDao.insertPost({
-          ...this.post
-        }, docID)
-      })
-      .then(result => {
-        console.log('result', result)
-        this.$emit('submit-success')
-      })
-      .catch(err => {
-        console.log('err', err)
-      })
+        this.firestoreDao.updatePost(this.post)
+        .then(result => {
+          console.log('result', result)
+          this.$emit('submit-success')
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+      }
     },
     uploadOnePhoto: function (file) {
       this.$nextTick(() => {

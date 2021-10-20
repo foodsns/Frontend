@@ -81,10 +81,16 @@ export default {
             }
         },
         onBtnUpdateClicked: function () {
-
+            Vue.prototype.$notify.$emit('onFocusedPostChanged', this.post)
         },
         onBtnDeleteClicked: function () {
-
+            this.firestoreDao.deletePost(this.postItem.docID)
+            .then(() => {
+                Vue.prototype.$notify.$emit('Need refresh')
+            })
+            .catch(err => {
+                console.error(`[PostBox] [onBtnDeleteClicked] Error: ${err.message}`)
+            })
         },
         increase: function () {
            this.firestoreDao.thumbsUpPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
