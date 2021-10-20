@@ -43,7 +43,7 @@
         </b-col>
         <b-col style="text-align:right;">
           <b-button pill variant="outline-warning" @click="onCancelBtnClicked()">취소</b-button>
-          <b-button pill variant="outline-secondary" :disabled="!validateForm" @click="onSubmit()">게시하기</b-button>
+          <b-button pill variant="outline-secondary" :disabled="!validateForm || submitProcessing" @click="onSubmit()">게시하기</b-button>
         </b-col>
       </b-row>
       <b-row>
@@ -166,6 +166,7 @@ export default {
       firebaseStorageInstance: new FirebaseStorage(),
       firestoreDao: new FirestoreDao(),
       uploadProcessing: false,
+      submitProcessing: false,
       errorMsg: '',
       file: null
     }
@@ -201,6 +202,7 @@ export default {
         }
     },
     onSubmit: function () {
+      this.submitProcessing = true
       const docID = this.firestoreDao.getDocumentID()
       if (this.file) {
         this.uploadFileToServer(docID, this.file)
@@ -217,9 +219,16 @@ export default {
         .then(result => {
           console.log('result', result)
           this.$emit('submit-success')
+          this.$nextTick(() => {
+            this.submitProcessing = false
+            this.file = null
+          })
         })
         .catch(err => {
           console.log('err', err)
+          this.$nextTick(() => {
+            this.submitProcessing = false
+          })
         })
       } else if (this.post.docID) {
         const currentUser = Vue.prototype.$firebaseAuth.currentUser
@@ -230,9 +239,15 @@ export default {
         .then(result => {
           console.log('result', result)
           this.$emit('submit-success')
+          this.$nextTick(() => {
+            this.submitProcessing = false
+          })
         })
         .catch(err => {
           console.log('err', err)
+          this.$nextTick(() => {
+            this.submitProcessing = false
+          })
         })
       }
     },
