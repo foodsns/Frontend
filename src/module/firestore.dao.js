@@ -1,7 +1,6 @@
 import { getFirestore, collection, collectionGroup, query,
         startAfter, where, getDocs, getDoc,
-        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction,
-        documentId } from 'firebase/firestore'
+        orderBy, limit, setDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction} from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
@@ -31,7 +30,8 @@ export default class FirestoreDao {
     }
 
     getDocumentID () {
-        return documentId()
+        const db = getFirestore()
+        return doc(collection(db, 'posts')).id
     }
 
     // https://stackoverflow.com/a/26578323/7270469
@@ -297,19 +297,19 @@ export default class FirestoreDao {
         state,
         street,
         hashtag
-    } = {}, docID = null) {
+    } = {}, docID) {
         const db = getFirestore()
-        return addDoc(collection(db, docID ? `posts/${docID}` : 'posts'), {
+        const payload = {
             id: this.generateGuid(),
-            title,
+            title: hashtag,
             descript,
             date: serverTimestamp(),
             profileImg,
             writer,
             good: 0,
             img,
-            lat,
-            lot,
+            lat: Number(lat),
+            lot: Number(lot),
             visibility,
             authorId,
             country,
@@ -317,7 +317,8 @@ export default class FirestoreDao {
             state,
             street,
             hashtag
-        })
+        }
+        return setDoc(doc(collection(db, 'posts'), docID), payload)
     }
 
     updatePost ({
@@ -344,8 +345,8 @@ export default class FirestoreDao {
             profileImg,
             writer,
             img,
-            lat,
-            lot,
+            lat: Number(lat),
+            lot: Number(lot),
             visibility,
             country,
             city,

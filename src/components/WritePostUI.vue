@@ -42,7 +42,7 @@
           <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
         <b-col style="text-align:right;">
-          <b-button pill variant="outline-secondary" :disabled="!validateForm">게시하기</b-button>
+          <b-button pill variant="outline-secondary" :disabled="!validateForm" @click="onSubmit()">게시하기</b-button>
         </b-col>
       </b-row>
       <b-row>
@@ -104,6 +104,7 @@
 <script>
 import Vue from 'vue'
 import FirebaseStorage from '../module/firebaseStorage.controller'
+import FirestoreDao from '../module/firestore.dao'
 export default {
   name: 'WritePostUI',
   props: {
@@ -159,13 +160,36 @@ export default {
       addrEditExpand: false,
       isLoggedIn: false,
       firebaseStorageInstance: new FirebaseStorage(),
+      firestoreDao: new FirestoreDao(),
       uploadProcessing: false,
-      errorMsg: ''
+      errorMsg: '',
+      file: null
     }
   },
   mounted () {
   },
   methods: {
+    onSubmit: function () {
+      const docID = this.firestoreDao.getDocumentID()
+      console.log('docID', docID)
+      this.uploadFileToServer(docID, this.file)
+      .then(url => {
+        this.post.img = url
+        const currentUser = Vue.prototype.$firebaseAuth.currentUser
+        this.post.authorId = currentUser.uid
+        this.post.profileImg = currentUser.photoURL
+        this.post.writer = currentUser.displayName
+        return this.firestoreDao.insertPost({
+          ...this.post
+        }, docID)
+      })
+      .then(result => {
+        console.log('result', result)
+      })
+      .catch(err => {
+        console.log('err', err)
+      })
+    },
     uploadOnePhoto: function (file) {
       this.$nextTick(() => {
         this.cropModal.show = true
@@ -187,13 +211,13 @@ export default {
     onFileChanged: function (e) {
       this.cropModal.show = false
       if (e.target.files && e.target.files.length > 0) {
-        const file = e.target.files[0]
+        this.file = e.target.files[0]
         const maxSize = 10 * 1024 * 1024
-        if (file.size <= maxSize) {
+        if (this.file.size <= maxSize) {
           this.$nextTick(() => {
             // this.uploadOnePhoto(file)
             // this.uploadFileToServer(file)
-            this.generateFileLocalUrl(file)
+            this.generateFileLocalUrl(this.file)
             .then(url => {
               this.post.img = url
             })
@@ -204,18 +228,18 @@ export default {
             e.target.value = ''
           })
         } else {
-          console.warn(`Maximum file size: ${maxSize}, current: ${file.size}`)
+          console.warn(`Maximum file size: ${maxSize}, current: ${this.file.size}`)
         }
       } else {
         console.warn('Empty file detected')
       }
     },
-    uploadFileToServer: function (file) {
+    uploadFileToServer: function (docID, file) {
       this.uploadProcessing = true
-      this.firebaseStorageInstance.uploadFile('', file)
+      return this.firebaseStorageInstance.uploadFile(docID, file)
       .then(url => {
-        this.post.img = url
         this.uploadProcessing = false
+        return url
       })
       .catch(err => {
         this.uploadProcessing = false
