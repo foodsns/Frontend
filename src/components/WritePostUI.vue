@@ -119,7 +119,7 @@ export default {
           profileImg: '',
           writer: '',
           good: 0,
-          img: '',
+          img: null,
           lat: 0,
           lot: 0,
           visibility: 'public',
@@ -240,11 +240,19 @@ export default {
     // https://stackoverflow.com/a/29743813/7270469
     validateTextArea: function () {
       const descriptRegex = this.post.descript.match(/^[\p{L}\t\n\r\s\\#]{2,200}$/u)
-      console.log(descriptRegex, this.post.hashtag)
+      // console.log(descriptRegex, this.post.hashtag)
       return descriptRegex != null && this.post.hashtag != null
     },
+    validateAddress: function () {
+      return this.post.country &&
+              this.post.city &&
+              this.post.state &&
+              this.post.street &&
+              (this.post.lat >= -90 && this.post.lat <= 90) &&
+              (this.post.lot >= -180 && this.post.lot <= 180)
+    },
     validateForm: function () {
-      return false
+      return this.validateTextArea && this.validateAddress && this.validateAuth && this.post.img != null
     },
     validateAuth: function () {
       return Vue.prototype.$firebaseAuth.getCurrentUserUid()
