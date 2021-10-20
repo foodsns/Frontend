@@ -2,7 +2,7 @@
   <div id="writePostUI" style="position: relative">
     <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></crop-modal>
     <b-form @submit.stop.prevent class="form-box">
-      <b-row v-if="img" style="padding: 0 15px;">
+      <b-row v-if="post.img" style="padding: 0 15px 15px;">
         <b-col class="img-preview" v-bind:style="{ backgroundImage: 'url(' + post.img + ')'}">
         </b-col>
       </b-row>
@@ -33,9 +33,9 @@
       </b-row>
       <b-row align-h="between" style="padding: 0 0 5px">
         <b-col style="text-align:left;">
-          <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
+          <input type="file" ref="fileInput" id="filebtn" @change="onFileChanged" style="display:none" accept="image/*"/>
           <span>
-            <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button>
+            <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="uploadProcessing"><font-awesome-icon icon="camera-retro"/></b-button>
           </span>
           <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
           <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
@@ -81,6 +81,11 @@
           </b-form-invalid-feedback>
         </b-col>
       </b-row>
+      <b-row style="padding: 0 0 5px" v-if="errorMsg">
+        <b-col style="text-align:left;padding-left: 10px;color:red">
+        {{errorMsg}}
+        </b-col>
+      </b-row>
     </b-form>
     <!--<div class="form-floating">
       <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
@@ -98,6 +103,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import FirebaseStorage from '../module/firebaseStorage.controller'
 export default {
   name: 'WritePostUI',
   props: {
@@ -151,21 +157,50 @@ export default {
       fullAddr: null,
       addrEdit: false,
       addrEditExpand: false,
-      isLoggedIn: false
+      isLoggedIn: false,
+      firebaseStorageInstance: new FirebaseStorage(),
+      uploadProcessing: false,
+      errorMsg: ''
     }
   },
   mounted () {
   },
   methods: {
-    uploadOnePhoto: function (e) {
+    uploadOnePhoto: function (file) {
+      this.$nextTick(() => {
+        this.cropModal.show = true
+        this.cropModal.file = file
+      })
+    },
+    generateFileLocalUrl: function (file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (event) => {
+          resolve(event.target.result)
+        }
+        reader.onerror = (err) => {
+          reject(err)
+        }
+        reader.readAsDataURL(file)
+      })
+    },
+    onFileChanged: function (e) {
       this.cropModal.show = false
       if (e.target.files && e.target.files.length > 0) {
         const file = e.target.files[0]
-        const maxSize = 3 * 1024 * 1024
+        const maxSize = 10 * 1024 * 1024
         if (file.size <= maxSize) {
           this.$nextTick(() => {
-            this.cropModal.show = true
-            this.cropModal.file = file
+            // this.uploadOnePhoto(file)
+            // this.uploadFileToServer(file)
+            this.generateFileLocalUrl(file)
+            .then(url => {
+              this.post.img = url
+            })
+            .catch(err => {
+              console.error(`[WritePostUI] [onFileChanged] Error: ${err.message}`)
+              this.errorMsg = '이미지 불러오는 중 문제가 발생하였습니다.'
+            })
             e.target.value = ''
           })
         } else {
@@ -174,6 +209,19 @@ export default {
       } else {
         console.warn('Empty file detected')
       }
+    },
+    uploadFileToServer: function (file) {
+      this.uploadProcessing = true
+      this.firebaseStorageInstance.uploadFile('', file)
+      .then(url => {
+        this.post.img = url
+        this.uploadProcessing = false
+      })
+      .catch(err => {
+        this.uploadProcessing = false
+        console.error(`[WritePostUI] [uploadFileToServer] Error: ${err.message}`)
+        this.errorMsg = '이미지 업로드 중 문제가 발생하였습니다.'
+      })
     },
     onGpsAddrLoaded: function (location) {
       this.post.country = '대한민국'

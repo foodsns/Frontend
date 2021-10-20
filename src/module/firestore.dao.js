@@ -1,6 +1,7 @@
 import { getFirestore, collection, collectionGroup, query,
         startAfter, where, getDocs, getDoc,
-        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction } from 'firebase/firestore'
+        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction,
+        documentId } from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
@@ -27,6 +28,10 @@ export default class FirestoreDao {
 
     km2Lot (lat, km) {
         return 1 / (111.320 * Math.cos(lat * (Math.PI / 180))) * km
+    }
+
+    getDocumentID () {
+        return documentId()
     }
 
     // https://stackoverflow.com/a/26578323/7270469
@@ -292,9 +297,9 @@ export default class FirestoreDao {
         state,
         street,
         hashtag
-    } = {}) {
+    } = {}, docID = null) {
         const db = getFirestore()
-        return addDoc(collection(db, 'posts'), {
+        return addDoc(collection(db, docID ? `posts/${docID}` : 'posts'), {
             id: this.generateGuid(),
             title,
             descript,
