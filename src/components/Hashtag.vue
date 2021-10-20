@@ -1,7 +1,7 @@
 <template>
-
+ <!-- https://www.creative-tim.com/vuematerial/components/chips -->
 <div class="box">
-    <md-chip v-for = "post in postList" :key="post.id" class="md-primary" md-deletable md-clickable>{{post.hashtag}}</md-chip>
+    <md-chip v-for = "hash in form(object)" :key="hash.id" class="md-primary" md-deletable md-clickable>{{hash}}</md-chip>
 </div>
 </template>
 
@@ -16,12 +16,27 @@ export default {
             }
         }
     },
-    method: {
+    mounted () {
+        // this.form(this.postList)
+    },
+    computed: {
 
+    },
+    methods: {
+        form: function (postList) {
+            for (let i = 0; i < this.postList.length; i++) {
+                this.object.hashtag[i] = this.postList[i].hashtag
+            }
+            return [...new Set(this.object.hashtag)]
+        }
     },
     data () {
             return {
-                postList: this.postListProps
+                postList: this.postListProps,
+                object: {
+                    hashtag: [],
+                    count: 0
+                }
             }
         }
 }
