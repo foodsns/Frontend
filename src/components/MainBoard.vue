@@ -41,7 +41,9 @@
                 </b-input-group>
               </template>
               <template v-if="!addrEditExpand">
-                <span>{{fullAddr}}</span>
+                <span style="background-color: white;
+    border-radius: 5px;
+    padding: 2px;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">{{fullAddr}}</span>
               </template>
               <template v-if="gpsAddrFailMsg">
                 <div>
@@ -62,7 +64,7 @@
       </b-row>
       <b-row align-h="center">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
-          <write-post-ui></write-post-ui>
+          <write-post-ui @submit-success="onSubmitPostSuccess"></write-post-ui>
         </b-col>
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
@@ -118,6 +120,26 @@ export default {
         viewMode: 'grid',
         openSideList: false,
         focusedPost: {},
+        focusedEditPost: {
+          id: '',
+          docID: '',
+          title: '',
+          descript: '',
+          date: '',
+          profileImg: '',
+          writer: '',
+          good: 0,
+          img: null,
+          lat: 0,
+          lot: 0,
+          visibility: 'public',
+          authorId: '',
+          country: null,
+          city: null,
+          state: null,
+          street: null,
+          hashtag: null
+        },
         inputText: '',
         clientHeight: 0,
         scrollHeight: 0,
@@ -131,7 +153,12 @@ export default {
         gpsAddrFailMsg: null,
         fullAddr: null,
         addrEdit: false,
-        addrEditExpand: false
+        addrEditExpand: false,
+        lastLoc: {
+          addr1: null,
+          addr2: null,
+          addr3: null
+        }
     }
   },
   watch: {
@@ -151,10 +178,29 @@ export default {
     if (dev) {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
     } else {
-      this.searchPosts()
+      if (!this.fullAddr) {
+        this.searchPosts()
+      } else {
+        this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+      }
       if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
         Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
-          this.searchPosts()
+          this.$nextTick(() => {
+            if (!this.fullAddr) {
+              this.searchPosts()
+            } else {
+              this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+            }
+          })
+        })
+      }
+      if (Vue.prototype.$notify) {
+        Vue.prototype.$notify.$on('Need refresh', () => {
+          if (!this.fullAddr) {
+            this.searchPosts()
+          } else {
+            this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+          }
         })
       }
     }
@@ -164,7 +210,7 @@ export default {
     this.scrollHandler()
   },
   methods: {
-    searchPosts (isInfinite = false) {
+    searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동') {
       this.firestoreDao.selectPosts({
           lat: 37.566227,
           lot: 126.977966,
@@ -172,12 +218,12 @@ export default {
           sortBy: 'best',
           pageSize: 8,
           includeMine: false,
-          country: 'Korea',
-          city: '서울특별시',
-          state: '중구',
-          street: '정동',
+          country,
+          city,
+          state,
+          street,
           uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
-      })
+      }, true)
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
         if (!isInfinite) {
@@ -247,9 +293,18 @@ export default {
     },
     onGpsAddrLoaded: function (location) {
       this.fullAddr = `${location.addr1} ${location.addr2} ${location.addr3}`
+      this.lastLoc = location
+      this.$nextTick(() => {
+        this.searchPosts(false, '대한민국', location.addr1, location.addr2, location.addr3)
+      })
     },
     onGpsAddrFailed: function (errMsg) {
       this.gpsAddrFailMsg = errMsg
+    },
+    onSubmitPostSuccess: function () {
+      this.$nextTick(() => {
+        this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
+      })
     }
   }
 }
@@ -340,4 +395,12 @@ export default {
   text-align: left;
 }
 
+input[type=text] {
+  border: 0;
+  outline: 0;
+  border-bottom: 2px solid #212529;
+}
+div.input-group-append > button{
+  border-color: transparent;
+}
 </style>

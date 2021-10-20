@@ -2,6 +2,10 @@
   <div id="writePostUI" style="position: relative">
     <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></crop-modal>
     <b-form @submit.stop.prevent class="form-box">
+      <b-row v-if="post.img" style="padding: 0 15px 15px;">
+        <b-col class="img-preview" v-bind:style="{ backgroundImage: 'url(' + post.img + ')'}">
+        </b-col>
+      </b-row>
       <b-row>
         <b-col>
           <b-form-textarea
@@ -29,14 +33,17 @@
       </b-row>
       <b-row align-h="between" style="padding: 0 0 5px">
         <b-col style="text-align:left;">
-          <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
-          <span><b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button></span>
+          <input type="file" ref="fileInput" id="filebtn" @change="onFileChanged" style="display:none" accept="image/*"/>
+          <span>
+            <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="uploadProcessing"><font-awesome-icon icon="camera-retro"/></b-button>
+          </span>
           <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
           <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
           <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
         <b-col style="text-align:right;">
-          <b-button pill variant="outline-secondary" :disabled="!validateForm">게시하기</b-button>
+          <b-button pill variant="outline-warning" @click="onCancelBtnClicked()">취소</b-button>
+          <b-button pill variant="outline-secondary" :disabled="!validateForm" @click="onSubmit()">게시하기</b-button>
         </b-col>
       </b-row>
       <b-row>
@@ -75,6 +82,11 @@
           </b-form-invalid-feedback>
         </b-col>
       </b-row>
+      <b-row style="padding: 0 0 5px" v-if="errorMsg">
+        <b-col style="text-align:left;padding-left: 10px;color:red">
+        {{errorMsg}}
+        </b-col>
+      </b-row>
     </b-form>
     <!--<div class="form-floating">
       <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
@@ -91,7 +103,9 @@
   </div>
 </template>
 <script>
-
+import Vue from 'vue'
+import FirebaseStorage from '../module/firebaseStorage.controller'
+import FirestoreDao from '../module/firestore.dao'
 export default {
   name: 'WritePostUI',
   props: {
@@ -107,7 +121,7 @@ export default {
           profileImg: '',
           writer: '',
           good: 0,
-          img: '',
+          img: null,
           lat: 0,
           lot: 0,
           visibility: 'public',
@@ -129,6 +143,9 @@ export default {
       } else {
         this.post.hashtag = null
       }
+    },
+    post: function (val) {
+      console.log('current post', val)
     }
   },
   data () {
@@ -144,27 +161,137 @@ export default {
       gpsAddrFailMsg: null,
       fullAddr: null,
       addrEdit: false,
-      addrEditExpand: false
+      addrEditExpand: false,
+      isLoggedIn: false,
+      firebaseStorageInstance: new FirebaseStorage(),
+      firestoreDao: new FirestoreDao(),
+      uploadProcessing: false,
+      errorMsg: '',
+      file: null
+    }
+  },
+  mounted () {
+    if (Vue.prototype.$notify) {
+      Vue.prototype.$notify.$on('onFocusedPostChanged', post => {
+        this.post = post
+      })
     }
   },
   methods: {
-    uploadOnePhoto: function (e) {
+    onCancelBtnClicked: function () {
+      this.post = {
+          id: '',
+          docID: '',
+          title: '',
+          descript: '',
+          date: '',
+          profileImg: '',
+          writer: '',
+          good: 0,
+          img: null,
+          lat: 0,
+          lot: 0,
+          visibility: 'public',
+          authorId: '',
+          country: null,
+          city: null,
+          state: null,
+          street: null,
+          hashtag: null
+        }
+    },
+    onSubmit: function () {
+      const docID = this.firestoreDao.getDocumentID()
+      if (this.file) {
+        this.uploadFileToServer(docID, this.file)
+        .then(url => {
+          this.post.img = url
+          const currentUser = Vue.prototype.$firebaseAuth.currentUser
+          this.post.authorId = currentUser.uid
+          this.post.profileImg = currentUser.photoURL
+          this.post.writer = currentUser.displayName
+          return this.post.docID ? this.firestoreDao.updatePost(this.post) : this.firestoreDao.insertPost({
+            ...this.post
+          }, docID)
+        })
+        .then(result => {
+          console.log('result', result)
+          this.$emit('submit-success')
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+      } else if (this.post.docID) {
+        const currentUser = Vue.prototype.$firebaseAuth.currentUser
+        this.post.authorId = currentUser.uid
+        this.post.profileImg = currentUser.photoURL
+        this.post.writer = currentUser.displayName
+        this.firestoreDao.updatePost(this.post)
+        .then(result => {
+          console.log('result', result)
+          this.$emit('submit-success')
+        })
+        .catch(err => {
+          console.log('err', err)
+        })
+      }
+    },
+    uploadOnePhoto: function (file) {
+      this.$nextTick(() => {
+        this.cropModal.show = true
+        this.cropModal.file = file
+      })
+    },
+    generateFileLocalUrl: function (file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (event) => {
+          resolve(event.target.result)
+        }
+        reader.onerror = (err) => {
+          reject(err)
+        }
+        reader.readAsDataURL(file)
+      })
+    },
+    onFileChanged: function (e) {
       this.cropModal.show = false
       if (e.target.files && e.target.files.length > 0) {
-        const file = e.target.files[0]
-        const maxSize = 3 * 1024 * 1024
-        if (file.size <= maxSize) {
+        this.file = e.target.files[0]
+        const maxSize = 10 * 1024 * 1024
+        if (this.file.size <= maxSize) {
           this.$nextTick(() => {
-            this.cropModal.show = true
-            this.cropModal.file = file
+            // this.uploadOnePhoto(file)
+            // this.uploadFileToServer(file)
+            this.generateFileLocalUrl(this.file)
+            .then(url => {
+              this.post.img = url
+            })
+            .catch(err => {
+              console.error(`[WritePostUI] [onFileChanged] Error: ${err.message}`)
+              this.errorMsg = '이미지 불러오는 중 문제가 발생하였습니다.'
+            })
             e.target.value = ''
           })
         } else {
-          console.warn(`Maximum file size: ${maxSize}, current: ${file.size}`)
+          console.warn(`Maximum file size: ${maxSize}, current: ${this.file.size}`)
         }
       } else {
         console.warn('Empty file detected')
       }
+    },
+    uploadFileToServer: function (docID, file) {
+      this.uploadProcessing = true
+      return this.firebaseStorageInstance.uploadFile(docID, file)
+      .then(url => {
+        this.uploadProcessing = false
+        return url
+      })
+      .catch(err => {
+        this.uploadProcessing = false
+        console.error(`[WritePostUI] [uploadFileToServer] Error: ${err.message}`)
+        this.errorMsg = '이미지 업로드 중 문제가 발생하였습니다.'
+      })
     },
     onGpsAddrLoaded: function (location) {
       this.post.country = '대한민국'
@@ -183,11 +310,22 @@ export default {
     // https://stackoverflow.com/a/29743813/7270469
     validateTextArea: function () {
       const descriptRegex = this.post.descript.match(/^[\p{L}\t\n\r\s\\#]{2,200}$/u)
-      console.log(descriptRegex, this.post.hashtag)
+      // console.log(descriptRegex, this.post.hashtag)
       return descriptRegex != null && this.post.hashtag != null
     },
+    validateAddress: function () {
+      return this.post.country &&
+              this.post.city &&
+              this.post.state &&
+              this.post.street &&
+              (this.post.lat >= -90 && this.post.lat <= 90) &&
+              (this.post.lot >= -180 && this.post.lot <= 180)
+    },
     validateForm: function () {
-      return false
+      return this.validateTextArea && this.validateAddress && this.validateAuth && this.post.img != null
+    },
+    validateAuth: function () {
+      return Vue.prototype.$firebaseAuth.getCurrentUserUid()
     }
   }
 }
@@ -224,5 +362,21 @@ textarea {
 input:focus, textarea:focus, select:focus{
     outline: none;
     border: 0 none #FFF;
+}
+input[type=text] {
+  border: 0;
+  outline: 0;
+  border-bottom: 2px solid #212529;
+}
+div.input-group-append > button{
+  border-color: transparent;
+}
+
+.img-preview {
+  height: 200px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 10px;
 }
 </style>

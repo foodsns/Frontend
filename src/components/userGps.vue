@@ -22,6 +22,11 @@ export default {
             this.kakaoMapInstance.initMap()
             this.$nextTick(() => {
                 this.processing = false
+
+                const lastAddr = localStorage.getItem('addr')
+                if (lastAddr) {
+                    this.getLatLotUsingAddr(lastAddr)
+                }
             })
         })
     },
@@ -54,6 +59,7 @@ export default {
                     lat: data.y,
                     lot: data.x
                 })
+                this.saveLastLoadedAddr(`${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`)
                 this.$nextTick(() => {
                     this.processing = false
                 })
@@ -82,6 +88,7 @@ export default {
                     lat,
                     lot
                 })
+                this.saveLastLoadedAddr(`${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`)
                 this.$nextTick(() => {
                     this.processing = false
                 })
@@ -91,6 +98,9 @@ export default {
                 console.error('[userGps] [onLocationLoaderClicked] Error', err)
                 this.$emit('err-msg', err.message)
             })
+        },
+        saveLastLoadedAddr: function (addr) {
+            localStorage.setItem('addr', addr)
         }
     }
 }
