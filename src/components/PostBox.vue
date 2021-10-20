@@ -68,15 +68,25 @@ export default {
             } else {
                 this.increase()
             }
-            post.goodMarked = !post.goodMarked
         },
         increase: function () {
-           this.postItem.good++
            this.firestoreDao.thumbsUpPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
+           .then(() => {
+                this.postItem.goodMarked = true
+           })
+           .catch(err => {
+               console.error(`[PostBox] [increase] Error: ${err.message}`)
+           })
         },
         decrease: function () {
-           this.postItem.good--
            this.firestoreDao.thumbsDownPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
+           .then(() => {
+                this.postItem.good--
+                this.postItem.goodMarked = false
+           })
+           .catch(err => {
+               console.error(`[PostBox] [decrease] Error: ${err.message}`)
+           })
         },
         ture_not_liked: function () {
            this.liked === true ? this.liked = false : this.liked = true
