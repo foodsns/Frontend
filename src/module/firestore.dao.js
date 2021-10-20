@@ -368,7 +368,7 @@ export default class FirestoreDao {
         const db = getFirestore()
         const docRef = (doc(db, 'posts', docID))
 
-        runTransaction(db, async (transaction) => {
+        return runTransaction(db, async (transaction) => {
             const sfDoc = await transaction.get(docRef)
             const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
             const newgood = sfDoc.data().good + 1
@@ -380,11 +380,11 @@ export default class FirestoreDao {
         })
     }
 
-    async thumbsDownPost (docID, uid) {
+    thumbsDownPost (docID, uid) {
         const db = getFirestore()
         const docRef = (doc(db, 'posts', docID))
 
-        runTransaction(db, async (transaction) => {
+        return runTransaction(db, async (transaction) => {
             const sfDoc = await transaction.get(docRef)
             const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
             const newgood = sfDoc.data().good - 1
