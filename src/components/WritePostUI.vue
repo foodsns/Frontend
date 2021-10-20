@@ -222,6 +222,7 @@ export default {
           this.$nextTick(() => {
             this.submitProcessing = false
             this.file = null
+            this.errorMsg = ''
           })
         })
         .catch(err => {
@@ -243,6 +244,7 @@ export default {
           this.$emit('submit-success')
           this.$nextTick(() => {
             this.submitProcessing = false
+            this.errorMsg = ''
           })
         })
         .catch(err => {
@@ -293,6 +295,7 @@ export default {
           })
         } else {
           console.warn(`Maximum file size: ${maxSize}, current: ${this.file.size}`)
+          this.errorMsg = '이미지 용량이 10MB 제한을 넘었습니다.'
         }
       } else {
         console.warn('Empty file detected')
