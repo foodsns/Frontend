@@ -225,4 +225,12 @@ input:focus, textarea:focus, select:focus{
     outline: none;
     border: 0 none #FFF;
 }
+input[type=text] {
+  border: 0;
+  outline: 0;
+  border-bottom: 2px solid #212529;
+}
+div.input-group-append > button{
+  border-color: transparent;
+}
 </style>

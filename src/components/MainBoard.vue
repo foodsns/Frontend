@@ -41,7 +41,9 @@
                 </b-input-group>
               </template>
               <template v-if="!addrEditExpand">
-                <span>{{fullAddr}}</span>
+                <span style="background-color: white;
+    border-radius: 5px;
+    padding: 2px;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">{{fullAddr}}</span>
               </template>
               <template v-if="gpsAddrFailMsg">
                 <div>
@@ -340,4 +342,12 @@ export default {
   text-align: left;
 }
 
+input[type=text] {
+  border: 0;
+  outline: 0;
+  border-bottom: 2px solid #212529;
+}
+div.input-group-append > button{
+  border-color: transparent;
+}
 </style>
