@@ -30,7 +30,9 @@
       <b-row align-h="between" style="padding: 0 0 5px">
         <b-col style="text-align:left;">
           <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
-          <span><b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button></span>
+          <span>
+            <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="!isLoggedIn"><font-awesome-icon icon="camera-retro"/></b-button>
+          </span>
           <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
           <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
           <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
@@ -91,7 +93,7 @@
   </div>
 </template>
 <script>
-
+import Vue from 'vue'
 export default {
   name: 'WritePostUI',
   props: {
@@ -144,7 +146,22 @@ export default {
       gpsAddrFailMsg: null,
       fullAddr: null,
       addrEdit: false,
-      addrEditExpand: false
+      addrEditExpand: false,
+      isLoggedIn: false
+    }
+  },
+  mounted () {
+    if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
+      Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+        this.isLoggedIn = isLoggedIn
+        setTimeout(() => {
+          this.$forceUpdate()
+        }, 1)
+        this.$nextTick(() => {
+          this.isLoggedIn = isLoggedIn
+          console.log('isloggedin', this.isLoggedIn, isLoggedIn)
+        })
+      })
     }
   },
   methods: {
@@ -188,6 +205,9 @@ export default {
     },
     validateForm: function () {
       return false
+    },
+    validateAuth: function () {
+      return Vue.prototype.$firebaseAuth.getCurrentUserUid()
     }
   }
 }
