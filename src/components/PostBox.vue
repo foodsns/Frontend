@@ -95,6 +95,7 @@ export default {
         increase: function () {
            this.firestoreDao.thumbsUpPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
            .then(() => {
+                this.postItem.good++
                 this.postItem.goodMarked = true
            })
            .catch(err => {
