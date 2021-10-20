@@ -2,6 +2,10 @@
   <div id="writePostUI" style="position: relative">
     <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></crop-modal>
     <b-form @submit.stop.prevent class="form-box">
+      <b-row v-if="img" style="padding: 0 15px;">
+        <b-col class="img-preview" v-bind:style="{ backgroundImage: 'url(' + post.img + ')'}">
+        </b-col>
+      </b-row>
       <b-row>
         <b-col>
           <b-form-textarea
@@ -240,5 +244,13 @@ input[type=text] {
 }
 div.input-group-append > button{
   border-color: transparent;
+}
+
+.img-preview {
+  height: 200px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 10px;
 }
 </style>
