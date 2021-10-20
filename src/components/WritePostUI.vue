@@ -32,8 +32,8 @@
           <input type="file" ref="fileInput" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*"/>
           <span><b-button pill variant="outline-secondary" @click="$refs.fileInput.click()"><font-awesome-icon icon="camera-retro"/></b-button></span>
           <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
-          <span v-if="!addrEditExpand && (post.country && post.city && post.state && post.street)" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
-          <span v-else-if="addrEditExpand && (post.country && post.city && post.state && post.street)" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
+          <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
+          <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
         <b-col style="text-align:right;">
           <b-button pill variant="outline-secondary" :disabled="!validateForm">게시하기</b-button>
@@ -41,8 +41,7 @@
       </b-row>
       <b-row>
         <b-col style="text-align:left;padding-left: 15px">
-          <template v-if="!gpsAddrFailMsg">
-            <template v-if="addrEditExpand && post.country && post.city && post.state && post.street">
+          <template v-if="addrEditExpand">
               <b-input-group>
                 <b-form-input
                   v-model="fullAddr"
@@ -57,14 +56,15 @@
                 </b-input-group-append>
               </b-input-group>
             </template>
-            <template v-if="!addrEditExpand && post.country && post.city && post.state && post.street">
+            <template v-if="!addrEditExpand">
               <span style="margin-right:2px">{{post.city}}</span>
               <span style="margin-right:2px">{{post.state}}</span>
               <span style="margin-right:2px">{{post.street}}</span>
             </template>
-          </template>
-          <template v-else>
-            <span style="color:red">{{gpsAddrFailMsg}}</span>
+          <template v-if="gpsAddrFailMsg">
+            <div>
+              <span style="color:red">{{gpsAddrFailMsg}}</span>
+            </div>
           </template>
         </b-col>
       </b-row>
