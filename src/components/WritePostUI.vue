@@ -42,6 +42,7 @@
           <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
         <b-col style="text-align:right;">
+          <b-button pill variant="outline-warning" @click="onCancelBtnClicked()">취소</b-button>
           <b-button pill variant="outline-secondary" :disabled="!validateForm" @click="onSubmit()">게시하기</b-button>
         </b-col>
       </b-row>
@@ -177,6 +178,28 @@ export default {
     }
   },
   methods: {
+    onCancelBtnClicked: function () {
+      this.post = {
+          id: '',
+          docID: '',
+          title: '',
+          descript: '',
+          date: '',
+          profileImg: '',
+          writer: '',
+          good: 0,
+          img: null,
+          lat: 0,
+          lot: 0,
+          visibility: 'public',
+          authorId: '',
+          country: null,
+          city: null,
+          state: null,
+          street: null,
+          hashtag: null
+        }
+    },
     onSubmit: function () {
       const docID = this.firestoreDao.getDocumentID()
       if (this.file) {
