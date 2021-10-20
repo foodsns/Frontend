@@ -133,8 +133,8 @@ export default class FirestoreDao {
                 ...data,
                 docID: item.id,
                 goodMarked: uid ? !(await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false,
-                img: `${data.img}?_${Math.random()}`,
-                profileImg: `${data.profileImg}?_${Math.random()}`,
+                img: `${data.img}`,
+                profileImg: `${data.profileImg}`,
                 date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
@@ -196,8 +196,8 @@ export default class FirestoreDao {
                 ...data,
                 goodMarked: true,
                 docID: docRef.id,
-                img: `${data.img}?_${Math.random()}`,
-                profileImg: `${data.profileImg}?_${Math.random()}`,
+                img: `${data.img}`,
+                profileImg: `${data.profileImg}`,
                 date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
@@ -256,8 +256,8 @@ export default class FirestoreDao {
                 ...data,
                 goodMarked: false,
                 docID: item.id,
-                img: `${data.img}?_${Math.random()}`,
-                profileImg: `${data.profileImg}?_${Math.random()}`,
+                img: `${data.img}`,
+                profileImg: `${data.profileImg}`,
                 date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
