@@ -166,7 +166,7 @@ export default {
     this.scrollHandler()
   },
   methods: {
-    searchPosts (isInfinite = false) {
+    searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동') {
       this.firestoreDao.selectPosts({
           lat: 37.566227,
           lot: 126.977966,
@@ -174,10 +174,10 @@ export default {
           sortBy: 'best',
           pageSize: 8,
           includeMine: false,
-          country: 'Korea',
-          city: '서울특별시',
-          state: '중구',
-          street: '정동',
+          country,
+          city,
+          state,
+          street,
           uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
       })
       // https://stackoverflow.com/a/59289650/7270469
@@ -249,6 +249,9 @@ export default {
     },
     onGpsAddrLoaded: function (location) {
       this.fullAddr = `${location.addr1} ${location.addr2} ${location.addr3}`
+      this.$nextTick(() => {
+        this.searchPosts(false, '대한민국', location.addr1, location.addr2, location.addr3)
+      })
     },
     onGpsAddrFailed: function (errMsg) {
       this.gpsAddrFailMsg = errMsg
