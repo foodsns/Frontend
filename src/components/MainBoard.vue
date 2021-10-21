@@ -339,7 +339,7 @@ export default {
     width: 100%;
     top: 0;
     left: 0;
-    max-width: 350px;
+    max-width: 320px;
     z-index: 999;
     overflow-y: hidden;
     height: 100vh;
@@ -362,14 +362,27 @@ export default {
   position: fixed;
   left: 300px;
   top: calc(50% - 40px);
-  width: 25px;
-  height: 50px;
+  width: 20px;
+  height: 40px;
   background-color: white;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   z-index: 999;
   cursor: pointer;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+@media (min-width: 768px) {
+  #mainboard .wrapper {
+      max-width: 330px;
+  }
+  #mainboard .wrapper .list-toggle {
+    top: calc(50% - 60px);
+    width: 30px;
+    height: 60px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
 }
 
 #mainboard .wrapper .list-toggle svg {
