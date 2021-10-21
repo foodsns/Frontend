@@ -1,6 +1,6 @@
 import { getFirestore, collection, collectionGroup, query,
         startAfter, where, getDocs, getDoc,
-        orderBy, limit, setDoc, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction } from 'firebase/firestore'
+        orderBy, limit, setDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction} from 'firebase/firestore'
 // , doc, setDoc startAt
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
@@ -29,6 +29,11 @@ export default class FirestoreDao {
         return 1 / (111.320 * Math.cos(lat * (Math.PI / 180))) * km
     }
 
+    getDocumentID () {
+        const db = getFirestore()
+        return doc(collection(db, 'posts')).id
+    }
+
     // https://stackoverflow.com/a/26578323/7270469
     // 게시물을 좋아요 기준 정렬하는데 공개형, 같은 나라, 같은 시도, 같은 시군구, 같은 읍면동을 기준으로 페이징 기법을 사용함
     // 자신의 게시물 중 비공개형이 보이지 않으므로 따로 조회하는 api 호출해야 함 (추후 변동될 수 있음)
@@ -44,7 +49,7 @@ export default class FirestoreDao {
         state,
         street,
         uid
-    } = {}) {
+    } = {}, forceUpdate = false) {
         let goodOrderByDir = 'desc'
         let dateOrderByDir = 'desc'
         switch (sortBy) {
@@ -63,6 +68,9 @@ export default class FirestoreDao {
             orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
             where('visibility', '==', 'public'),
             where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+        if (forceUpdate) {
+            this._lastSelectPostsOptions = {}
+        }
 
         if (JSON.stringify(this._lastSelectPostsOptions) !== JSON.stringify({
             lat,
@@ -125,8 +133,8 @@ export default class FirestoreDao {
                 ...data,
                 docID: item.id,
                 goodMarked: uid ? !(await getDocs(query(collection(item.ref, 'goods'), where('authorId', '==', uid)))).empty : false,
-                img: `${data.img}?_${Math.random()}`,
-                profileImg: `${data.profileImg}?_${Math.random()}`,
+                img: `${data.img}`,
+                profileImg: `${data.profileImg}`,
                 date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
@@ -188,8 +196,8 @@ export default class FirestoreDao {
                 ...data,
                 goodMarked: true,
                 docID: docRef.id,
-                img: `${data.img}?_${Math.random()}`,
-                profileImg: `${data.profileImg}?_${Math.random()}`,
+                img: `${data.img}`,
+                profileImg: `${data.profileImg}`,
                 date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
@@ -248,8 +256,8 @@ export default class FirestoreDao {
                 ...data,
                 goodMarked: false,
                 docID: item.id,
-                img: `${data.img}?_${Math.random()}`,
-                profileImg: `${data.profileImg}?_${Math.random()}`,
+                img: `${data.img}`,
+                profileImg: `${data.profileImg}`,
                 date: new Date(data.date.seconds * 1000).toLocaleDateString()
             }
         }))
@@ -292,19 +300,19 @@ export default class FirestoreDao {
         state,
         street,
         hashtag
-    } = {}) {
+    } = {}, docID) {
         const db = getFirestore()
-        return addDoc(collection(db, 'posts'), {
+        const payload = {
             id: this.generateGuid(),
-            title,
+            title: hashtag,
             descript,
             date: serverTimestamp(),
             profileImg,
             writer,
             good: 0,
             img,
-            lat,
-            lot,
+            lat: Number(lat),
+            lot: Number(lot),
             visibility,
             authorId,
             country,
@@ -312,7 +320,8 @@ export default class FirestoreDao {
             state,
             street,
             hashtag
-        })
+        }
+        return setDoc(doc(collection(db, 'posts'), docID), payload)
     }
 
     updatePost ({
@@ -339,8 +348,8 @@ export default class FirestoreDao {
             profileImg,
             writer,
             img,
-            lat,
-            lot,
+            lat: Number(lat),
+            lot: Number(lot),
             visibility,
             country,
             city,
@@ -359,7 +368,7 @@ export default class FirestoreDao {
         const db = getFirestore()
         const docRef = (doc(db, 'posts', docID))
 
-        runTransaction(db, async (transaction) => {
+        return runTransaction(db, async (transaction) => {
             const sfDoc = await transaction.get(docRef)
             const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
             const newgood = sfDoc.data().good + 1
@@ -371,11 +380,11 @@ export default class FirestoreDao {
         })
     }
 
-    async thumbsDownPost (docID, uid) {
+    thumbsDownPost (docID, uid) {
         const db = getFirestore()
         const docRef = (doc(db, 'posts', docID))
 
-        runTransaction(db, async (transaction) => {
+        return runTransaction(db, async (transaction) => {
             const sfDoc = await transaction.get(docRef)
             const goodLogRef = doc(db, `posts/${docID}/goods`, uid)
             const newgood = sfDoc.data().good - 1

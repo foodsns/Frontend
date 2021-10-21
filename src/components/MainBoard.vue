@@ -264,7 +264,8 @@ export default {
     },
     scrollStop: function (e) {
       if (count >= 16) {
-        console.log('데이터 그만 가져옴')
+        // 스크롤은 멈추지만 데이터 가져오는 건 여전. 수정해야함.
+        console.log('데이터 그만 가져오기')
         e.preventDefault()
       }
     }

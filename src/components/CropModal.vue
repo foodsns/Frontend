@@ -4,22 +4,31 @@
     <b-modal
       id="cropper-modal"
       ref="cropper-modal"
-      title="Submit Your Name"
+      v-bind:title="foodname"
     >
-      <div>
-        File name:<span v-if="fileProp">{{fileProp.name}}</span>
-        <img v-if="img" v-bind:src="img" />
+    <div slot="modal-header">
+      <input type="text" id="insertfd" placeholder="어떤 이름의 음식이였나요?"/>
+    </div>
+      <template v-if="option.img">
+        <vue-cropper ref="cropper" :src="option.img" :autoCrop="option.autoCrop" :autoCropWidth="option.autoCropWidth"
+          :autoCropHeight="option.autoCropHeight">
+        </vue-cropper>
+        <!-- test Croppedimg> <img :src="croppedimg" /> <-->
+      </template>
+      <div slot="modal-footer">
+        <b-button variant="primary" @click="imgsubmit">확인</b-button>
+        <b-button variant="secondary" @click="$bvModal.hide('cropper-modal')">닫기</b-button>
       </div>
     </b-modal>
   </div>
 </template>
 
 <script>
-// 지금 당장 소스상에 사용된 기록이 없었기 때문에 es-lint 오류가
-// 나서 임시로 주석처리함, 나중에 쓸때 다시 주석 해제하고 쓰면 됨
-// import VueCropper from 'vue-cropperjs'
+import VueCropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
 
 export default {
+  components: { VueCropper },
     props: {
       fileProp: {
         type: File,
@@ -34,11 +43,14 @@ export default {
     },
     data () {
         return {
-            fileList: [],
-            active: false,
-            croppedImg: [],
-            beforecrop: null,
-            img: null
+          foodname: '',
+          croppedimg: '',
+            option: {
+              img: null,
+              autoCrop: true,
+              autoCropWidth: 500,
+              autoCropHeight: 550
+            }
         }
     },
     mounted () {
@@ -46,26 +58,27 @@ export default {
       // https://stackoverflow.com/a/16153675/7270469
       const reader = new FileReader()
       reader.onload = (event) => {
-        this.img = event.target.result
+        this.option.img = event.target.result
       }
       reader.readAsDataURL(this.fileProp)
     },
-    method: {
-    // cropui: function(index) {
-    //     if (fileList) {
-    //       const reader = new Filereader()
-    //       reader.readAsDataURL(fileList[index])
-    //       reader.onload = function(event) {
-    //         image.attr("src", e.target.result)
-    //         cropper = image.cropper( {
-    //           dragMode: 'move',
-    //           vieMode: 1,
-    //           autoCropArea: 0.7,
-    //           guides: false
-    //       })
-    //     }
-    //   }
-    // }
+    methods: {
+      imgsubmit () {
+        this.croppedimg = this.$refs.cropper.getCroppedCanvas().toDataURL()
+      }
+    }
   }
-}
 </script>
+<style scoped>
+#insertfd{
+  border: none;
+}
+input:focus {
+    outline: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+</style>

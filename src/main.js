@@ -12,7 +12,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, faHeart, faMap, faTh, faUser,
         faSignInAlt, faArrowRight, faArrowLeft,
-        faSpinner, faArrowDown, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons'
+        faSpinner, faArrowDown, faMapMarkerAlt,
+        faCameraRetro, faGlobeAsia, faLock, faDice,
+        faEdit, faCheck, faSortDown, faSortUp, faTrash,
+        faPencilAlt, faShare} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -21,7 +24,7 @@ import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
+import { MdButton, MdContent, MdTabs, MdChips } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
@@ -41,6 +44,8 @@ import Hashtag from './components/Hashtag'
 import MainLogo from './components/MainLogo'
 import UserGps from './components/userGps'
 import CropModal from './components/CropModal'
+import WritePostUI from './components/WritePostUI'
+import ShareAddr from './components/ShareAddr'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -57,6 +62,17 @@ library.add(faArrowLeft)
 library.add(faSpinner)
 library.add(faArrowDown)
 library.add(faMapMarkerAlt)
+library.add(faCameraRetro)
+library.add(faGlobeAsia)
+library.add(faLock)
+library.add(faDice)
+library.add(faEdit)
+library.add(faCheck)
+library.add(faSortDown)
+library.add(faSortUp)
+library.add(faTrash)
+library.add(faPencilAlt)
+library.add(faShare)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
@@ -75,10 +91,13 @@ Vue.component('hash-tag', Hashtag)
 Vue.component('main-logo', MainLogo)
 Vue.component('user-gps-logo', UserGps)
 Vue.component('crop-modal', CropModal)
+Vue.component('write-post-ui', WritePostUI)
+Vue.component('share-addr', ShareAddr)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
+Vue.use(MdChips)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {

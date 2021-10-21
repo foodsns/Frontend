@@ -30,6 +30,18 @@ export default {
             default: function () {
                 return []
             }
+        },
+        latProp: {
+            type: Number,
+            default: function () {
+                return 37.5662952
+            }
+        },
+        lotProp: {
+            type: Number,
+            default: function () {
+                return 126.9757511
+            }
         }
     },
     watch: {
@@ -53,7 +65,7 @@ export default {
         this.initKakaoMap()
         .then(() => {
             if (!this.dev) {
-                this.kakaoMapInstance.initMap()
+                this.kakaoMapInstance.initMap(this.latProp, this.lotProp)
             } else {
                 this.kakaoMapInstance.initMap(35.19656853772262, 129.0807270648317)
             }
@@ -72,6 +84,9 @@ export default {
         })
     },
     methods: {
+        moveTo (lat, lot) {
+            this.kakaoMapInstance.moveCenter(lat, lot)
+        },
         onMarkerClicked (id) {
             const post = this.postList.find(item => item.id === id)
             if (post) {
