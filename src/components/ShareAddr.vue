@@ -23,7 +23,7 @@ export default {
     },
     data () {
         return {
-            host: 'https://mogutsou.web.app/#/'
+            host: `https://${document.location.host}/#/`
         }
     },
     watch: {
