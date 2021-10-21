@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import KakaoMapController from '../module/kakaoMap.controller'
 export default {
     name: 'userGps',
@@ -24,7 +25,11 @@ export default {
                 this.processing = false
 
                 const lastAddr = localStorage.getItem('addr')
-                if (lastAddr) {
+                const queryAddr = Vue.prototype.$queryAddr
+                if (this.$route.query.address && queryAddr !== this.$route.query.address) {
+                    this.getLatLotUsingAddr(this.$route.query.address)
+                    Vue.prototype.$queryAddr = this.$route.query.address
+                } else if (lastAddr) {
                     this.getLatLotUsingAddr(lastAddr)
                 }
             })
