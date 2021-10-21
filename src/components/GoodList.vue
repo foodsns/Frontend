@@ -1,7 +1,7 @@
 <template>
 <div>
-    <b-button  v-on:click="[on(), showlist()] " class="goodlist-btn" pill variant="outline-danger">
-        <b-icon icon="heart-fill" ></b-icon> LIST
+    <b-button  v-on:click="[on(), showlist()] " class="goodlist-btn" pill variant="outline-danger" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+        <b-icon icon="heart-fill" ></b-icon>
     </b-button>
 </div>
 </template>
@@ -32,13 +32,8 @@ export default {
 </script>
 
 <style scoped>
-
-.goodlist-btn{
-    position : fixed;
-    bottom : 130px;
-    width : 90px;
-    right : 30px;
-    border: 5px;
-    }
-
+div {
+    display: inline-block;
+    margin-left: 5px;
+}
 </style>
