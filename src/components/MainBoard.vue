@@ -361,12 +361,12 @@ export default {
 #mainboard .wrapper .list-toggle {
   position: fixed;
   left: 300px;
-  top: 50%;
-  width: 40px;
-  height: 80px;
+  top: calc(50% - 40px);
+  width: 25px;
+  height: 50px;
   background-color: white;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
   z-index: 999;
   cursor: pointer;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
