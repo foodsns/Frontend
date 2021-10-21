@@ -239,7 +239,6 @@ export default {
       .then(_postList => {
         if (!_postList || _postList.length <= 0) {
           this.scrollMsg = '더 이상 리뷰가 없어요'
-          this.scrollMsg = '더 이상 리뷰가 없어요.'
         }
         _postList.forEach(post => this.postList.push(post))
         return true
