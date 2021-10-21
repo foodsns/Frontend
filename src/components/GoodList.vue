@@ -1,7 +1,7 @@
 <template>
 <div>
     <b-button  v-on:click="[on(), showlist()] " class="goodlist-btn" pill variant="outline-danger" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
-        <b-icon icon="heart-fill" ></b-icon> LIST
+        <b-icon icon="heart-fill" ></b-icon>
     </b-button>
 </div>
 </template>
