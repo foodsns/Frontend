@@ -10,10 +10,10 @@
     <b-container class="body">
       <b-row align-h="end">
         <b-col style="text-align: left;position:relative;">
-          <b-button pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="dice" style="margin-right: 5px"/>랜덤 선택</b-button>
+          <b-button pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="dice" style="margin-right: 5px"/></b-button>
           <goodlist-btn></goodlist-btn>
         </b-col>
-        <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
+        <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
           <profile-icon style="position: relative"></profile-icon>
         </b-col>
       </b-row>
@@ -24,6 +24,7 @@
               <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
               <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
               <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
+              <b-button v-if="viewMode === 'map'" @click="formVisibleToggle = !formVisibleToggle" pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="pencil-alt"/></b-button>
             </b-col>
           </b-row>
           <b-row style="margin-top:5px">
@@ -65,7 +66,7 @@
           <hashtag v-bind:postListProps="postList"></hashtag>
         </b-col>
       </b-row>
-      <b-row align-h="center">
+      <b-row align-h="center" v-if="viewMode === 'grid' || (viewMode === 'map' && formVisibleToggle)">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
           <write-post-ui @submit-success="onSubmitPostSuccess"></write-post-ui>
         </b-col>
@@ -163,7 +164,8 @@ export default {
           addr3: null,
           lat: 37.5662952,
           lot: 126.9757511
-        }
+        },
+        formVisibleToggle: true
     }
   },
   watch: {
