@@ -1,7 +1,10 @@
 <template>
   <div id="mainboard" ref="mainboard">
     <main-logo v-on:scrollMainboard="scrollMainboard"></main-logo>
-    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"
+    <kakao-map ref="kakaoMap" v-if="viewMode === 'map'"
+              v-bind:postListProps="postList"
+              v-bind:latProp="lastLoc.lat"
+              v-bind:lotProp="lastLoc.lot"
               @on-marker-clicked="onMarkerClicked"
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
     <b-container class="body">
@@ -157,7 +160,9 @@ export default {
         lastLoc: {
           addr1: null,
           addr2: null,
-          addr3: null
+          addr3: null,
+          lat: 37.5662952,
+          lot: 126.9757511
         }
     }
   },
@@ -294,6 +299,12 @@ export default {
     onGpsAddrLoaded: function (location) {
       this.fullAddr = `${location.addr1} ${location.addr2} ${location.addr3}`
       this.lastLoc = location
+      if (this.viewMode === 'map') {
+        this.$refs.kakaoMap.moveTo(Number(location.lat), Number(location.lot))
+      } else if (this.viewMode === 'grid') {
+        this.lastLoc.lat = Number(location.lat)
+        this.lastLoc.lot = Number(location.lot)
+      }
       this.$nextTick(() => {
         this.searchPosts(false, '대한민국', location.addr1, location.addr2, location.addr3)
       })
