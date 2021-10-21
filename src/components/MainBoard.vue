@@ -165,7 +165,7 @@ export default {
           lat: 37.5662952,
           lot: 126.9757511
         },
-        formVisibleToggle: true
+        formVisibleToggle: false
     }
   },
   watch: {
