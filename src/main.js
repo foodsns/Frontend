@@ -15,7 +15,7 @@ import { faUserSecret, faHeart, faMap, faTh, faUser,
         faSpinner, faArrowDown, faMapMarkerAlt,
         faCameraRetro, faGlobeAsia, faLock, faDice,
         faEdit, faCheck, faSortDown, faSortUp, faTrash,
-        faPencilAlt} from '@fortawesome/free-solid-svg-icons'
+        faPencilAlt, faShare} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -45,6 +45,7 @@ import MainLogo from './components/MainLogo'
 import UserGps from './components/userGps'
 import CropModal from './components/CropModal'
 import WritePostUI from './components/WritePostUI'
+import ShareAddr from './components/ShareAddr'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -71,6 +72,7 @@ library.add(faSortDown)
 library.add(faSortUp)
 library.add(faTrash)
 library.add(faPencilAlt)
+library.add(faShare)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
@@ -90,6 +92,7 @@ Vue.component('main-logo', MainLogo)
 Vue.component('user-gps-logo', UserGps)
 Vue.component('crop-modal', CropModal)
 Vue.component('write-post-ui', WritePostUI)
+Vue.component('share-addr', ShareAddr)
 
 Vue.use(MdButton)
 Vue.use(MdContent)

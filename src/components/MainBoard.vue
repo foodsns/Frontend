@@ -45,9 +45,7 @@
                 </b-input-group>
               </template>
               <template v-if="!addrEditExpand">
-                <span style="background-color: white;
-    border-radius: 5px;
-    padding: 2px;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">{{fullAddr}}</span>
+                <share-addr v-bind:fullAddr="fullAddr"></share-addr>
               </template>
               <template v-if="gpsAddrFailMsg">
                 <div>
