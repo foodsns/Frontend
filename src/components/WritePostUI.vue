@@ -281,7 +281,7 @@ export default {
         const maxSize = 10 * 1024 * 1024
         if (this.file.size <= maxSize) {
           this.$nextTick(() => {
-            // this.uploadOnePhoto(this.file)
+            // this.uploadOnePhoto(file)
             // this.uploadFileToServer(file)
             this.generateFileLocalUrl(this.file)
             .then(url => {

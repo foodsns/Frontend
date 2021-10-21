@@ -118,8 +118,11 @@ export default {
            EventBus.$emit('use-eventBus', this.liked)
            return this.liked
         }
-    }
-}
+    },
+       greet: function (mode) {
+           this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
+       }
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
