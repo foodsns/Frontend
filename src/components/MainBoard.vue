@@ -1,54 +1,78 @@
 <template>
   <div id="mainboard" ref="mainboard">
     <main-logo v-on:scrollMainboard="scrollMainboard"></main-logo>
-    <kakao-map v-if="viewMode === 'map'" v-bind:postListProps="postList"
+    <kakao-map ref="kakaoMap" v-if="viewMode === 'map'"
+              v-bind:postListProps="postList"
+              v-bind:latProp="lastLoc.lat"
+              v-bind:lotProp="lastLoc.lot"
               @on-marker-clicked="onMarkerClicked"
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
     <b-container class="body">
       <b-row align-h="end">
-        <b-col>
-          <user-gps-logo class="user-gps-btn"></user-gps-logo>
+        <b-col style="text-align: left;position:relative;">
+          <b-button pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="dice" style="margin-right: 5px"/></b-button>
+          <goodlist-btn></goodlist-btn>
         </b-col>
-        <b-col align-self="end" cols="6" style="text-align: right; margin-bottom: 15px">
+        <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
           <profile-icon style="position: relative"></profile-icon>
         </b-col>
       </b-row>
       <b-row>
-        <b-col cols="6" style="text-align: left">
-          <scrollbar style="position: relative"></scrollbar>
+        <b-col cols="8" style="text-align: left">
+          <b-row style="margin-top: 5px;">
+            <b-col style="position:relative">
+              <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
+              <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
+              <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
+              <b-button v-if="viewMode === 'map'" @click="formVisibleToggle = !formVisibleToggle" pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="pencil-alt"/></b-button>
+            </b-col>
+          </b-row>
+          <b-row style="margin-top:5px">
+            <b-col lg="6" cols="12" style="position:relative">
+              <template v-if="addrEditExpand">
+                <b-input-group>
+                  <b-form-input
+                    v-model="fullAddr"
+                    type="text"
+                    placeholder="정확한 주소를 입력해주세요"
+                    required
+                    :disabled="!addrEdit"
+                  ></b-form-input>
+                  <b-input-group-append>
+                    <b-button variant="outline-secondary" v-if="!addrEdit" @click="addrEdit = !addrEdit"><font-awesome-icon icon="edit"/></b-button>
+                    <b-button variant="outline-secondary" v-if="addrEdit" @click="addrEdit = !addrEdit;$refs.userGps.getLatLotUsingAddr(fullAddr)"><font-awesome-icon icon="check"/></b-button>
+                  </b-input-group-append>
+                </b-input-group>
+              </template>
+              <template v-if="!addrEditExpand">
+                <share-addr v-bind:fullAddr="fullAddr"></share-addr>
+              </template>
+              <template v-if="gpsAddrFailMsg">
+                <div>
+                  <span style="color:red">{{gpsAddrFailMsg}}</span>
+                </div>
+              </template>
+            </b-col>
+          </b-row>
         </b-col>
-        <b-col cols="6" class="toggle-btn">
+        <b-col cols="4" class="toggle-btn">
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          <hashtag class="hashtag"></hashtag>
+          <hashtag v-bind:postListProps="postList"></hashtag>
         </b-col>
       </b-row>
-      <b-row align-h="center">
+      <b-row align-h="center" v-if="viewMode === 'grid' || (viewMode === 'map' && formVisibleToggle)">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
-          <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></crop-modal>
-          <div id="writePostUI" style="position: relative">
-            <div class="form-floating">
-              <textarea class="form-control" value="inputText" id="floatingTextarea" placeholder="내용입력" @keyup.#="hashE" enctype="multipart/form-data" style="resize:none; margin-bottom:5px"></textarea>
-            </div>
-            <div class="Buttons">
-              <form action="upload" id="uploadForm" method="post" style="display:inline; margin-right:5px">
-                <label class="btn btn-primary" pill variant="primary" for="filebtn">
-                사진
-                </label>
-                <input type="file" id="filebtn" @change="uploadOnePhoto" style="display:none" accept="image/*" multiple/>
-              </form>
-              <button type="submit" class="btn btn-success" id="postbtn">확인</button>
-            </div>
-          </div>
+          <write-post-ui @submit-success="onSubmitPostSuccess"></write-post-ui>
         </b-col>
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
       <b-row v-if="viewMode === 'grid'">
         <b-col>
-          <infinite-scroll  v-bind:clientHeight="clientHeight"
+          <infinite-scroll v-bind:clientHeight="clientHeight"
                             v-bind:scrollHeight="scrollHeight"
                             v-bind:scrollTop="scrollTop"
                             v-bind:thresholdProp="threshold"
@@ -78,8 +102,7 @@
         <font-awesome-icon icon="arrow-left" v-else/>
       </div>
     </div>
-    <random-btn></random-btn>
-    <goodlist-btn></goodlist-btn>
+    <!--<random-btn></random-btn>-->
     <!-- <b-button class = "random-btn" pill variant="outline-danger" v-on:click="greet">랜덤선택</b-button> -->
   </div>
 </template>
@@ -87,13 +110,10 @@
 <script>
 import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
-import Scrollbar from './Scrollbar.vue'
 import FirestoreDao from '../module/firestore.dao'
 
-var count
-
 export default {
-  components: { Scrollbar, Hashtag },
+  components: { Hashtag },
   name:
     'MainBoard',
   data () {
@@ -102,6 +122,26 @@ export default {
         viewMode: 'grid',
         openSideList: false,
         focusedPost: {},
+        focusedEditPost: {
+          id: '',
+          docID: '',
+          title: '',
+          descript: '',
+          date: '',
+          profileImg: '',
+          writer: '',
+          good: 0,
+          img: null,
+          lat: 0,
+          lot: 0,
+          visibility: 'public',
+          authorId: '',
+          country: null,
+          city: null,
+          state: null,
+          street: null,
+          hashtag: null
+        },
         inputText: '',
         clientHeight: 0,
         scrollHeight: 0,
@@ -112,10 +152,18 @@ export default {
         dummyCnt: 0,
         firestoreDao: new FirestoreDao(),
         postList: [],
-        cropModal: {
-          show: false,
-          file: null
-        }
+        gpsAddrFailMsg: null,
+        fullAddr: null,
+        addrEdit: false,
+        addrEditExpand: false,
+        lastLoc: {
+          addr1: null,
+          addr2: null,
+          addr3: null,
+          lat: 37.5662952,
+          lot: 126.9757511
+        },
+        formVisibleToggle: false
     }
   },
   watch: {
@@ -135,10 +183,29 @@ export default {
     if (dev) {
       this.postList = JSON.parse(localStorage.getItem('postList')) || []
     } else {
-      this.searchPosts()
+      if (!this.fullAddr) {
+        this.searchPosts()
+      } else {
+        this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+      }
       if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
         Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
-          this.searchPosts()
+          this.$nextTick(() => {
+            if (!this.fullAddr) {
+              this.searchPosts()
+            } else {
+              this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+            }
+          })
+        })
+      }
+      if (Vue.prototype.$notify) {
+        Vue.prototype.$notify.$on('Need refresh', () => {
+          if (!this.fullAddr) {
+            this.searchPosts()
+          } else {
+            this.$refs.userGps.getLatLotUsingAddr(this.fullAddr)
+          }
         })
       }
     }
@@ -148,7 +215,7 @@ export default {
     this.scrollHandler()
   },
   methods: {
-    searchPosts (isInfinite = false) {
+    searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동') {
       this.firestoreDao.selectPosts({
           lat: 37.566227,
           lot: 126.977966,
@@ -156,28 +223,25 @@ export default {
           sortBy: 'best',
           pageSize: 8,
           includeMine: false,
-          country: 'Korea',
-          city: '서울특별시',
-          state: '중구',
-          street: '정동',
+          country,
+          city,
+          state,
+          street,
           uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
-      })
+      }, true)
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
-        count = this.postList.length + 8
-        console.log('postCount : ' + count)
         if (!isInfinite) {
           this.postList.splice(0)
         }
         return postList
       })
       .then(_postList => {
-        console.log('postCount2 : ' + count)
         if (!_postList || _postList.length <= 0) {
+          this.scrollMsg = '더 이상 리뷰가 없어요'
           this.scrollMsg = '더 이상 리뷰가 없어요.'
         }
         _postList.forEach(post => this.postList.push(post))
-        this.scrollStop()
         return true
       })
       .then(() => {
@@ -230,44 +294,29 @@ export default {
       this.openSideList = true
       this.focusedPost = post
     },
-    // 현재 DB 모델이 한개의 파일만 입력하게끔 되어 있어,
-    // 멀티 이미지 지원은 마지막 스프린트에 작업하는걸로
-    uploadPhoto: function (e) {
-      console.log('uploadPhoto :', e)
-        if (e.target.files) {
-          var fileList = e.target.files
-          var maxSize = 3 * 1024 * 1024
-          for (const file of fileList) {
-            if (file.size > maxSize) {
-              alert(file.name + ' : 3MB이하 이미지만 가능합니다.')
-              return false
-          }
-        }
-      }
-    },
-    uploadOnePhoto: function (e) {
-      if (e.target.files && e.target.files.length > 0) {
-        const file = e.target.files[0]
-        const maxSize = 3 * 1024 * 1024
-        if (file.size <= maxSize) {
-          this.cropModal.show = true
-          this.cropModal.file = file
-        } else {
-          console.warn(`Maximum file size: ${maxSize}, current: ${file.size}`)
-        }
-      } else {
-        console.warn('Empty file detected')
-      }
-    },
     scrollMainboard: function () {
-      this.$refs.mainboard.scrollTo(0, 0)
+        this.$refs.mainboard.scrollTo(0, 0)
     },
-    scrollStop: function (e) {
-      if (count >= 16) {
-        // 스크롤은 멈추지만 데이터 가져오는 건 여전. 수정해야함.
-        console.log('데이터 그만 가져오기')
-        e.preventDefault()
+    onGpsAddrLoaded: function (location) {
+      this.fullAddr = `${location.addr1} ${location.addr2} ${location.addr3}`
+      this.lastLoc = location
+      if (this.viewMode === 'map') {
+        this.$refs.kakaoMap.moveTo(Number(location.lat), Number(location.lot))
+      } else if (this.viewMode === 'grid') {
+        this.lastLoc.lat = Number(location.lat)
+        this.lastLoc.lot = Number(location.lot)
       }
+      this.$nextTick(() => {
+        this.searchPosts(false, '대한민국', location.addr1, location.addr2, location.addr3)
+      })
+    },
+    onGpsAddrFailed: function (errMsg) {
+      this.gpsAddrFailMsg = errMsg
+    },
+    onSubmitPostSuccess: function () {
+      this.$nextTick(() => {
+        this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
+      })
     }
   }
 }
@@ -289,7 +338,7 @@ export default {
     width: 100%;
     top: 0;
     left: 0;
-    max-width: 350px;
+    max-width: 320px;
     z-index: 999;
     overflow-y: hidden;
     height: 100vh;
@@ -311,15 +360,28 @@ export default {
 #mainboard .wrapper .list-toggle {
   position: fixed;
   left: 300px;
-  top: 50%;
-  width: 40px;
-  height: 80px;
+  top: calc(50% - 40px);
+  width: 20px;
+  height: 40px;
   background-color: white;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   z-index: 999;
   cursor: pointer;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+@media (min-width: 768px) {
+  #mainboard .wrapper {
+      max-width: 330px;
+  }
+  #mainboard .wrapper .list-toggle {
+    top: calc(50% - 60px);
+    width: 30px;
+    height: 60px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
 }
 
 #mainboard .wrapper .list-toggle svg {
@@ -358,4 +420,12 @@ export default {
   text-align: left;
 }
 
+input[type=text] {
+  border: 0;
+  outline: 0;
+  border-bottom: 2px solid #212529;
+}
+div.input-group-append > button{
+  border-color: transparent;
+}
 </style>
