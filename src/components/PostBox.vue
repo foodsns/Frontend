@@ -1,8 +1,19 @@
 <template>
   <div id="postbox">
-    <div class="thumbnail-img" v-bind:style="{ backgroundImage: 'url(' + postItem.img + ')'}"></div>
+    <div class="thumbnail-img" v-bind:style="{ backgroundImage: 'url(' + postItem.img + ')'}">
+        <template v-if="$firebaseAuth && $firebaseAuth.getCurrentUserUid() && $firebaseAuth.getCurrentUserUid() === postItem.authorId">
+            <b-row style="padding: 0 15px">
+                <b-col>
+                    <b-button pill variant="outline-secondary" @click="onBtnUpdateClicked()"><font-awesome-icon icon="edit" style="margin-right: 5px"/></b-button>
+                </b-col>
+                <b-col style="text-align:right">
+                    <b-button pill variant="outline-secondary" @click="onBtnDeleteClicked()"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
+                </b-col>
+            </b-row>
+        </template>
+    </div>
     <div>
-        <h4>{{postItem.title}}</h4>
+        <h4>{{postItem.hashtag}}</h4>
         <p>{{ cutDescript }}</p>
         <div class="text-date">{{postItem.date}}</div>
         <hr>
@@ -37,7 +48,8 @@ export default {
                   profileImg: '../assets/logo.png',
                   writer: 'unknown',
                   good: 0,
-                  img: '../assets/logo.png'
+                  img: '../assets/logo.png',
+                  hashtag: ''
               }
           }
       }
@@ -67,15 +79,38 @@ export default {
             } else {
                 this.increase()
             }
-            post.goodMarked = !post.goodMarked
+        },
+        onBtnUpdateClicked: function () {
+            Vue.prototype.$notify.$emit('onFocusedPostChanged', this.post)
+        },
+        onBtnDeleteClicked: function () {
+            this.firestoreDao.deletePost(this.postItem.docID)
+            .then(() => {
+                Vue.prototype.$notify.$emit('Need refresh')
+            })
+            .catch(err => {
+                console.error(`[PostBox] [onBtnDeleteClicked] Error: ${err.message}`)
+            })
         },
         increase: function () {
-           this.postItem.good++
            this.firestoreDao.thumbsUpPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
+           .then(() => {
+                this.postItem.good++
+                this.postItem.goodMarked = true
+           })
+           .catch(err => {
+               console.error(`[PostBox] [increase] Error: ${err.message}`)
+           })
         },
         decrease: function () {
-           this.postItem.good--
            this.firestoreDao.thumbsDownPost(this.postItem.docID, Vue.prototype.$firebaseAuth.getCurrentUserUid())
+           .then(() => {
+                this.postItem.good--
+                this.postItem.goodMarked = false
+           })
+           .catch(err => {
+               console.error(`[PostBox] [decrease] Error: ${err.message}`)
+           })
         },
         ture_not_liked: function () {
            this.liked === true ? this.liked = false : this.liked = true
@@ -83,8 +118,11 @@ export default {
            EventBus.$emit('use-eventBus', this.liked)
            return this.liked
         }
-    }
-}
+    },
+       greet: function (mode) {
+           this.currentMode === 'grid' ? this.currentMode = '' : this.currentMode = 'grid'
+       }
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -165,5 +203,8 @@ h4 {
 
 .gap_margin_5px_horizontal:hover {
     color:palevioletred;
+}
+button > svg {
+    margin: 0 !important;
 }
 </style>

@@ -48,7 +48,7 @@
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
       <b-row v-if="viewMode === 'grid'">
         <b-col>
-          <infinite-scroll v-bind:clientHeight="clientHeight"
+          <infinite-scroll  v-bind:clientHeight="clientHeight"
                             v-bind:scrollHeight="scrollHeight"
                             v-bind:scrollTop="scrollTop"
                             v-bind:thresholdProp="threshold"
@@ -89,6 +89,8 @@ import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
 import Scrollbar from './Scrollbar.vue'
 import FirestoreDao from '../module/firestore.dao'
+
+var count
 
 export default {
   components: { Scrollbar, Hashtag },
@@ -162,16 +164,20 @@ export default {
       })
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
+        count = this.postList.length + 8
+        console.log('postCount : ' + count)
         if (!isInfinite) {
           this.postList.splice(0)
         }
         return postList
       })
       .then(_postList => {
+        console.log('postCount2 : ' + count)
         if (!_postList || _postList.length <= 0) {
           this.scrollMsg = '더 이상 리뷰가 없어요'
         }
         _postList.forEach(post => this.postList.push(post))
+        this.scrollStop()
         return true
       })
       .then(() => {
@@ -254,7 +260,14 @@ export default {
       }
     },
     scrollMainboard: function () {
-        this.$refs.mainboard.scrollTo(0, 0)
+      this.$refs.mainboard.scrollTo(0, 0)
+    },
+    scrollStop: function (e) {
+      if (count >= 16) {
+        // 스크롤은 멈추지만 데이터 가져오는 건 여전. 수정해야함.
+        console.log('데이터 그만 가져오기')
+        e.preventDefault()
+      }
     }
   }
 }

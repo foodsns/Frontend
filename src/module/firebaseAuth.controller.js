@@ -30,6 +30,7 @@ export default class FirebaseAuth {
         return signOut(auth).then(() => {
         // Sign-out successful.
             console.log('[firebaseAuth] [signOut] Successfully signed out')
+            this.currentUser = null
             return true
         }).catch((error) => {
         // An error happened.
