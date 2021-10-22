@@ -215,7 +215,7 @@ export default {
     this.scrollHandler()
   },
   methods: {
-    searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동') {
+    searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동', forceUpdate = true) {
       this.firestoreDao.selectPosts({
           lat: 37.566227,
           lot: 126.977966,
@@ -228,7 +228,7 @@ export default {
           state,
           street,
           uid: Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
-      }, true)
+      }, forceUpdate)
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
         if (!isInfinite) {
@@ -252,7 +252,7 @@ export default {
       if (!this.isLoading) {
         this.scrollMsg = ''
         this.isLoading = true
-        this.searchPosts(true)
+        this.searchPosts(true, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3, false)
       }
     },
     scrollHandler () {
