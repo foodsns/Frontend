@@ -54,15 +54,21 @@ export default {
         },
         onLocationLoaderClicked: function () {
             this.processing = true
+            let lat = 0
+            let lot = 0
             this.getLocation()
-            .then(latLot => this.kakaoMapInstance.latLot2Addr(latLot.lat, latLot.lot))
+            .then(latLot => {
+                lat = latLot.lat
+                lot = latLot.lot
+                return this.kakaoMapInstance.latLot2Addr(latLot.lat, latLot.lot)
+            })
             .then(data => {
                 this.$emit('location', {
                     addr1: data.region_1depth_name,
                     addr2: data.region_2depth_name,
                     addr3: data.region_3depth_name,
-                    lat: data.y,
-                    lot: data.x
+                    lat,
+                    lot
                 })
                 this.saveLastLoadedAddr(`${data.region_1depth_name} ${data.region_2depth_name} ${data.region_3depth_name}`)
                 this.$nextTick(() => {
