@@ -1,6 +1,6 @@
 <template>
   <div id="writePostUI" style="position: relative">
-    <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @close-modal="cropModal.show=false"></crop-modal>
+    <crop-modal v-if="cropModal.show" v-bind:fileProp="cropModal.file" @updatefileProp="updatefileProp"></crop-modal>
     <b-form @submit.stop.prevent class="form-box">
       <b-row v-if="post.img" style="padding: 0 15px 15px;">
         <b-col class="img-preview" v-bind:style="{ backgroundImage: 'url(' + post.img + ')'}">
@@ -281,7 +281,7 @@ export default {
         const maxSize = 10 * 1024 * 1024
         if (this.file.size <= maxSize) {
           this.$nextTick(() => {
-            // this.uploadOnePhoto(file)
+            this.uploadOnePhoto(this.file)
             // this.uploadFileToServer(file)
             this.generateFileLocalUrl(this.file)
             .then(url => {
@@ -325,6 +325,10 @@ export default {
     },
     onGpsAddrFailed: function (errMsg) {
       this.gpsAddrFailMsg = errMsg
+    },
+    updatefileProp: function (file) {
+      this.post.img = file
+      this.cropModal.show = false
     }
   },
   computed: {

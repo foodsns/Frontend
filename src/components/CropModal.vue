@@ -65,6 +65,7 @@ export default {
     methods: {
       imgsubmit () {
         this.croppedimg = this.$refs.cropper.getCroppedCanvas().toDataURL()
+        this.$emit('updatefileProp', this.croppedimg)
       }
     }
   }
