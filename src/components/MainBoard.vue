@@ -112,6 +112,8 @@ import Vue from 'vue'
 import Hashtag from './Hashtag.vue'
 import FirestoreDao from '../module/firestore.dao'
 
+var postCount
+
 export default {
   components: { Hashtag },
   name:
@@ -231,9 +233,11 @@ export default {
       }, forceUpdate)
       // https://stackoverflow.com/a/59289650/7270469
       .then(postList => {
+        postCount = this.postList.length
         if (!isInfinite) {
           this.postList.splice(0)
         }
+        console.log("postCount: " + postCount)
         return postList
       })
       .then(_postList => {
