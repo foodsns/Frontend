@@ -5,16 +5,24 @@
       id="cropper-modal"
       ref="cropper-modal"
       v-bind:title="foodname"
+      centered
+      :no-close-on-backdrop="true"
     >
-    <div slot="modal-header">
-      <input type="text" id="insertfd" placeholder="어떤 이름의 음식이였나요?"/>
-    </div>
-      <template v-if="option.img">
-        <vue-cropper ref="cropper" :src="option.img" :autoCrop="option.autoCrop" :autoCropWidth="option.autoCropWidth"
-          :autoCropHeight="option.autoCropHeight">
-        </vue-cropper>
-        <!-- test Croppedimg> <img :src="croppedimg" /> <-->
-      </template>
+    <!--<div slot="modal-header">
+      <input type="text" id="insertfd" placeholder="음식이 잘 보일 수 있게 편집해주세요"/>
+    </div>-->
+      <b-container fluid>
+        <b-row>
+          <b-col class="modal-content-size">
+            <template v-if="option.img">
+              <vue-cropper ref="cropper" :src="option.img" :autoCrop="option.autoCrop" :autoCropWidth="option.autoCropWidth"
+                :autoCropHeight="option.autoCropHeight" :aspectRatio="option.aspectRatio">
+              </vue-cropper>
+              <!-- test Croppedimg> <img :src="croppedimg" /> <-->
+            </template>
+          </b-col>
+        </b-row>
+      </b-container>
       <div slot="modal-footer">
         <b-button variant="primary" @click="imgsubmit">확인</b-button>
         <b-button variant="secondary" @click="$bvModal.hide('cropper-modal')">닫기</b-button>
@@ -43,14 +51,15 @@ export default {
     },
     data () {
         return {
-          foodname: '',
+          foodname: '음식이 잘 보일 수 있게 편집해주세요',
           croppedimg: '',
-            option: {
-              img: null,
-              autoCrop: true,
-              autoCropWidth: 500,
-              autoCropHeight: 550
-            }
+          option: {
+            img: null,
+            autoCrop: true,
+            autoCropWidth: 500,
+            autoCropHeight: 500,
+            aspectRatio: 2
+          }
         }
     },
     mounted () {
@@ -64,8 +73,12 @@ export default {
     },
     methods: {
       imgsubmit () {
-        this.croppedimg = this.$refs.cropper.getCroppedCanvas().toDataURL()
-        this.$emit('updatefileProp', this.croppedimg)
+        // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
+        this.$refs.cropper.getCroppedCanvas().toBlob((blob) => {
+          this.croppedimg = URL.createObjectURL(blob)
+          this.$bvModal.hide('cropper-modal')
+          this.$emit('updatefileProp', this.croppedimg)
+        })
       }
     }
   }
@@ -81,5 +94,13 @@ input:focus {
 img {
   display: block;
   max-width: 100%;
+}
+.modal-content-size {
+  height: 60vh;
+  max-height: 60vh;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

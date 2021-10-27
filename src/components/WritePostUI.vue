@@ -283,15 +283,16 @@ export default {
           this.$nextTick(() => {
             this.uploadOnePhoto(this.file)
             // this.uploadFileToServer(file)
-            this.generateFileLocalUrl(this.file)
-            .then(url => {
-              this.post.img = url
-            })
-            .catch(err => {
-              console.error(`[WritePostUI] [onFileChanged] Error: ${err.message}`)
-              this.errorMsg = '이미지 불러오는 중 문제가 발생하였습니다.'
-            })
+            // this.generateFileLocalUrl(this.file)
+            // .then(url => {
+            //   this.post.img = url
+            // })
+            // .catch(err => {
+            //   console.error(`[WritePostUI] [onFileChanged] Error: ${err.message}`)
+            //   this.errorMsg = '이미지 불러오는 중 문제가 발생하였습니다.'
+            // })
             e.target.value = ''
+            this.errorMsg = ''
           })
         } else {
           console.warn(`Maximum file size: ${maxSize}, current: ${this.file.size}`)
