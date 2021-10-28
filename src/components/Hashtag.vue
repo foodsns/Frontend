@@ -1,7 +1,8 @@
 <template>
  <!-- https://www.creative-tim.com/vuematerial/components/chips -->
 <div class="box">
-    <md-chip v-for = "hash in form(this.postList)" :key="hash.id" class="md-primary" md-deletable md-clickable>{{hash[0]}}</md-chip>
+    <!-- <md-chips v-model="hashtag"></md-chips> -->
+    <md-chip @click="click($event, hash)" v-for = "hash in form(this.postList)" :key="hash.id" class="md-primary" @md-delete="deleteHandler($event)" md-deletable md-clickable>{{hash[0]}}</md-chip>
 </div>
 </template>
 
@@ -17,9 +18,24 @@ export default {
         }
     },
     methods: {
+        click: function (event, hash) {
+            var hashvalue = event.target.textContent
+            console.log(hashvalue)
+            console.log(this.hashtag)
+            // var index = (this.hashtag).findindex(i => i === hashvalue)
+            var index = (this.hashtag).indexOf(hashvalue)
+            console.log(index)
+            if (index > -1) {
+                this.hashtag.splice(index, 1)
+            }
+        },
+        deleteHandler (event) {
+            console.log(event)
+        },
+
         form: function (postList) {
-            for (let i = 0; i < this.postList.length; i++) {
-                this.hashtag[i] = this.postList[i].hashtag
+            for (let i = 0; i < postList.length; i++) {
+                this.hashtag[i] = postList[i].hashtag
             }
             return this.getSortArr(this.hashtag)
         },
@@ -43,7 +59,8 @@ export default {
     data () {
             return {
                 postList: this.postListProps,
-                    hashtag: []
+                result_hashtag: [],
+                hashtag: []
             }
         }
 }
