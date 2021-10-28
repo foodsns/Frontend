@@ -9,9 +9,9 @@
               @on-custom-overlay-clicked="onCustomOverlayClicked"></kakao-map>
     <b-container class="body">
       <b-row align-h="end">
-        <b-col style="text-align: left;position:relative;">
-          <b-button pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="dice" style="margin-right: 5px"/></b-button>
-          <goodlist-btn></goodlist-btn>
+        <b-col style="text-align: left; position:relative;">
+          <random-btn class="btnClass"></random-btn>
+          <goodlist-btn class="btnClass"></goodlist-btn>
         </b-col>
         <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
           <profile-icon style="position: relative"></profile-icon>
@@ -237,7 +237,7 @@ export default {
         if (!isInfinite) {
           this.postList.splice(0)
         }
-        console.log("postCount: " + postCount)
+        console.log('postCount: ' + postCount)
         return postList
       })
       .then(_postList => {
@@ -430,5 +430,9 @@ input[type=text] {
 }
 div.input-group-append > button{
   border-color: transparent;
+}
+
+.btnClass {
+  display: inline-block;
 }
 </style>

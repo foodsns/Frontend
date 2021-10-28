@@ -1,7 +1,9 @@
 <template>
     <div>
-        <b-button class = "random-btn" pill variant="outline-danger" v-b-modal = "'random-modal'">랜덤선택</b-button>
-        <b-modal id="random-modal">랜덤결과 창입니다.</b-modal>
+      <b-button class = "random-btn" pill variant="outline-secondary" v-b-modal = "'random-modal'">
+        <font-awesome-icon icon="dice" style="margin-right: 5px"/>
+      </b-button>
+      <b-modal id="random-modal">랜덤결과 창입니다.</b-modal>
     </div>
 </template>
 
@@ -10,11 +12,6 @@
 
 <style>
 .random-btn{
-  position : fixed;
-  bottom : 30px;
-  right : 30px;
-  width : 90px;
-  height : 90px;
-  border-radius : 100px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 </style>
