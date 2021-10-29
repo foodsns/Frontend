@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, IconsPlugin, ToastPlugin, BToast } from 'bootstrap-vue'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -81,6 +81,7 @@ Vue.component('user-gps-logo', UserGps)
 // =======
 Vue.component('crop-modal', CropModal)
 // >>>>>>> a1e5411e9c428e002668909f8c9368d74655cec1
+Vue.component('b-toast', BToast)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
@@ -93,7 +94,7 @@ Vue.use(BootstrapVue, {
 })
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
-
+Vue.use(ToastPlugin)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
