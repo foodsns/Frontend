@@ -205,6 +205,7 @@ export default {
       this.submitProcessing = true
       const docID = this.firestoreDao.getDocumentID()
       if (this.file) {
+        this.uploadToast()
         this.uploadFileToServer(docID, this.file)
         .then(url => {
           this.post.img = url
@@ -330,6 +331,16 @@ export default {
     updatefileProp: function (file) {
       this.post.img = file
       this.cropModal.show = false
+    },
+    uploadToast: function () {
+      // https://stackoverflow.com/questions/68269598/vue-bootstrap-toaster-instantly-vanishing-hiding-itself/69010546#69010546
+        this.$root.$bvToast.toast('게시물 업로드 완료', {
+          autoHideDelay: 10000,
+          toaster: 'b-toaster-top-center',
+          variant: 'secondary',
+          title: 'upload',
+          noAutoHide: true
+        })
     }
   },
   computed: {

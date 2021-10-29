@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, IconsPlugin, BToast, ToastPlugin } from 'bootstrap-vue'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -95,6 +95,8 @@ Vue.component('crop-modal', CropModal)
 Vue.component('write-post-ui', WritePostUI)
 Vue.component('share-addr', ShareAddr)
 
+Vue.component('b-toast', BToast)
+
 Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
@@ -106,6 +108,7 @@ Vue.use(BootstrapVue, {
 })
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+Vue.use(ToastPlugin)
 
 Vue.config.productionTip = false
 
