@@ -42,6 +42,9 @@
           <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
         <b-col style="text-align:right;">
+          <b-modal id="upload-modal" ok-only>
+              게시물 업로드 완료
+          </b-modal>
           <b-button pill variant="outline-warning" @click="onCancelBtnClicked()">취소</b-button>
           <b-button pill variant="outline-secondary" :disabled="!validateForm || submitProcessing" @click="onSubmit()">게시하기</b-button>
         </b-col>
@@ -208,7 +211,6 @@ export default {
       this.submitProcessing = true
       const docID = this.firestoreDao.getDocumentID()
       if (this.file) {
-        this.uploadToast()
         this.uploadFileToServer(docID, this.file)
         .then(url => {
           this.post.img = url
@@ -222,6 +224,7 @@ export default {
         })
         .then(result => {
           console.log('result', result)
+          this.$bvModal.show('upload-modal')
           this.$emit('submit-success')
           this.$nextTick(() => {
             this.submitProcessing = false

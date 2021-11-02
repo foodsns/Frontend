@@ -7,7 +7,8 @@
                     <b-button pill variant="outline-secondary" @click="onBtnUpdateClicked()"><font-awesome-icon icon="edit" style="margin-right: 5px"/></b-button>
                 </b-col>
                 <b-col style="text-align:right">
-                    <b-button pill variant="outline-secondary" @click="onBtnDeleteClicked()"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
+                    <b-modal id="deleteCheck-modal" @ok="handleOk">게시물을 삭제하시겠습니까?</b-modal>
+                    <b-button v-b-modal.deleteCheck-modal pill variant="outline-secondary"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
                 </b-col>
             </b-row>
         </template>
@@ -82,6 +83,10 @@ export default {
         },
         onBtnUpdateClicked: function () {
             Vue.prototype.$notify.$emit('onFocusedPostChanged', this.post)
+        },
+        handleOk (bvModalEvt) {
+            bvModalEvt.preventDefault()
+            this.onBtnDeleteClicked()
         },
         onBtnDeleteClicked: function () {
             this.firestoreDao.deletePost(this.postItem.docID)
