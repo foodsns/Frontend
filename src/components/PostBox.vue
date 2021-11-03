@@ -7,8 +7,14 @@
                     <b-button pill variant="outline-secondary" @click="onBtnUpdateClicked()"><font-awesome-icon icon="edit" style="margin-right: 5px"/></b-button>
                 </b-col>
                 <b-col style="text-align:right">
-                    <b-modal id="deleteCheck-modal" @ok="handleOk">게시물을 삭제하시겠습니까?</b-modal>
-                    <b-button v-b-modal.deleteCheck-modal pill variant="outline-secondary"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
+                    <b-modal hide-backdrop="true" id="deleteSuccess-modal" @ok ="onBtnDeleteClicked()" ok-only>게시물 삭제 완료</b-modal>
+                    <b-modal hide-backdrop="true"
+                        id="deleteCheck-modal"
+                        @ok="deleteHandleOk"
+                        @cancel="$bvModal.hide('deleteCheck-modal')">
+                        게시물을 삭제하시겠습니까?
+                    </b-modal>
+                    <b-button @click="$bvModal.show('deleteCheck-modal')" pill variant="outline-secondary"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
                 </b-col>
             </b-row>
         </template>
@@ -84,11 +90,13 @@ export default {
         onBtnUpdateClicked: function () {
             Vue.prototype.$notify.$emit('onFocusedPostChanged', this.post)
         },
-        handleOk (bvModalEvt) {
-            bvModalEvt.preventDefault()
-            this.onBtnDeleteClicked()
+        deleteHandleOk (bvModalEvt) {
+            this.$bvModal.hide('deleteCheck-modal')
+            this.$bvModal.show('deleteSuccess-modal')
+            // bvModalEvt.preventDefault()
         },
         onBtnDeleteClicked: function () {
+            this.$bvModal.hide('deleteSuccess-modal')
             this.firestoreDao.deletePost(this.postItem.docID)
             .then(() => {
                 Vue.prototype.$notify.$emit('Need refresh')
