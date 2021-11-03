@@ -80,6 +80,9 @@
           <b-form-invalid-feedback :state="validateForm" style="text-align:right;padding-left: 10px">
             자세한 리뷰, 위치, 사진이 필요합니다.
           </b-form-invalid-feedback>
+          <b-form-invalid-feedback :state="unAddress" style="text-align:right;padding-left: 10px">
+            위치정보가 필요합니다.
+          </b-form-invalid-feedback>
         </b-col>
       </b-row>
       <b-row style="padding: 0 0 5px" v-if="errorMsg">
@@ -205,7 +208,6 @@ export default {
       this.submitProcessing = true
       const docID = this.firestoreDao.getDocumentID()
       if (this.file) {
-        this.uploadToast()
         this.uploadFileToServer(docID, this.file)
         .then(url => {
           this.post.img = url
@@ -219,6 +221,8 @@ export default {
         })
         .then(result => {
           console.log('result', result)
+          this.showUploaSuccessdModal()
+          this.onCancelBtnClicked() // 임시 초기화
           this.$emit('submit-success')
           this.$nextTick(() => {
             this.submitProcessing = false
@@ -363,6 +367,71 @@ export default {
     },
     validateAuth: function () {
       return Vue.prototype.$firebaseAuth.getCurrentUserUid()
+    }
+      }
+    },
+    uploadFileToServer: function (docID, file) {
+      this.uploadProcessing = true
+      return this.firebaseStorageInstance.uploadFile(docID, file)
+      .then(url => {
+        this.uploadProcessing = false
+        return url
+      })
+      .catch(err => {
+        this.uploadProcessing = false
+        console.error(`[WritePostUI] [uploadFileToServer] Error: ${err.message}`)
+        this.errorMsg = '이미지 업로드 중 문제가 발생하였습니다.'
+      })
+    },
+    onGpsAddrLoaded: function (location) {
+      this.post.country = '대한민국'
+      this.post.city = location.addr1
+      this.post.state = location.addr2
+      this.post.street = location.addr3
+      this.post.lat = location.lat
+      this.post.lot = location.lot
+      this.fullAddr = `${this.post.city} ${this.post.state} ${this.post.street}`
+    },
+    onGpsAddrFailed: function (errMsg) {
+      this.gpsAddrFailMsg = errMsg
+    },
+    updatefileProp: function (file) {
+      this.post.img = file
+      this.cropModal.show = false
+    },
+    showUploaSuccessdModal: function () {
+        this.$bvModal.msgBoxOk('게시물 업로드 완료', {
+          title: ' ',
+          size: 'md',
+          okTitle: '확인',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0'
+        })
+      }
+  },
+  computed: {
+    // https://stackoverflow.com/a/29743813/7270469
+    validateTextArea: function () {
+      const descriptRegex = this.post.descript.match(/^[\p{L}\t\n\r\s\\#]{2,200}$/u)
+      // console.log(descriptRegex, this.post.hashtag)
+      return descriptRegex != null && this.post.hashtag != null
+    },
+    validateAddress: function () {
+      return this.post.country &&
+              this.post.city &&
+              this.post.state &&
+              this.post.street &&
+              (this.post.lat >= -90 && this.post.lat <= 90) &&
+              (this.post.lot >= -180 && this.post.lot <= 180)
+    },
+    validateForm: function () {
+      return this.validateTextArea && this.validateAddress && this.validateAuth && this.post.img != null
+    },
+    validateAuth: function () {
+      return Vue.prototype.$firebaseAuth.getCurrentUserUid()
+    },
+    unAddress: function () {
+      return this.validateAddress != null
     }
   }
 }

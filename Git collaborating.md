@@ -76,3 +76,5 @@ https://user-images.githubusercontent.com/16532326/133429590-8a9cf8e2-8b39-4279-
 ![asdf](https://images.velog.io/post-images/dooreplay/6a424fa0-e281-11e9-9cc9-c52279a372a5/image.png)
 
 위와 같이 자동 병합이 실패한다는 문구가 표시되어지는 경우 `git conflict issue` 가 발생하였으므로 팀원과 같이 상의하며 어떤 부분의 소스로 수정하여 병합해야하는지 해결해야 함
+
+[Git conflict event](https://github.com/foodsns/Frontend/pull/109#issuecomment-955139898)

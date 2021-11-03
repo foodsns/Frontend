@@ -7,11 +7,13 @@
 
 <script>
 import FirebaseAuth from './module/firebaseAuth.controller'
+import { EventBus } from './lib/event-bus'
 import Vue from 'vue'
 export default {
     name: 'App',
     beforeCreate () {
       Vue.prototype.$firebaseAuth = new FirebaseAuth()
+      Vue.prototype.$notify = EventBus
     }
 }
 </script>
