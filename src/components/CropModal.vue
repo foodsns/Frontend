@@ -4,6 +4,7 @@
     <b-modal
       id="cropper-modal"
       ref="cropper-modal"
+      scrollable
       v-bind:title="foodname"
       centered
       :no-close-on-backdrop="true"
@@ -16,7 +17,7 @@
           <b-col class="modal-content-size">
             <template v-if="option.img">
               <vue-cropper ref="cropper" :src="option.img" :autoCrop="option.autoCrop" :autoCropWidth="option.autoCropWidth"
-                :autoCropHeight="option.autoCropHeight" :aspectRatio="option.aspectRatio">
+                :autoCropHeight="option.autoCropHeight" :aspectRatio="option.aspectRatio" :viewMode="option.viewMode">
               </vue-cropper>
               <!-- test Croppedimg> <img :src="croppedimg" /> <-->
             </template>
@@ -58,7 +59,8 @@ export default {
             autoCrop: true,
             autoCropWidth: 500,
             autoCropHeight: 500,
-            aspectRatio: 2
+            aspectRatio: 2,
+            viewMode: 3
           }
         }
     },
