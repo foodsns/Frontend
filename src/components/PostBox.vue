@@ -7,14 +7,7 @@
                     <b-button pill variant="outline-secondary" @click="onBtnUpdateClicked()"><font-awesome-icon icon="edit" style="margin-right: 5px"/></b-button>
                 </b-col>
                 <b-col style="text-align:right">
-                    <b-modal hide-backdrop="true" id="deleteSuccess-modal" @ok ="onBtnDeleteClicked()" ok-only>게시물 삭제 완료</b-modal>
-                    <b-modal hide-backdrop="true"
-                        id="deleteCheck-modal"
-                        @ok="deleteHandleOk"
-                        @cancel="$bvModal.hide('deleteCheck-modal')">
-                        게시물을 삭제하시겠습니까?
-                    </b-modal>
-                    <b-button @click="$bvModal.show('deleteCheck-modal')" pill variant="outline-secondary"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
+                    <b-button @click="showUpDeleteCheckModal()" pill variant="outline-secondary"><font-awesome-icon icon="trash" style="margin-right: 5px"/></b-button>
                 </b-col>
             </b-row>
         </template>
@@ -90,10 +83,34 @@ export default {
         onBtnUpdateClicked: function () {
             Vue.prototype.$notify.$emit('onFocusedPostChanged', this.post)
         },
+        showUpDeleteCheckModal: function () {
+            // this.$bvModal.show('deleteCheck-modal')
+            this.$bvModal.msgBoxConfirm('게시물을 삭제하시겠습니까?', {
+                title: ' ',
+                okTitle: '확인',
+                cancelTitle: '취소',
+                headerClass: 'p-2 border-bottom-0',
+                footerClass: 'p-2 border-top-0',
+                hideHeaderClose: false
+            }).then(value => {
+                if (value === true) {
+                    this.deleteHandleOk()
+                } else {
+                    this.$bvModal.hide()
+                }
+            })
+        },
         deleteHandleOk (bvModalEvt) {
-            this.$bvModal.hide('deleteCheck-modal')
-            this.$bvModal.show('deleteSuccess-modal')
-            // bvModalEvt.preventDefault()
+        this.$bvModal.msgBoxOk('게시물 삭제 완료', {
+            title: ' ',
+                okTitle: '확인',
+                headerClass: 'p-2 border-bottom-0',
+                footerClass: 'p-2 border-top-0',
+                hideHeaderClose: true
+        })
+        .then(value => {
+            this.onBtnDeleteClicked()
+        })
         },
         onBtnDeleteClicked: function () {
             this.$bvModal.hide('deleteSuccess-modal')
