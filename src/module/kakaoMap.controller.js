@@ -1,3 +1,5 @@
+import {makeDonuuut} from 'donuuut'
+
 export default class KakaoMapController {
     kakao = null
     mapContainer = null
@@ -321,11 +323,46 @@ export default class KakaoMapController {
         this.markerList.splice(idx, withSplice)
     }
 
+    findDuplicatePosMarker (array) {
+        const latLotDic = {}
+        array.forEach(item => {
+            const key = `${item.lat}_${item.lot}`
+            console.log(`key`, key, latLotDic.hasOwnProperty(key))
+            if (latLotDic.hasOwnProperty(key)) {
+                latLotDic[key].push(item)
+            } else {
+                latLotDic[key] = [item]
+            }
+        })
+        const fixedArray = []
+        Object.keys(latLotDic).forEach(key => {
+            const donuutArray = makeDonuuut(
+                {
+                    blockSize: 32,
+                    radius: 50,
+                    offset: 16,
+                    itemSize: latLotDic[key].length
+                })
+            console.log('key', key, donuutArray)
+            let idx = 0
+            latLotDic[key].forEach(item => {
+                item.offsetX = donuutArray[idx].x
+                item.offsetY = donuutArray[idx].y
+                idx++
+                fixedArray.push(item)
+            })
+        })
+        return fixedArray
+    }
+
     setMarkerList (array) {
         this.resetMarkerList()
         if (!array && array.length < 0) {
             throw new Error(`Unexpected array detected`)
         }
+
+        array = this.findDuplicatePosMarker(array)
+        console.log('setMarkerList', array)
 
         array.forEach(item => {
             this.addMarker(item.lat, item.lot, item.id)
