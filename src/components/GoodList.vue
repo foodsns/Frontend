@@ -1,6 +1,11 @@
 <template>
 <div>
-    <b-button  v-on:click="[on(), showlist()] " class="goodlist-btn" pill variant="outline-danger" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+    <b-button
+        v-b-tooltip.hover.topleft.v-danger title="좋아요 누른 게시물" placement = "bottom"
+        v-on:click="[on(), showlist()] "
+        class="goodlist-btn"
+        pill variant="outline-danger"
+        style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
         <b-icon icon="heart-fill" ></b-icon>
     </b-button>
 </div>
@@ -36,4 +41,5 @@ div {
     display: inline-block;
     margin-left: 5px;
 }
+
 </style>
