@@ -1,6 +1,7 @@
 <template>
     <div>
-      <b-button class = "random-btn" pill variant="outline-secondary" v-b-modal = "'random-modal'">
+      <b-button v-b-tooltip.hover.topright.v-secondary title="음식점 랜덤선택" placement = "bottom"
+        class = "random-btn" pill variant="outline-secondary" v-b-modal = "'random-modal'">
         <font-awesome-icon icon="dice" style="margin-right: 5px"/>
       </b-button>
       <b-modal id="random-modal">랜덤결과 창입니다.</b-modal>
