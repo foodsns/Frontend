@@ -19,6 +19,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "bootstrap": "^5.1.1",
     "bootstrap-vue": "^2.21.2",
+    "donuuut": "^0.1.0",
     "firebase": "^9.0.2",
     "vue": "^2.5.2",
     "vue-cropperjs": "^4.2.0",
