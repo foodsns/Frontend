@@ -44,7 +44,6 @@ export default {
         },
         firebaseSignOut: function () {
             Vue.prototype.$firebaseAuth.signOut()
-            location.reload()
             this.toggleDropdown = false
         }
     }

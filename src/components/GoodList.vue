@@ -1,7 +1,7 @@
 <template>
 <div>
     <b-button
-        :disabled="!validateForm"
+        :disabled="!isLoggedIn"
         v-b-tooltip.hover.topleft.v-danger title="좋아요 누른 게시물" placement = "bottom"
         v-on:click="[on(), showlist()] "
         class="goodlist-btn"
@@ -20,30 +20,30 @@ export default {
     name: 'likelist-btn',
     data () {
         return {
-            value: false
+            value: false,
+            isLoggedIn: null
         }
+    },
+    mounted () {
+        Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+            if (isLoggedIn) {
+                this.isLoggedIn = isLoggedIn
+            } else {
+                this.isLoggedIn = isLoggedIn
+                console.log('login no: ' + this.isLoggedIn)
+            }
+        })
     },
     methods: {
         showlist: function () {
             this.$router.push('goodlist')
-            },
+        },
         on: function () {
             EventBus.$on('use-eventBus', function (value) {
                 this.value = value
                 console.log('데이터 받습니다: ', value)
                 return value
-        })
-        }
-    },
-    computed: {
-        validateForm: function () {
-            if (Vue.prototype.$firebaseAuth.getCurrentUserUid() != null) {
-                console.log('로그인')
-                return 1
-            } else {
-                console.log('로그인x')
-                return 0
-            }
+            })
         }
     }
 }
