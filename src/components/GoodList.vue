@@ -28,9 +28,10 @@ export default {
         Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
             if (isLoggedIn) {
                 this.isLoggedIn = isLoggedIn
+                console.log('로그인 상태: ' + this.isLoggedIn)
             } else {
                 this.isLoggedIn = isLoggedIn
-                console.log('login no: ' + this.isLoggedIn)
+                console.log('로그인 상태: ' + this.isLoggedIn)
             }
         })
     },
