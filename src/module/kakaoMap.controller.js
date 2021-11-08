@@ -1,4 +1,5 @@
 import {makeDonuuut} from 'donuuut'
+import markerImg from '../assets/marker.png'
 
 export default class KakaoMapController {
     kakao = null
@@ -13,6 +14,8 @@ export default class KakaoMapController {
 
     focusedMarkerID = null
     focusedCustomOverlayID = null
+
+    ICON_SIZE = 78
 
     constructor (mapEle, onMarkerClicked = null, onCustomOverlayClicked = null) {
         this.mapContainer = mapEle // document.querySelector(mapEleId)
@@ -265,12 +268,21 @@ export default class KakaoMapController {
         this.kakao.maps.event.trigger(this.markerList[1], 'click')
     }
 
-    addMarker (lat, lot, id) {
+    addMarker (lat, lot, id, x, y) {
         this.validateKakaoMapInstance()
         const markerPosition = new this.kakao.maps.LatLng(lat, lot)
 
+        var icon = new this.kakao.maps.MarkerImage(
+            markerImg,
+            new this.kakao.maps.Size(this.ICON_SIZE, this.ICON_SIZE),
+            {
+                offset: new this.kakao.maps.Point(x, y)
+            }
+        )
+
         const marker = new this.kakao.maps.Marker({
-            position: markerPosition
+            position: markerPosition,
+            image: icon
         })
         this.kakao.maps.event.addListener(marker, 'click', () => {
             const linkedCustomOverlay = this.customOverlayList.find(overlay => overlay.data.id === id)
@@ -327,7 +339,7 @@ export default class KakaoMapController {
         const latLotDic = {}
         array.forEach(item => {
             const key = `${item.lat}_${item.lot}`
-            console.log(`key`, key, latLotDic.hasOwnProperty(key))
+            // console.log(`key`, key, latLotDic.hasOwnProperty(key))
             if (latLotDic.hasOwnProperty(key)) {
                 latLotDic[key].push(item)
             } else {
@@ -338,12 +350,12 @@ export default class KakaoMapController {
         Object.keys(latLotDic).forEach(key => {
             const donuutArray = makeDonuuut(
                 {
-                    blockSize: 32,
-                    radius: 50,
-                    offset: 16,
+                    blockSize: this.ICON_SIZE,
+                    radius: 90,
+                    offset: this.ICON_SIZE / 2,
                     itemSize: latLotDic[key].length
                 })
-            console.log('key', key, donuutArray)
+            // console.log('key', key, donuutArray)
             let idx = 0
             latLotDic[key].forEach(item => {
                 item.offsetX = donuutArray[idx].x
@@ -365,7 +377,7 @@ export default class KakaoMapController {
         console.log('setMarkerList', array)
 
         array.forEach(item => {
-            this.addMarker(item.lat, item.lot, item.id)
+            this.addMarker(item.lat, item.lot, item.id, item.offsetX, item.offsetY)
         })
     }
 
