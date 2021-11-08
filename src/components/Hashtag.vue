@@ -74,6 +74,8 @@ export default {
     width : 300px;
     height : 100px; */
     padding: 15px;
+    white-space: nowrap;
+    overflow-x: auto;
 }
 
 </style>
