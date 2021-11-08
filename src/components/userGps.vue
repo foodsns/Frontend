@@ -1,7 +1,6 @@
 <template>
     <span class = "userGps">
         <b-button
-            v-b-tooltip.hover.left.v-secondary title="내 위치" placement = "bottom"
             pill variant="outline-secondary" @click="onLocationLoaderClicked()" :disabled="processing"><font-awesome-icon icon="map-marker-alt"/></b-button>
         <div ref="hiddenMap" style="display:none"></div>
     </span>
