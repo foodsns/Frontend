@@ -19,6 +19,7 @@ export default class FirebaseAuth {
         return signInWithPopup(auth, provider)
         .then((result) => {
             console.log(`[firebaseAuth] [googleSignUp] Sign up successfully`)
+            location.reload()
             return result
         }).catch((error) => {
             console.error('[firebaseAuth] [googleSignUp]: error', error)
