@@ -15,7 +15,7 @@ export default class KakaoMapController {
     focusedMarkerID = null
     focusedCustomOverlayID = null
 
-    ICON_SIZE = 78
+    ICON_SIZE = 64
 
     constructor (mapEle, onMarkerClicked = null, onCustomOverlayClicked = null) {
         this.mapContainer = mapEle // document.querySelector(mapEleId)
