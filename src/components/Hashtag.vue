@@ -2,7 +2,7 @@
  <!-- https://www.creative-tim.com/vuematerial/components/chips -->
 <div class="box">
     <!-- <md-chips v-model="hashtag"></md-chips> -->
-    <md-chip @click="click($event, hash)" v-for = "hash in form(this.postList)" :key="hash.id" class="md-primary" @md-delete="deleteHandler($event)" md-deletable md-clickable>{{hash[0]}}</md-chip>
+    <md-chip @click="click($event, index)" v-for = "(hash, index) in renderHashtag" :key="hash.id" class="md-primary" @md-delete="deleteHandler($event)" md-deletable md-clickable>{{hash[0]}}</md-chip>
 </div>
 </template>
 
@@ -17,16 +17,22 @@ export default {
             }
         }
     },
+    watch: {
+        postListProps: function (val) {
+            this.deletedHastagIdxList.splice(0)
+        }
+    },
+    computed: {
+        renderHashtag: function () {
+            const arr = this.form(this.postListProps)
+            this.deletedHastagIdxList.forEach(idx => arr.splice(idx, 1))
+            return arr
+        }
+    },
     methods: {
-        click: function (event, hash) {
-            var hashvalue = event.target.textContent
-            console.log(hashvalue)
-            console.log(this.hashtag)
-            // var index = (this.hashtag).findindex(i => i === hashvalue)
-            var index = (this.hashtag).indexOf(hashvalue)
-            console.log(index)
+        click: function (event, index) {
             if (index > -1) {
-                this.hashtag.splice(index, 1)
+                this.deletedHastagIdxList.push(index)
             }
         },
         deleteHandler (event) {
@@ -60,7 +66,8 @@ export default {
             return {
                 postList: this.postListProps,
                 result_hashtag: [],
-                hashtag: []
+                hashtag: [],
+                deletedHastagIdxList: []
             }
         }
 }
