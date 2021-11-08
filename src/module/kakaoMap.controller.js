@@ -183,7 +183,8 @@ export default class KakaoMapController {
                         text-overflow: ellipsis;
                         overflow-wrap: break-word;
                         word-break: break-all;
-                        height: 50px;">
+                        width: 100%;
+                        height: 70px;">
                         ${item.descript}
                     </p>
                     <img data-v-8bdc44ea="" src="${item.profileImg}" style="
@@ -194,7 +195,7 @@ export default class KakaoMapController {
                         position: absolute;
                         border-radius: 12px;
                     ">
-                    <span style="
+                    <span id="close" style="
     position: absolute;
     right: 5px;
     bottom: 5px;
@@ -219,7 +220,10 @@ export default class KakaoMapController {
         customOverlay.data = item
         customOverlay.setVisible(false)
         // https://devtalk.kakao.com/t/topic/44205/8
-        customOverlay.a.addEventListener('click', (e) => {
+        customOverlay.a.querySelector('span#close').addEventListener('click', (e) => {
+            customOverlay.setVisible(!customOverlay.getVisible())
+        })
+        customOverlay.a.querySelector('p').addEventListener('click', (e) => {
             if (this.onCustomOverlayClicked) {
                 this.onCustomOverlayClicked(item.id)
             }
