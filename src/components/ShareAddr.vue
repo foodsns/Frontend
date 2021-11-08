@@ -3,6 +3,7 @@
     border-radius: 5px;
     padding: 2px;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><span @click="copyToClipboard(`${host}?address=${fullAddr}`)" id="address-share">{{fullAddr}}
         <font-awesome-icon icon="share"/>
+        <font-awesome-icon icon="times"/>
         </span>
         <b-tooltip target="address-share" triggers="click" placement="bottomright">
             복사되었습니다!
