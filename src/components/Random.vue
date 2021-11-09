@@ -59,7 +59,7 @@ export default {
     // 3: (2) ['#온더보더', 1]
     // 4: (2) ['#롯데월드', 1]
     // 5: (2) ['#아웃백', 1]
-      const sum = hashTagList.reduce((p, c) => p + Number(c[1]))
+      const sum = hashTagList.reduce((p, c) => p + Number(c[1]), 0)
       const randomList = hashTagList.map((item, idx) => [...item, item[1] / sum])
       const ranVal = devMode && randomVal >= 0 ? randomVal : Math.random()
       console.log(`[Random] [calcHashTagBasedRandom] randomList:`, randomList, `, ranVal : ${ranVal}, sum: ${sum}`)
