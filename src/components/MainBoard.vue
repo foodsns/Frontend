@@ -21,7 +21,7 @@
         <b-col cols="8" style="text-align: left">
           <b-row style="margin-top: 5px;">
             <b-col style="position:relative">
-              <span><user-gps-logo ref="userGps" v-b-tooltip.hover.bottom.v-secondary title="내 위치" placement = "bottom" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
+              <span><user-gps-logo ref="userGps" v-b-tooltip.hover.left.v-secondary title="내 위치" placement = "bottom" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
               <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
               <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
               <b-button v-if="viewMode === 'map'" @click="formVisibleToggle = !formVisibleToggle" pill variant="outline-secondary" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;"><font-awesome-icon icon="pencil-alt"/></b-button>
