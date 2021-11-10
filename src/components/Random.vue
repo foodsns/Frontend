@@ -8,6 +8,14 @@
         id = "randomBtn">
         <font-awesome-icon icon="dice" style="margin-right: 5px"/>
       </b-button>
+      <div id="custom-backdrop" ref="custom-backdrop" v-if="selectedRandomPost">
+        <span id="btn-close" @click="onRandomCloseBtnClicked()">
+          <font-awesome-icon icon="times"/>
+        </span>
+        <div>
+          <post-box v-bind:post="selectedRandomPost"></post-box>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -23,7 +31,8 @@ export default {
   },
   data () {
     return {
-      hashTagList: []
+      hashTagList: [],
+      selectedRandomPost: null
     }
   },
   methods: {
@@ -33,9 +42,14 @@ export default {
         hideHeaderClose: false
       })
     },
+    onRandomCloseBtnClicked: function () {
+      this.selectedRandomPost = null
+    },
     onRandomBtnClicked: function (devMode = false, randomVal = -1) {
+      this.selectedRandomPost = null
       const postList = this.postListProps
-      console.log('ran', this.calcGoodCountBasedRandom(postList, devMode, randomVal))
+      this.selectedRandomPost = this.calcGoodCountBasedRandom(postList, devMode, randomVal)
+      console.log('ran', this.selectedRandomPost)
     },
     getRandomInt: function (min, max) {
       min = Math.ceil(min)
@@ -132,5 +146,36 @@ export default {
 <style>
 .random-btn{
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+div#custom-backdrop {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div#custom-backdrop > div {
+  width: 300px;
+  height: 400px;
+}
+
+div#custom-backdrop > div > div#postbox {
+  margin: 0;
+}
+
+span#btn-close {
+  color: white;
+  font-size: 2.5em;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
 }
 </style>
