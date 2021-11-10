@@ -8,7 +8,7 @@
         id = "randomBtn">
         <font-awesome-icon icon="dice" style="margin-right: 5px"/>
       </b-button>
-      <div id="custom-backdrop" ref="custom-backdrop" v-if="selectedRandomPost">
+      <div id="custom-backdrop" ref="custom-backdrop" v-if="selectedRandomPost" @click="onRandomCloseBtnClicked()">
         <span id="btn-close" @click="onRandomCloseBtnClicked()">
           <font-awesome-icon icon="times"/>
         </span>
