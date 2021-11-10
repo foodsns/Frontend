@@ -13,7 +13,7 @@
           <font-awesome-icon icon="times"/>
         </span>
         <div>
-          <post-box v-bind:post="selectedRandomPost"></post-box>
+          <post-box v-bind:post="selectedRandomPost" :key="selectedRandomPost.id"></post-box>
         </div>
       </div>
     </div>
@@ -48,8 +48,35 @@ export default {
     onRandomBtnClicked: function (devMode = false, randomVal = -1) {
       this.selectedRandomPost = null
       const postList = this.postListProps
-      this.selectedRandomPost = this.calcGoodCountBasedRandom(postList, devMode, randomVal)
-      console.log('ran', this.selectedRandomPost)
+      // this.selectedRandomPost = this.calcGoodCountBasedRandom(postList, devMode, randomVal)
+      // console.log('ran', this.selectedRandomPost)
+      this.randomAnimation(postList)
+      .then(() => {
+        this.selectedRandomPost = this.calcGoodCountBasedRandom(postList, devMode, randomVal)
+      })
+    },
+    delay: function () {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(), 200)
+      })
+    },
+    simpleRandomSelect: function (postList) {
+      return new Promise((resolve) => {
+        const idx = this.getRandomInt(0, postList.length)
+        this.selectedRandomPost = postList[idx]
+        resolve()
+      })
+    },
+    randomAnimation: function (postList, cnt = 10) {
+      return this.simpleRandomSelect(postList)
+      .then(() => this.delay())
+      .then(() => {
+        if (cnt <= 0) {
+          return cnt
+        } else {
+          return this.randomAnimation(postList, cnt - 1)
+        }
+      })
     },
     getRandomInt: function (min, max) {
       min = Math.ceil(min)
