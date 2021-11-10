@@ -35,7 +35,7 @@ export default {
     },
     onRandomBtnClicked: function (devMode = false, randomVal = -1) {
       const postList = this.postListProps
-      console.log('ran', this.choosePost(postList, devMode, randomVal))
+      console.log('ran', this.calcGoodCountBasedRandom(postList, devMode, randomVal))
     },
     getRandomInt: function (min, max) {
       min = Math.ceil(min)
@@ -43,7 +43,53 @@ export default {
       return Math.floor(Math.random() * (max - min)) + min
     },
     loadHashTagList: function (devMode) {
+    // 0: (2) ['#맛집', 3]
+    // 1: (2) ['#삼성컨퍼런스', 1]
+    // 2: (2) ['#코코로벤또', 1]
+    // 3: (2) ['#온더보더', 1]
+    // 4: (2) ['#롯데월드', 1]
+    // 5: (2) ['#아웃백', 1]
       return devMode ? this.hashTagList : this.$parent.$refs['hashtagEle'].renderHashtag
+    },
+    calcGoodCountBasedRandom: function (postList, devMode = false, randomVal = -1) {
+      const hashTagList = this.loadHashTagList(devMode)
+      if (!hashTagList || hashTagList.length <= 0 || !postList || postList.length <= 0) {
+        console.warn(`[Random] [calcGoodCountBasedRandom] Empty hash tag list or post list detected!`)
+        return null
+      }
+
+      const hashTagNameList = hashTagList.map(hashtag => hashtag[0])
+      const filteredPostList = postList.filter(post => hashTagNameList.includes(post.hashtag))
+      if (!filteredPostList || filteredPostList.length <= 0) {
+        console.warn(`[Random] [calcGoodCountBasedRandom] Empty hashtag based filtered post list`)
+        return null
+      }
+      const sum = filteredPostList.reduce((p, c) => p + c.good, 0)
+      const filteredPostRandomRatioList = filteredPostList.map(i => {
+        return {
+          ...i,
+          ratio: i.good / sum
+        }
+      })
+      console.log(sum, filteredPostRandomRatioList)
+
+      const ranVal = devMode && randomVal > 0 ? randomVal : Math.random()
+
+      if (ranVal < 0 || ranVal > 1) {
+        console.warn(`[Random] [calcGoodCountBasedRandom] Out of range ranVal: ${ranVal}`)
+        return null
+      }
+
+      for (let ran = 0, i = 0; i < filteredPostRandomRatioList.length && ran < 1; i++) {
+        console.log('ran', ran, ranVal, ran + filteredPostRandomRatioList[i].ratio, 'i', i)
+        if (ran <= ranVal && ranVal < ran + filteredPostRandomRatioList[i].ratio) {
+          console.log(`[Random] [calcGoodCountBasedRandom] Choosed post`, filteredPostRandomRatioList[i])
+          return filteredPostRandomRatioList[i]
+        }
+        ran += filteredPostRandomRatioList[i].ratio
+      }
+      console.warn(`[Random] [calcGoodCountBasedRandom] No one choosed. Ranval: ${ranVal}`)
+      return null
     },
     calcHashTagBasedRandom: function (postList, devMode = false, randomVal = -1) {
       const hashTagList = this.loadHashTagList(devMode)
@@ -52,13 +98,6 @@ export default {
         console.warn(`[Random] [calcHashTagBasedRandom] Empty hash tag list or post list detected!`)
         return null
       }
-
-    // 0: (2) ['#맛집', 3]
-    // 1: (2) ['#삼성컨퍼런스', 1]
-    // 2: (2) ['#코코로벤또', 1]
-    // 3: (2) ['#온더보더', 1]
-    // 4: (2) ['#롯데월드', 1]
-    // 5: (2) ['#아웃백', 1]
       const sum = hashTagList.reduce((p, c) => p + Number(c[1]), 0)
       const randomList = hashTagList.map((item, idx) => [...item, item[1] / sum])
       const ranVal = devMode && randomVal >= 0 ? randomVal : Math.random()
