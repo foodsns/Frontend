@@ -1,3 +1,6 @@
+import {makeDonuuut} from 'donuuut'
+import markerImg from '../assets/marker.png'
+
 export default class KakaoMapController {
     kakao = null
     mapContainer = null
@@ -11,6 +14,8 @@ export default class KakaoMapController {
 
     focusedMarkerID = null
     focusedCustomOverlayID = null
+
+    ICON_SIZE = 64
 
     constructor (mapEle, onMarkerClicked = null, onCustomOverlayClicked = null) {
         this.mapContainer = mapEle // document.querySelector(mapEleId)
@@ -178,7 +183,8 @@ export default class KakaoMapController {
                         text-overflow: ellipsis;
                         overflow-wrap: break-word;
                         word-break: break-all;
-                        height: 50px;">
+                        width: 100%;
+                        height: 70px;">
                         ${item.descript}
                     </p>
                     <img data-v-8bdc44ea="" src="${item.profileImg}" style="
@@ -189,7 +195,14 @@ export default class KakaoMapController {
                         position: absolute;
                         border-radius: 12px;
                     ">
-                    
+                    <span id="close" style="
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    font-size: 1.75em;
+">
+    <svg data-v-f266cf20="" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" class="svg-inline--fa fa-times fa-w-11"><path data-v-f266cf20="" fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z" class=""></path></svg>
+</span>
                 </div>
             </div>
         `
@@ -207,7 +220,10 @@ export default class KakaoMapController {
         customOverlay.data = item
         customOverlay.setVisible(false)
         // https://devtalk.kakao.com/t/topic/44205/8
-        customOverlay.a.addEventListener('click', (e) => {
+        customOverlay.a.querySelector('span#close').addEventListener('click', (e) => {
+            customOverlay.setVisible(!customOverlay.getVisible())
+        })
+        customOverlay.a.querySelector('p').addEventListener('click', (e) => {
             if (this.onCustomOverlayClicked) {
                 this.onCustomOverlayClicked(item.id)
             }
@@ -263,12 +279,21 @@ export default class KakaoMapController {
         this.kakao.maps.event.trigger(this.markerList[1], 'click')
     }
 
-    addMarker (lat, lot, id) {
+    addMarker (lat, lot, id, x, y) {
         this.validateKakaoMapInstance()
         const markerPosition = new this.kakao.maps.LatLng(lat, lot)
 
+        var icon = new this.kakao.maps.MarkerImage(
+            markerImg,
+            new this.kakao.maps.Size(this.ICON_SIZE, this.ICON_SIZE),
+            {
+                offset: new this.kakao.maps.Point(x, y)
+            }
+        )
+
         const marker = new this.kakao.maps.Marker({
-            position: markerPosition
+            position: markerPosition,
+            image: icon
         })
         this.kakao.maps.event.addListener(marker, 'click', () => {
             const linkedCustomOverlay = this.customOverlayList.find(overlay => overlay.data.id === id)
@@ -321,14 +346,49 @@ export default class KakaoMapController {
         this.markerList.splice(idx, withSplice)
     }
 
+    findDuplicatePosMarker (array) {
+        const latLotDic = {}
+        array.forEach(item => {
+            const key = `${item.lat}_${item.lot}`
+            // console.log(`key`, key, latLotDic.hasOwnProperty(key))
+            if (latLotDic.hasOwnProperty(key)) {
+                latLotDic[key].push(item)
+            } else {
+                latLotDic[key] = [item]
+            }
+        })
+        const fixedArray = []
+        Object.keys(latLotDic).forEach(key => {
+            const donuutArray = makeDonuuut(
+                {
+                    blockSize: this.ICON_SIZE,
+                    radius: 90,
+                    offset: this.ICON_SIZE / 2,
+                    itemSize: latLotDic[key].length
+                })
+            // console.log('key', key, donuutArray)
+            let idx = 0
+            latLotDic[key].forEach(item => {
+                item.offsetX = donuutArray[idx].x
+                item.offsetY = donuutArray[idx].y
+                idx++
+                fixedArray.push(item)
+            })
+        })
+        return fixedArray
+    }
+
     setMarkerList (array) {
         this.resetMarkerList()
         if (!array && array.length < 0) {
             throw new Error(`Unexpected array detected`)
         }
 
+        array = this.findDuplicatePosMarker(array)
+        console.log('setMarkerList', array)
+
         array.forEach(item => {
-            this.addMarker(item.lat, item.lot, item.id)
+            this.addMarker(item.lat, item.lot, item.id, item.offsetX, item.offsetY)
         })
     }
 

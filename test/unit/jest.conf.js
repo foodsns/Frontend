@@ -16,8 +16,13 @@ module.exports = {
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
   },
   testPathIgnorePatterns: [
-    '<rootDir>/test/e2e'
+    '<rootDir>/test/e2e',
+    '/node_modules/*',
+    '/node_modules',
+    '<rootDir>/node_modules/*',
+    '<rootDir>/node_modules/(?!(@firebase.*)/)'
   ],
+  resolver: '<rootDir>/test/unit/my-module-resolve.js',
   snapshotSerializers: ['<rootDir>/node_modules/jest-serializer-vue'],
   setupFiles: ['<rootDir>/test/unit/setup'],
   mapCoverage: true,

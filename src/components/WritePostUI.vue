@@ -42,9 +42,6 @@
           <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
         </b-col>
         <b-col style="text-align:right;">
-          <b-modal id="upload-modal" ok-only>
-              게시물 업로드 완료
-          </b-modal>
           <b-button pill variant="outline-warning" @click="onCancelBtnClicked()">취소</b-button>
           <b-button pill variant="outline-secondary" :disabled="!validateForm || submitProcessing" @click="onSubmit()">게시하기</b-button>
         </b-col>
@@ -82,6 +79,9 @@
         <b-col>
           <b-form-invalid-feedback :state="validateForm" style="text-align:right;padding-left: 10px">
             자세한 리뷰, 위치, 사진이 필요합니다.
+          </b-form-invalid-feedback>
+          <b-form-invalid-feedback :state="unAddress" style="text-align:right;padding-left: 10px">
+            위치정보가 필요합니다.
           </b-form-invalid-feedback>
         </b-col>
       </b-row>
@@ -221,7 +221,8 @@ export default {
         })
         .then(result => {
           console.log('result', result)
-          this.$bvModal.show('upload-modal')
+          this.showUploaSuccessdModal()
+          this.onCancelBtnClicked() // 임시 초기화
           this.$emit('submit-success')
           this.$nextTick(() => {
             this.submitProcessing = false
@@ -335,16 +336,15 @@ export default {
       this.post.img = file
       this.cropModal.show = false
     },
-    uploadToast: function () {
-      // https://stackoverflow.com/questions/68269598/vue-bootstrap-toaster-instantly-vanishing-hiding-itself/69010546#69010546
-        this.$root.$bvToast.toast('게시물 업로드 완료', {
-          autoHideDelay: 10000,
-          toaster: 'b-toaster-top-center',
-          variant: 'secondary',
-          title: 'upload',
-          noAutoHide: true
+    showUploaSuccessdModal: function () {
+        this.$bvModal.msgBoxOk('게시물 업로드 완료', {
+          title: ' ',
+          size: 'md',
+          okTitle: '확인',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0'
         })
-    }
+      }
   },
   computed: {
     // https://stackoverflow.com/a/29743813/7270469
@@ -366,6 +366,9 @@ export default {
     },
     validateAuth: function () {
       return Vue.prototype.$firebaseAuth.getCurrentUserUid()
+    },
+    unAddress: function () {
+      return this.validateAddress != null
     }
   }
 }
