@@ -173,41 +173,41 @@ export default {
       }
       console.warn(`[Random] [calcGoodCountBasedRandom] No one choosed. Ranval: ${ranVal}`)
       return null
-    },
-    calcHashTagBasedRandom: function (postList, devMode = false, randomVal = -1) {
-      const hashTagList = this.loadHashTagList(devMode)
-      console.log(!hashTagList, hashTagList.length <= 0, !postList, postList.length <= 0, hashTagList)
-      if (!hashTagList || hashTagList.length <= 0 || !postList || postList.length <= 0) {
-        console.warn(`[Random] [calcHashTagBasedRandom] Empty hash tag list or post list detected!`)
-        return null
-      }
-      const sum = hashTagList.reduce((p, c) => p + Number(c[1]), 0)
-      const randomList = hashTagList.map((item, idx) => [...item, item[1] / sum])
-      const ranVal = devMode && randomVal >= 0 ? randomVal : Math.random()
-      console.log(`[Random] [calcHashTagBasedRandom] randomList:`, randomList, `, ranVal : ${ranVal}, sum: ${sum}`)
-      for (let ran = 0, i = 0; ran < 1 && i < randomList.length; i++) {
-        if (ran <= ranVal && ranVal < ran + randomList[i][2]) {
-          console.log(`[Random] [calcHashTagBasedRandom] Choosed hashtag found: ${hashTagList[i][0]}`)
-          return hashTagList[i][0]
-        }
-        ran += randomList[i][2]
-      }
-      return null
-    },
-    choosePost: function (postList, devMode = false, randomVal = -1) {
-      console.log(`[Random] [choosePost] postlist:`, postList, devMode, randomVal)
-      const choosedHashTag = this.calcHashTagBasedRandom(postList, devMode, randomVal)
-      if (!choosedHashTag) {
-        console.warn(`[Random] [choosePost] Any hashtag not chosen`)
-        return null
-      }
-      const filteredPostList = postList.filter(item => item.hashtag === choosedHashTag)
-      if (!filteredPostList || filteredPostList.length <= 0) {
-        console.warn(`[Random] [choosePost] ${choosedHashTag}: empty post list`)
-        return null
-      }
-      return filteredPostList[this.getRandomInt(0, filteredPostList.length)]
     }
+    // calcHashTagBasedRandom: function (postList, devMode = false, randomVal = -1) {
+    //   const hashTagList = this.loadHashTagList(devMode)
+    //   console.log(!hashTagList, hashTagList.length <= 0, !postList, postList.length <= 0, hashTagList)
+    //   if (!hashTagList || hashTagList.length <= 0 || !postList || postList.length <= 0) {
+    //     console.warn(`[Random] [calcHashTagBasedRandom] Empty hash tag list or post list detected!`)
+    //     return null
+    //   }
+    //   const sum = hashTagList.reduce((p, c) => p + Number(c[1]), 0)
+    //   const randomList = hashTagList.map((item, idx) => [...item, item[1] / sum])
+    //   const ranVal = devMode && randomVal >= 0 ? randomVal : Math.random()
+    //   console.log(`[Random] [calcHashTagBasedRandom] randomList:`, randomList, `, ranVal : ${ranVal}, sum: ${sum}`)
+    //   for (let ran = 0, i = 0; ran < 1 && i < randomList.length; i++) {
+    //     if (ran <= ranVal && ranVal < ran + randomList[i][2]) {
+    //       console.log(`[Random] [calcHashTagBasedRandom] Choosed hashtag found: ${hashTagList[i][0]}`)
+    //       return hashTagList[i][0]
+    //     }
+    //     ran += randomList[i][2]
+    //   }
+    //   return null
+    // },
+    // choosePost: function (postList, devMode = false, randomVal = -1) {
+    //   console.log(`[Random] [choosePost] postlist:`, postList, devMode, randomVal)
+    //   const choosedHashTag = this.calcHashTagBasedRandom(postList, devMode, randomVal)
+    //   if (!choosedHashTag) {
+    //     console.warn(`[Random] [choosePost] Any hashtag not chosen`)
+    //     return null
+    //   }
+    //   const filteredPostList = postList.filter(item => item.hashtag === choosedHashTag)
+    //   if (!filteredPostList || filteredPostList.length <= 0) {
+    //     console.warn(`[Random] [choosePost] ${choosedHashTag}: empty post list`)
+    //     return null
+    //   }
+    //   return filteredPostList[this.getRandomInt(0, filteredPostList.length)]
+    // }
   }
 }
 </script>
