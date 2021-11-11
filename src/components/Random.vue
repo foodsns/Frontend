@@ -132,37 +132,39 @@ export default {
     // 5: (2) ['#아웃백', 1]
       return devMode ? this.hashTagList : this.$parent.$refs['hashtagEle'].renderHashtag
     },
-    calcGoodCountBasedRandom: function (postList, devMode = false, randomVal = -1) {
+    getFilteredPostListUsingHashtag: function (postList, devMode = false) {
       const hashTagList = this.loadHashTagList(devMode)
       if (!hashTagList || hashTagList.length <= 0 || !postList || postList.length <= 0) {
-        console.warn(`[Random] [calcGoodCountBasedRandom] Empty hash tag list or post list detected!`)
+        console.warn(`[Random] [getFilteredPostListUsingHashtag] Empty hash tag list or post list detected!`)
         return null
       }
 
       const hashTagNameList = hashTagList.map(hashtag => hashtag[0])
-      const filteredPostList = postList.filter(post => hashTagNameList.includes(post.hashtag))
-      if (!filteredPostList || filteredPostList.length <= 0) {
-        console.warn(`[Random] [calcGoodCountBasedRandom] Empty hashtag based filtered post list`)
-        return null
-      }
+      return postList.filter(post => hashTagNameList.includes(post.hashtag))
+    },
+    calcRatioFilteredPostList: function (filteredPostList) {
       const sum = filteredPostList.reduce((p, c) => p + c.good, 0)
-      const filteredPostRandomRatioList = filteredPostList.map(i => {
+      return filteredPostList.map(i => {
         return {
           ...i,
           ratio: i.good / sum
         }
       })
-      console.log(sum, filteredPostRandomRatioList)
-
+    },
+    calcGoodCountBasedRandom: function (postList, devMode = false, randomVal = -1) {
+      const filteredPostList = this.getFilteredPostListUsingHashtag(postList, devMode)
+      if (!filteredPostList || filteredPostList.length <= 0) {
+        console.warn(`[Random] [calcGoodCountBasedRandom] Empty hashtag based filtered post list`)
+        return null
+      }
+      const filteredPostRandomRatioList = this.calcRatioFilteredPostList(filteredPostList)
       const ranVal = devMode && randomVal > 0 ? randomVal : Math.random()
-
       if (ranVal < 0 || ranVal > 1) {
         console.warn(`[Random] [calcGoodCountBasedRandom] Out of range ranVal: ${ranVal}`)
         return null
       }
 
       for (let ran = 0, i = 0; i < filteredPostRandomRatioList.length && ran < 1; i++) {
-        console.log('ran', ran, ranVal, ran + filteredPostRandomRatioList[i].ratio, 'i', i)
         if (ran <= ranVal && ranVal < ran + filteredPostRandomRatioList[i].ratio) {
           console.log(`[Random] [calcGoodCountBasedRandom] Choosed post`, filteredPostRandomRatioList[i])
           return filteredPostRandomRatioList[i]
