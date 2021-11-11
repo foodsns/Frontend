@@ -8,18 +8,29 @@
         id = "randomBtn">
         <font-awesome-icon icon="dice" style="margin-right: 5px"/>
       </b-button>
-      <div id="custom-backdrop" ref="custom-backdrop" v-if="selectedRandomPost" @click="onRandomCloseBtnClicked()">
+      <div id="custom-backdrop" ref="custom-backdrop" v-if="suffleIdx >= 0" @click="onRandomCloseBtnClicked()">
         <span id="btn-close" @click="onRandomCloseBtnClicked()">
           <font-awesome-icon icon="times"/>
         </span>
-        <div>
-          <post-box v-bind:post="selectedRandomPost" :key="selectedRandomPost.id"></post-box>
+        <div id="shuffleMsg">
+        {{suffleMsgList[suffleIdx]}}
+        </div>
+        <div id="post">
+          <template v-if="selectedRandomPost">
+            <post-box v-bind:post="selectedRandomPost" :key="selectedRandomPost.id"></post-box>
+          </template>
+          <template v-else>
+            <div @click="onStartRandom()">
+              <post-box v-bind:post="defaultPost"></post-box>
+            </div>
+          </template>
         </div>
       </div>
     </div>
 </template>
 
 <script>
+import markerImg from '../assets/marker.png'
 export default {
   props: {
     postListProps: {
@@ -31,8 +42,26 @@ export default {
   },
   data () {
     return {
+      closeToggle: true,
       hashTagList: [],
-      selectedRandomPost: null
+      selectedRandomPost: null,
+      suffleIdx: -1,
+      suffleMsgList: [
+        '맛있는 고민을 시작해볼까요?',
+        '최고의 맛을 고르는 중...',
+        '짜잔~! 이건 어때요?'
+      ],
+      defaultPost: {
+                  docID: '',
+                  title: 'Undefined',
+                  descript: '...',
+                  date: '',
+                  profileImg: markerImg,
+                  writer: '먹었소',
+                  good: 0,
+                  img: markerImg,
+                  hashtag: '#클릭해서 랜덤 돌리기'
+              }
     }
   },
   methods: {
@@ -43,16 +72,27 @@ export default {
       })
     },
     onRandomCloseBtnClicked: function () {
+      if (!this.closeToggle) {
+        this.closeToggle = true
+        return
+      }
       this.selectedRandomPost = null
+      this.suffleIdx = -1
     },
     onRandomBtnClicked: function (devMode = false, randomVal = -1) {
       this.selectedRandomPost = null
+      this.suffleIdx = 0
+    },
+    onStartRandom: function (devMode = false, randomVal = -1) {
+      this.closeToggle = false
+      this.suffleIdx = 1
       const postList = this.postListProps
       // this.selectedRandomPost = this.calcGoodCountBasedRandom(postList, devMode, randomVal)
       // console.log('ran', this.selectedRandomPost)
       this.randomAnimation(postList)
       .then(() => {
         this.selectedRandomPost = this.calcGoodCountBasedRandom(postList, devMode, randomVal)
+        this.suffleIdx = 2
       })
     },
     delay: function () {
@@ -186,14 +226,21 @@ div#custom-backdrop {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
-div#custom-backdrop > div {
+div#custom-backdrop > div#post {
   width: 300px;
   height: 400px;
 }
 
-div#custom-backdrop > div > div#postbox {
+div#shuffleMsg {
+  color: white;
+  font-size: 2em;
+  margin-bottom: 15px;
+}
+
+div#custom-backdrop > div#post > div#postbox {
   margin: 0;
 }
 
