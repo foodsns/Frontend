@@ -239,10 +239,10 @@ div#custom-backdrop > div#post {
 div#shuffleMsg {
   color: white;
   font-size: 2em;
-  margin-bottom: 15px;
+  margin-bottom: 45px;
 }
 
-div#custom-backdrop > div#post > div#postbox {
+div#custom-backdrop > div#post > div > div#postbox {
   margin: 0;
 }
 

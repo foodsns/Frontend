@@ -189,7 +189,7 @@ export default {
 }
 
 p {
-    height: 150px;
+    height: 100px;
     overflow:hidden;
     text-overflow:ellipsis;
     overflow-wrap: break-word;
