@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import markerImg from '../assets/marker.png'
+import Vue from 'vue'
 export default {
   props: {
     postListProps: {
@@ -56,10 +56,10 @@ export default {
                   title: 'Undefined',
                   descript: '...',
                   date: '',
-                  profileImg: markerImg,
+                  profileImg: Vue.prototype.$markerImg || '',
                   writer: '먹었소',
                   good: 0,
-                  img: markerImg,
+                  img: Vue.prototype.$markerImg || '',
                   hashtag: '#클릭해서 랜덤 돌리기'
               }
     }
