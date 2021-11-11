@@ -10,7 +10,7 @@
     <b-container class="body">
       <b-row align-h="end">
         <b-col style="text-align: left; position:relative;">
-          <random-btn class="btnClass"></random-btn>
+          <random-btn class="btnClass" v-bind:postListProps="postList"></random-btn>
           <goodlist-btn class="btnClass"></goodlist-btn>
         </b-col>
         <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
@@ -61,7 +61,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <hashtag v-bind:postListProps="postList"></hashtag>
+          <hashtag ref="hashtagEle" v-bind:postListProps="postList"></hashtag>
         </b-col>
       </b-row>
       <b-row align-h="center" v-if="viewMode === 'grid' || (viewMode === 'map' && formVisibleToggle)">

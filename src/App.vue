@@ -8,12 +8,14 @@
 <script>
 import FirebaseAuth from './module/firebaseAuth.controller'
 import { EventBus } from './lib/event-bus'
+import markerImg from './assets/marker.png'
 import Vue from 'vue'
 export default {
     name: 'App',
     beforeCreate () {
       Vue.prototype.$firebaseAuth = new FirebaseAuth()
       Vue.prototype.$notify = EventBus
+      Vue.prototype.$markerImg = markerImg
     }
 }
 </script>
