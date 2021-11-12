@@ -19,6 +19,8 @@ import { faUserSecret, faHeart, faMap, faTh, faUser,
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import VueIntro from 'vue-introjs'
+
 import app from './firebaseApp'
 import { getAnalytics } from 'firebase/analytics'
 // TODO: Add SDKs for Firebase products that you want to use
@@ -100,6 +102,8 @@ Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
 Vue.use(MdChips)
+
+Vue.use(VueIntro)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {
