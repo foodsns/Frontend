@@ -349,7 +349,7 @@ export default {
   computed: {
     // https://stackoverflow.com/a/29743813/7270469
     validateTextArea: function () {
-      const descriptRegex = this.post.descript.match(/^[\p{L}\t\n\r\s\\#,.><~!?@#$%^&*()-=+|]{2,200}$/u)
+      const descriptRegex = this.post.descript.match(/^[\p{L}\t\n\r\s\w\\#,.><~!?@#$%^&*()-=+|]{2,200}$/u)
       // console.log(descriptRegex, this.post.hashtag)
       return descriptRegex != null && this.post.hashtag != null
     },
