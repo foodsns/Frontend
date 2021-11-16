@@ -46,6 +46,7 @@ import UserGps from './components/userGps'
 import CropModal from './components/CropModal'
 import WritePostUI from './components/WritePostUI'
 import ShareAddr from './components/ShareAddr'
+import DropDownList from './components/DropDownList'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -95,6 +96,7 @@ Vue.component('user-gps-logo', UserGps)
 Vue.component('crop-modal', CropModal)
 Vue.component('write-post-ui', WritePostUI)
 Vue.component('share-addr', ShareAddr)
+Vue.component('drop-down-list', DropDownList)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
