@@ -12,17 +12,34 @@
         <span id="btn-close" @click="onRandomCloseBtnClicked()">
           <font-awesome-icon icon="times"/>
         </span>
-        <div id="shuffleMsg">
-        {{suffleMsgList[suffleIdx]}}
-        </div>
+        <template v-if="validateHashTag && validatePostList">
+          <div id="shuffleMsg">
+          {{suffleMsgList[suffleIdx]}}
+          </div>
+        </template>
+        <template v-else>
+          <div id="shuffleMsg">
+            최소한 한개의 해시태그와 게시물이 필요해요.
+          </div>
+        </template>
         <div id="post">
           <template v-if="selectedRandomPost">
             <post-box v-bind:post="selectedRandomPost" :key="selectedRandomPost.id"></post-box>
           </template>
           <template v-else>
-            <div @click="onStartRandom()">
-              <post-box v-bind:post="defaultPost"></post-box>
-            </div>
+            <template v-if="validateHashTag && validatePostList">
+              <div @click="onStartRandom()">
+                <post-box v-bind:post="defaultPost"></post-box>
+              </div>
+            </template>
+            <template v-else>
+              <div style="text-align: center;
+    color: white;
+    font-size: 10em;
+    margin-top: 50px;">
+                <font-awesome-icon icon="exclamation-triangle" style=""/>
+              </div>
+            </template>
           </template>
         </div>
       </div>
@@ -62,6 +79,15 @@ export default {
                   img: Vue.prototype.$markerImg || '',
                   hashtag: '#클릭해서 랜덤 돌리기'
               }
+    }
+  },
+  computed: {
+    validateHashTag: function () {
+      const hashTagList = this.loadHashTagList()
+      return !(!hashTagList || hashTagList.length <= 0)
+    },
+    validatePostList: function () {
+      return !(!this.postListProps || this.postListProps.length <= 0)
     }
   },
   methods: {
@@ -253,5 +279,11 @@ span#btn-close {
   right: 15px;
   top: 15px;
   cursor: pointer;
+}
+
+@media (max-width: 575.98px) {
+  div#shuffleMsg {
+    font-size: 1.3em;
+  }
 }
 </style>
