@@ -5,8 +5,10 @@
     <div v-if="profileImg && toggleDropdown" class="drop-down">
         <div @click="firebaseSignOut"><span>로그아웃</span><span><font-awesome-icon icon="sign-out-alt" style="margin-left: 5px;"/></span></div>
     </div>
-    <div v-if="!profileImg" v-on:click="onSignInUpClicked">
-        <span v-intro ="'구글 회원가입 후, 로그인을 하면 게시물 작성과 좋아요를 누를 수 있어요.'">Sign in / up</span><font-awesome-icon icon="sign-in-alt" />
+    <div
+        v-intro ="'구글 회원가입 후, 로그인을 하면 게시물 작성과 좋아요를 누를 수 있어요.'"
+        v-if="!profileImg" v-on:click="onSignInUpClicked">
+        <span>Sign in / up</span><font-awesome-icon icon="sign-in-alt" />
     </div>
   </div>
 </template>

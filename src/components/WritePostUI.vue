@@ -9,7 +9,7 @@
       <b-row>
         <b-col>
           <b-form-textarea
-            v-intro ="'해시태그 형식의 음식점 이름과 음식점에 대한 의견을 작성해주세요.'"
+            v-intro ="'해시태그 형식의 #음식점 이름과 음식점에 대한 의견을 작성해주세요.'"
             id="textarea"
             placeholder="식사는 어떠셨나요?"
             rows="3"
