@@ -17,14 +17,15 @@ export default {
         handleOnChange: function (e) {
             console.log(e.target.value)
 
-            if(e.target.value==1)
-                console.log("e.target.value == 1")
-            else if(e.target.value==2)
-                console.log("e.target.value == 2")
-            else if(e.target.value==3)
-                console.log("e.target.value == 3")
-            else
-                console.log("e.target.value == 4")
+            if (e.target.value === 1) {
+                console.log('e.target.value == 1')
+            } else if (e.target.value === 2) {
+                console.log('e.target.value == 2')
+            } else if (e.target.value === 3) {
+                console.log('e.target.value == 3')
+            } else {
+                console.log('e.target.value == 4')
+            }
         }
     }
 }
