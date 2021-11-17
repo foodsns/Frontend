@@ -15,9 +15,12 @@ import { faUserSecret, faHeart, faMap, faTh, faUser,
         faSpinner, faArrowDown, faMapMarkerAlt,
         faCameraRetro, faGlobeAsia, faLock, faDice,
         faEdit, faCheck, faSortDown, faSortUp, faTrash,
-        faPencilAlt, faShare, faSignOutAlt, faTimes} from '@fortawesome/free-solid-svg-icons'
+        faPencilAlt, faShare, faSignOutAlt, faTimes,
+        faExclamationTriangle} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+import VueIntro from 'vue-introjs'
 
 import app from './firebaseApp'
 import { getAnalytics } from 'firebase/analytics'
@@ -47,6 +50,7 @@ import CropModal from './components/CropModal'
 import WritePostUI from './components/WritePostUI'
 import ShareAddr from './components/ShareAddr'
 import DropDownList from './components/DropDownList'
+import Manual from './components/Manual'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -76,6 +80,7 @@ library.add(faPencilAlt)
 library.add(faShare)
 library.add(faSignOutAlt)
 library.add(faTimes)
+library.add(faExclamationTriangle)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
@@ -97,11 +102,14 @@ Vue.component('crop-modal', CropModal)
 Vue.component('write-post-ui', WritePostUI)
 Vue.component('share-addr', ShareAddr)
 Vue.component('drop-down-list', DropDownList)
+Vue.component('manual-btn', Manual)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
 Vue.use(MdChips)
+
+Vue.use(VueIntro)
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue, {

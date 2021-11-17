@@ -1,11 +1,13 @@
 <template>
   <div id="profileicon">
-    <img v-if="profileImg" :src="profileImg" @click="toggleDropdown = !toggleDropdown"/>
+    <img v-if="profileImg" :src="profileImg" @click="toggleDropdown = !toggleDropdown" v-intro ="'구글 회원가입 후, 로그인을 하면 게시물 작성과 좋아요를 누를 수 있어요.'"/>
     <!--<b-button class="logoutBtn" v-show="isLogin" v-on:click="firebaseSignOut" size="sm">로그아웃</b-button>-->
     <div v-if="profileImg && toggleDropdown" class="drop-down">
         <div @click="firebaseSignOut"><span>로그아웃</span><span><font-awesome-icon icon="sign-out-alt" style="margin-left: 5px;"/></span></div>
     </div>
-    <div v-if="!profileImg" v-on:click="onSignInUpClicked">
+    <div
+        v-intro ="'구글 회원가입 후, 로그인을 하면 게시물 작성과 좋아요를 누를 수 있어요.'"
+        v-if="!profileImg" v-on:click="onSignInUpClicked">
         <span>Sign in / up</span><font-awesome-icon icon="sign-in-alt" />
     </div>
   </div>

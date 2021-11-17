@@ -9,6 +9,7 @@
       <b-row>
         <b-col>
           <b-form-textarea
+            v-intro ="'해시태그 형식의 #음식점 이름과 음식점에 대한 의견을 작성해주세요.'"
             id="textarea"
             placeholder="식사는 어떠셨나요?"
             rows="3"
@@ -22,7 +23,9 @@
         </b-col>
       </b-row>
       <b-row style="padding: 10px">
-        <b-col style="text-align:left;cursor: pointer;user-select: none;" v-on:click="post.visibility = (post.visibility == 'public' ? 'private' : 'public')">
+        <b-col
+        v-intro ="'게시물을 전체공개 혹은 비공개로 설정할 수 있어요.'"
+        style="text-align:left;cursor: pointer;user-select: none;" v-on:click="post.visibility = (post.visibility == 'public' ? 'private' : 'public')">
           <template v-if="post.visibility == 'public'">
             <font-awesome-icon icon="globe-asia" style="margin-right: 5px"/>모든 사람이 볼 수 있습니다.
           </template>
@@ -35,7 +38,7 @@
         <b-col style="text-align:left;">
           <input type="file" ref="fileInput" id="filebtn" @change="onFileChanged" style="display:none" accept="image/*"/>
           <span>
-            <b-button pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="uploadProcessing"><font-awesome-icon icon="camera-retro"/></b-button>
+            <b-button  v-intro ="'음식사진을 올려주세요.'" pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="uploadProcessing"><font-awesome-icon icon="camera-retro"/></b-button>
           </span>
           <span><user-gps-logo ref="userGps" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo></span>
           <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>

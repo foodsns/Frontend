@@ -1,6 +1,7 @@
 <template>
     <span class = "userGps">
         <b-button
+            v-intro ="'내 현재위치를 불러올 수 있어요.'"
             pill variant="outline-secondary" @click="onLocationLoaderClicked()" :disabled="processing"><font-awesome-icon icon="map-marker-alt"/></b-button>
         <div ref="hiddenMap" style="display:none"></div>
     </span>

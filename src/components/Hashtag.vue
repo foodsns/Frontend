@@ -40,6 +40,7 @@ export default {
         },
 
         form: function (postList) {
+            this.hashtag = []
             for (let i = 0; i < postList.length; i++) {
                 this.hashtag[i] = postList[i].hashtag
             }
