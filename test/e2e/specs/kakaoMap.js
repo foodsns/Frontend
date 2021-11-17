@@ -17,7 +17,7 @@ module.exports = {
         .url(`${devServer}/#/`)
         .assert.elementPresent('#mainboard')
         .pause(1000)
-        .click('#mainboard > div.body.container > div:nth-child(2) > div.toggle-btn.col-4 > div > div > button.btn.btn-secondary')
+        .click('#mainboard > div.body.container > div:nth-child(3) > div.toggle-btn.col-4 > div > div > button.btn.btn-secondary')
         .pause(1000)
         .assert.elementPresent('#kakaomap')
         .assert.elementPresent('#kakaomap > div:nth-child(1)')
