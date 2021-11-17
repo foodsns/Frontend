@@ -5,11 +5,17 @@ import HelloWorld from '@/components/HelloWorld'
 import LoginBoard from '@/components/LoginBoard'
 import GoodListPage from '@/components/GoodListPage'
 import TestLabBoard from '@/components/TestLabBoard'
+import Drop from '@/components/DropDownList'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/aaa',
+      name: 'Droptest',
+      component: Drop
+    },
     {
       path: '/',
       name: 'MainBoard',
