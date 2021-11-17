@@ -32,7 +32,7 @@
                 <post-box v-bind:post="defaultPost"></post-box>
               </div>
             </template>
-            <template>
+            <template v-else>
               <div style="text-align: center;
     color: white;
     font-size: 10em;
