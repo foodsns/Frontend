@@ -13,19 +13,16 @@
       </b-row> -->
       <b-row align-h="end">
         <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
-          <profile-icon
-            v-intro ="'구글 로그인을 하면 게시물 작성과 좋아요를 누를 수 있어요.'"
-            style="position: relative">
-          </profile-icon>
+          <profile-icon style="position: relative"></profile-icon>
         </b-col>
       </b-row>
       <b-row align-h="end">
         <b-col style="text-align: left; position:relative;">
           <random-btn
-            v-intro ="'무엇을 먹을지 고민이 될 때 랜덤으로 고를 수 있어요.'"
+            v-intro ="'무엇을 먹을지 고민이 될 때, 음식점을 랜덤으로 고를 수 있어요.'"
             class="btnClass" v-bind:postListProps="postList"></random-btn>
           <goodlist-btn
-            v-intro ="'좋아요 누른 게시물들을 볼 수 있어요.'"
+            v-intro ="'내가 좋아요 누른 게시물들을 볼 수 있어요.'"
             class="btnClass"></goodlist-btn>
           <manual-btn class="btnClass"></manual-btn>
         </b-col>
@@ -35,13 +32,7 @@
           <b-row style="margin-top: 5px;">
             <b-col style="position:relative">
               <span>
-                <user-gps-logo
-                ref="userGps"
-                v-b-tooltip.hover.bottom.v-secondary title="내 위치"
-                placement = "bottom" @location="onGpsAddrLoaded"
-                @err-msg="onGpsAddrFailed"
-                v-intro ="'내 현재위치를 불러올 수 있어요.'">
-                </user-gps-logo>
+                <user-gps-logo ref="userGps" v-b-tooltip.hover.bottom.v-secondary title="내 위치" placement = "bottom" @location="onGpsAddrLoaded" @err-msg="onGpsAddrFailed"></user-gps-logo>
               </span>
               <span v-if="!addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-down" style="margin: 5px 0; width: 32px;cursor: pointer"/></span>
               <span v-else-if="addrEditExpand" @click="addrEditExpand = !addrEditExpand"><font-awesome-icon icon="sort-up" style="width: 32px;cursor: pointer"/></span>
@@ -66,7 +57,7 @@
                 </b-input-group>
               </template>
               <template v-if="!addrEditExpand">
-                <share-addr v-bind:fullAddr="fullAddr"></share-addr>
+                <share-addr v-intro ="'원하는 위치를 입력해 장소를 이동할 수도 있어요.'" v-bind:fullAddr="fullAddr"></share-addr>
               </template>
               <template v-if="gpsAddrFailMsg">
                 <div>
@@ -82,7 +73,10 @@
       </b-row>
       <b-row>
         <b-col>
-          <hashtag ref="hashtagEle" v-bind:postListProps="postList"></hashtag>
+          <hashtag
+            v-intro ="'음식점 이름을 해시태그로 간편하게 확인해보세요.'"
+            ref="hashtagEle"
+            v-bind:postListProps="postList"></hashtag>
         </b-col>
       </b-row>
       <b-row align-h="center" v-if="viewMode === 'grid' || (viewMode === 'map' && formVisibleToggle)">
@@ -341,9 +335,6 @@ export default {
       this.$nextTick(() => {
         this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
       })
-    },
-    startOnboarding: function () {
-      this.$intro().start() // start the guide
     }
   }
 }
