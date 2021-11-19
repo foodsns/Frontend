@@ -16,6 +16,11 @@
           <profile-icon style="position: relative"></profile-icon>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col style="text-align: left; position:relative; margin-bottom: 10px">
+          <drop-down-list></drop-down-list>
+        </b-col>
+      </b-row>
       <b-row align-h="end">
         <b-col style="text-align: left; position:relative;">
           <random-btn
