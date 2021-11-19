@@ -2,7 +2,7 @@
  <!-- https://www.creative-tim.com/vuematerial/components/chips -->
 <div class="box">
     <!-- <md-chips v-model="hashtag"></md-chips> -->
-    <md-chip @click="click($event, index)" v-for = "(hash, index) in renderHashtag" :key="hash.id" class="md-primary" @md-delete="deleteHandler($event)" md-deletable md-clickable>{{hash[0]}}</md-chip>
+    <md-chip @click= "clickHashtag($event)" v-for = "(hash, index) in renderHashtag" :key="hash.id" class="md-primary" @md-delete="deleteHashtag($event, index)" md-deletable md-clickable>{{hash[0]}}</md-chip>
 </div>
 </template>
 
@@ -24,22 +24,22 @@ export default {
     },
     computed: {
         renderHashtag: function () {
-            const arr = this.form(this.postListProps)
+            const arr = this.getHashtag(this.postListProps)
             this.deletedHastagIdxList.forEach(idx => arr.splice(idx, 1))
             return arr
         }
     },
     methods: {
-        click: function (event, index) {
+        deleteHashtag: function (event, index) {
             if (index > -1) {
                 this.deletedHastagIdxList.push(index)
             }
         },
-        deleteHandler (event) {
+        clickHashtag (event) {
             console.log(event)
         },
 
-        form: function (postList) {
+        getHashtag: function (postList) {
             this.hashtag = []
             for (let i = 0; i < postList.length; i++) {
                 this.hashtag[i] = postList[i].hashtag
