@@ -32,9 +32,6 @@ export default {
         }
     },
     methods: {
-        checkHashtag: function () {
-
-        },
         deleteHashtag: function (event, index) {
             if (index > -1) {
                 this.deletedHastagIdxList.push(index)
