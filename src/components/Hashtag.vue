@@ -1,8 +1,10 @@
 <template>
  <!-- https://www.creative-tim.com/vuematerial/components/chips -->
-<div class="box">
-    <!-- <md-chips v-model="hashtag"></md-chips> -->
+<div v-if ="postList.length>0" class="box" v-intro ="'음식점 이름을 해시태그로 간편하게 확인해보세요.'">
     <md-chip @click= "clickHashtag($event)" v-for = "(hash, index) in renderHashtag" :key="hash.id" class="md-primary" @md-delete="deleteHashtag($event, index)" md-deletable md-clickable>{{hash[0]}}</md-chip>
+</div>
+<div v-else class="box"  >
+    <md-chip @click= "clickHashtag($event)" md-deletable md-clickable>#해시태그</md-chip>
 </div>
 </template>
 
@@ -66,7 +68,6 @@ export default {
     data () {
             return {
                 postList: this.postListProps,
-                result_hashtag: [],
                 hashtag: [],
                 deletedHastagIdxList: []
             }
