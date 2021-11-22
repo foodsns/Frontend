@@ -6,7 +6,6 @@
             <option value="3">비공개 게시물</option>
             <option value="4">지역 상관 없이 모든 게시물</option>
         </select>
-        <div id="result"></div>
     </div>
 </template>
 

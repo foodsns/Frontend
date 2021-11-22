@@ -25,6 +25,7 @@
             v-intro ="'내가 좋아요 누른 게시물들을 볼 수 있어요.'"
             class="btnClass"></goodlist-btn>
           <manual-btn class="btnClass"></manual-btn>
+          <drop-down-list style="margin-top: 10px"></drop-down-list>
         </b-col>
       </b-row>
       <b-row>
