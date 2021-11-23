@@ -212,6 +212,7 @@ export default {
       this.submitProcessing = true
       const docID = this.firestoreDao.getDocumentID()
       if (this.file) {
+        console.log('WritePostUI : ' + this.file)
         this.uploadFileToServer(docID, this.file)
         .then(url => {
           this.post.img = url
@@ -337,6 +338,7 @@ export default {
       this.gpsAddrFailMsg = errMsg
     },
     updatefileProp: function (file) {
+      console.log('writepostui1 : ' + file)
       this.post.img = file
       this.cropModal.show = false
     },
