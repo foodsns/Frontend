@@ -252,6 +252,7 @@ export default {
         .then(result => {
           console.log('result', result)
           this.$emit('submit-success')
+          this.showEditSuccessdModal()
           this.$nextTick(() => {
             this.submitProcessing = false
             this.errorMsg = ''
@@ -344,6 +345,15 @@ export default {
     },
     showUploaSuccessdModal: function () {
         this.$bvModal.msgBoxOk('게시물 업로드 완료', {
+          title: ' ',
+          size: 'md',
+          okTitle: '확인',
+          headerClass: 'p-2 border-bottom-0',
+          footerClass: 'p-2 border-top-0'
+        })
+      },
+    showEditSuccessdModal: function () {
+        this.$bvModal.msgBoxOk('게시물 수정 완료', {
           title: ' ',
           size: 'md',
           okTitle: '확인',
