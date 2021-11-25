@@ -16,7 +16,7 @@ import { faUserSecret, faHeart, faMap, faTh, faUser,
         faCameraRetro, faGlobeAsia, faLock, faDice,
         faEdit, faCheck, faSortDown, faSortUp, faTrash,
         faPencilAlt, faShare, faSignOutAlt, faTimes,
-        faExclamationTriangle} from '@fortawesome/free-solid-svg-icons'
+        faExclamationTriangle, faHome} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -81,6 +81,7 @@ library.add(faShare)
 library.add(faSignOutAlt)
 library.add(faTimes)
 library.add(faExclamationTriangle)
+library.add(faHome)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
