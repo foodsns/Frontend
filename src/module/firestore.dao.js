@@ -2,6 +2,7 @@ import { getFirestore, collection, collectionGroup, query,
         startAfter, where, getDocs, getDoc,
         orderBy, limit, setDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction} from 'firebase/firestore'
 // , doc, setDoc startAt
+import {EventBus} from '../lib/event-bus.js'
 export default class FirestoreDao {
     _lastSelectPostsOptions = {}
     _lastSelectPostsDoc = null
@@ -65,9 +66,31 @@ export default class FirestoreDao {
         const db = getFirestore()
         // https://stackoverflow.com/a/50658718/7270469
         const constraints = [
-            orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
+            orderBy('date', dateOrderByDir), orderBy('good', goodOrderByDir),
             where('visibility', '==', 'public'),
             where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+        EventBus.$on('dropDownL-evnetBus', function (value) {
+            this.value = value
+            console.log('DropDownList: ', value)
+            if (value == 1) {
+                console.log('a')
+                //constraints = [
+                //    orderBy('date', dateOrderByDir), orderBy('good', goodOrderByDir),
+                //    where('visibility', '==', 'public'),
+                //    where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+            } else if (value == 2) {
+                console.log('b')
+                //constraints = [
+                //    orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
+                //    where('visibility', '==', 'public'),
+                //    where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+            } else if (value == 3) {
+                console.log('c')
+            } else if (value == 4) {
+                console.log('d')
+            }
+            return value
+        })
         if (forceUpdate) {
             this._lastSelectPostsOptions = {}
         }
@@ -156,6 +179,7 @@ export default class FirestoreDao {
         // street = null,
         uid
     } = {}) {
+
         const constraints = [
             orderBy('setTime', sortByRecently ? 'desc' : 'asc'),
             where('authorId', '==', uid)]

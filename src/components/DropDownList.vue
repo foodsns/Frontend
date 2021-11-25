@@ -11,11 +11,13 @@
 </template>
 
 <script>
+import {EventBus} from '../lib/event-bus.js'
+
 export default {
     name: 'drop-down-list',
     methods: {
         handleOnChange: function (e) {
-            console.log(e.target.value)
+            EventBus.$emit('dropDownL-evnetBus', e.target.value)
         }
     }
 }
