@@ -2,11 +2,16 @@
     <div ref="goodGrid" id="goodGrid">
         <b-container>
             <h4 v-show="value" class= "mx-auto">좋아요 누른 목록 표시</h4>
-            <b-row style="margin-bottom: 10px;">
+            <b-row style="margin-bottom: 20px;">
                 <b-col style="text-align:left">
                     <b-button pill variant="outline-secondary" v-on:click="back()">
                         <font-awesome-icon icon="home"/>
                     </b-button>
+                </b-col>
+            </b-row>
+            <b-row style="margin-bottom: 10px;">
+                <b-col>
+                    <search-option-bar></search-option-bar>
                 </b-col>
             </b-row>
             <grid-board v-bind:postListProps="postList"/>

@@ -16,7 +16,7 @@ import { faUserSecret, faHeart, faMap, faTh, faUser,
         faCameraRetro, faGlobeAsia, faLock, faDice,
         faEdit, faCheck, faSortDown, faSortUp, faTrash,
         faPencilAlt, faShare, faSignOutAlt, faTimes,
-        faExclamationTriangle, faHome} from '@fortawesome/free-solid-svg-icons'
+        faExclamationTriangle, faHome, faHistory, faMapMarked} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -51,6 +51,7 @@ import WritePostUI from './components/WritePostUI'
 import ShareAddr from './components/ShareAddr'
 import DropDownList from './components/DropDownList'
 import Manual from './components/Manual'
+import SearchOptionBar from './components/SearchOptionBar'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -82,6 +83,8 @@ library.add(faSignOutAlt)
 library.add(faTimes)
 library.add(faExclamationTriangle)
 library.add(faHome)
+library.add(faHistory)
+library.add(faMapMarked)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)
@@ -104,6 +107,7 @@ Vue.component('write-post-ui', WritePostUI)
 Vue.component('share-addr', ShareAddr)
 Vue.component('drop-down-list', DropDownList)
 Vue.component('manual-btn', Manual)
+Vue.component('search-option-bar', SearchOptionBar)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
