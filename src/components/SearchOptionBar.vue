@@ -2,22 +2,22 @@
     <div id="searchOptionBar">
         <b-row>
             <b-col cols="4" md="2" style="padding: 8px 24px;text-align:left;">
-                <font-awesome-icon icon="globe-asia" style="margin-right:15px;cursor:pointer;" @click="publicOrPrivate = 'public'"
-                v-bind:style="{ opacity: publicOrPrivate == 'public' ? '1': '0.5'}"/>
-                <font-awesome-icon icon="lock" style="margin-right:5px;cursor:pointer;" @click="publicOrPrivate = 'private'"
-                v-bind:style="{ opacity: publicOrPrivate == 'public' ? '0.5': '1'}"/>
+                <font-awesome-icon icon="globe-asia" style="margin-right:15px;cursor:pointer;" @click="publicOrPrivate = 'public'; emitOptionChanged()"
+                v-bind:style="{ opacity: opacityCondition(publicOrPrivate, 'public')}"/>
+                <font-awesome-icon icon="lock" style="margin-right:5px;cursor:pointer;" @click="publicOrPrivate = 'private'; emitOptionChanged()"
+                v-bind:style="{ opacity: opacityCondition(publicOrPrivate, 'private')}"/>
             </b-col>
             <b-col cols="4" md="2" style="padding: 8px 24px;text-align:left;">
-                <font-awesome-icon icon="heart" style="margin-right:15px;cursor:pointer;" @click="sortByGoodOrDate = 'good'"
-                v-bind:style="{ opacity: sortByGoodOrDate == 'good' ? '1': '0.5'}"/>
-                <font-awesome-icon icon="history" style="margin-right:5px;cursor:pointer;" @click="sortByGoodOrDate = 'date'"
-                v-bind:style="{ opacity: sortByGoodOrDate == 'good' ? '0.5': '1'}"/>
+                <font-awesome-icon icon="heart" style="margin-right:15px;cursor:pointer;" @click="sortByGoodOrDate = 'good'; emitOptionChanged()"
+                v-bind:style="{ opacity: opacityCondition(sortByGoodOrDate, 'good')}"/>
+                <font-awesome-icon icon="history" style="margin-right:5px;cursor:pointer;" @click="sortByGoodOrDate = 'date'; emitOptionChanged()"
+                v-bind:style="{ opacity: opacityCondition(sortByGoodOrDate, 'date')}"/>
             </b-col>
             <b-col cols="4" md="2" style="padding: 8px 24px;text-align:left;">
-                <font-awesome-icon icon="map-marked" style="margin-right:15px;cursor:pointer;" @click="showAreaOrGlobaly = 'area'"
-                v-bind:style="{ opacity: showAreaOrGlobaly == 'area' ? '1': '0.5'}"/>
-                <font-awesome-icon icon="map" style="margin-right:5px;cursor:pointer;" @click="showAreaOrGlobaly = 'global'"
-                v-bind:style="{ opacity: showAreaOrGlobaly == 'area' ? '0.5': '1'}"/>
+                <font-awesome-icon icon="map-marked" style="margin-right:15px;cursor:pointer;" @click="showAreaOrGlobaly = 'area'; emitOptionChanged()"
+                v-bind:style="{ opacity: opacityCondition(showAreaOrGlobaly, 'area')}"/>
+                <font-awesome-icon icon="map" style="margin-right:5px;cursor:pointer;" @click="showAreaOrGlobaly = 'global'; emitOptionChanged()"
+                v-bind:style="{ opacity: opacityCondition(showAreaOrGlobaly, 'global')}"/>
             </b-col>
         </b-row>
     </div>
@@ -32,6 +32,18 @@ export default {
             publicOrPrivate: 'public',
             sortByGoodOrDate: 'good',
             showAreaOrGlobaly: 'area'
+        }
+    },
+    methods: {
+        opacityCondition: function (val, str) {
+            return val === str ? '1' : '0.5'
+        },
+        emitOptionChanged: function () {
+            this.$emit('on-option-changed', {
+                publicOrPrivate: this.publicOrPrivate,
+                sortByGoodOrDate: this.sortByGoodOrDate,
+                showAreaOrGlobaly: this.showAreaOrGlobaly
+            })
         }
     }
 }
