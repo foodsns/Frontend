@@ -11,7 +11,9 @@
             </b-row>
             <b-row style="margin-bottom: 10px;">
                 <b-col>
-                    <search-option-bar></search-option-bar>
+                    <search-option-bar
+                        v-bind:eanblePublicOrPrivate="true"
+                        @on-option-changed="onSearchOptionChanged"></search-option-bar>
                 </b-col>
             </b-row>
             <grid-board v-bind:postListProps="postList"/>
@@ -199,6 +201,9 @@ export default {
                 this.isLoading = true
             // this.searchPosts(true, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3, false)
             }
+        },
+        onSearchOptionChanged (currentSearchOption) {
+            console.log(currentSearchOption)
         }
     }
 }
