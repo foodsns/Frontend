@@ -64,7 +64,7 @@ export default class FirestoreDao {
         }
         const db = getFirestore()
         // https://stackoverflow.com/a/50658718/7270469
-        const constraints = [
+        let constraints = [
             orderBy('date', dateOrderByDir), orderBy('good', goodOrderByDir),
             where('visibility', '==', 'public'),
             where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
