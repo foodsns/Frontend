@@ -340,6 +340,14 @@ export default {
     },
     updatefileProp: function (file) {
       console.log('writepostui1 : ' + file)
+      if (typeof file === 'string' && file.includes('blob:')) {
+        fetch(file)
+        .then(r => r.blob())
+        .then(blob => {
+          blob.name = 'edited.png'
+          this.file = blob
+        })
+      }
       this.post.img = file
       this.cropModal.show = false
     },
