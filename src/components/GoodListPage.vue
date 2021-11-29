@@ -12,6 +12,7 @@
             <b-row style="margin-bottom: 10px;">
                 <b-col>
                     <search-option-bar
+                        v-bind:eanbleSortByGoodOrDate="false"
                         v-bind:eanblePublicOrPrivate="false"
                         v-bind:eanbleShowAreaOrGlobaly="false"
                         @on-option-changed="onSearchOptionChanged"></search-option-bar>
@@ -52,7 +53,8 @@ export default {
             scrollTop: 0,
             threshold: 200,
             scrollMsg: '',
-            isLoading: false
+            isLoading: false,
+            sortDir: 'dsc'
         }
     },
     mounted () {
@@ -79,27 +81,6 @@ export default {
                 this.scrollMsg = ''
             }
         },
-        selectMyThumbsUpPosts: function () {
-            this.firestoreDao.selectMyThumbsUpPosts({
-                lat: 37.566227,
-                lot: 126.977966,
-                distance: 1,
-                sortByRecently: true,
-                pageSize: 8,
-                // country = null,
-                // city = null,
-                // state = null,
-                // street = null,
-                uid: Vue.prototype.$firebaseAuth.getCurrentUserUid()
-            })
-            .then(postList => {
-                this.postList.splice(0)
-                return postList
-            })
-            .then(_postList => {
-                _postList.forEach(post => this.postList.push(post))
-            })
-        },
         onScrollReachedBottom () {
             console.log(`[GoodListPage] [onScrollReachedBottom] let's get more data`)
             if (!this.isLoading) {
@@ -110,21 +91,22 @@ export default {
             }
         },
         onSearchOptionChanged (currentSearchOption) {
-            console.log(currentSearchOption)
+            this.sortDir = currentSearchOption.sortDir
+            this.searchPosts(false, true)
         },
         searchPosts (isInfinite = false, forceUpdate = true) {
             this.firestoreDao.selectMyThumbsUpPosts({
                 lat: 37.566227,
                 lot: 126.977966,
                 distance: 1,
-                sortByRecently: true,
+                sortByRecently: this.sortDir === 'dsc',
                 pageSize: 8,
                 // country = null,
                 // city = null,
                 // state = null,
                 // street = null,
                 uid: Vue.prototype.$firebaseAuth.getCurrentUserUid()
-            })
+            }, forceUpdate)
             // https://stackoverflow.com/a/59289650/7270469
             .then(postList => {
                 if (!isInfinite) {
