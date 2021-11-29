@@ -61,9 +61,16 @@ export default {
         // this.selectMyThumbsUpPosts()
         this.$refs.goodGrid.addEventListener('resize', this.scrollHandler)
         this.$refs.goodGrid.addEventListener('scroll', this.scrollHandler)
-        console.log('good', this.$refs.goodGrid)
         this.scrollHandler()
-        this.searchPosts(true, false)
+        if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
+            Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+                this.$nextTick(() => {
+                    if (isLoggedIn) {
+                        this.searchPosts(true, false)
+                    }
+                })
+            })
+        }
     },
     methods: {
         back: function () {
