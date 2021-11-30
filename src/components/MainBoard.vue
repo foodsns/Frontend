@@ -18,6 +18,7 @@
       </b-row>
       <b-row align-h="end">
         <b-col style="text-align: left; position:relative;">
+          <search-option-bar></search-option-bar>
           <random-btn
             v-intro ="'무엇을 먹을지 고민이 될 때, 음식점을 랜덤으로 고를 수 있어요.'"
             class="btnClass" v-bind:postListProps="postList"></random-btn>
@@ -25,7 +26,7 @@
             v-intro ="'내가 좋아요 누른 게시물들을 볼 수 있어요.'"
             class="btnClass"></goodlist-btn>
           <manual-btn class="btnClass"></manual-btn>
-          <drop-down-list style="margin-top: 10px"></drop-down-list>
+          <!--<drop-down-list style="margin-top: 10px"></drop-down-list>-->
         </b-col>
       </b-row>
       <b-row>
