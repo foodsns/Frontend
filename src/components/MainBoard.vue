@@ -77,6 +77,7 @@
           <hashtag
             v-intro ="'음식점 이름을 해시태그로 간편하게 확인해보세요.'"
             ref="hashtagEle"
+            v-on:deleteHashtag="deletePost"
             v-bind:postListProps="postList"></hashtag>
         </b-col>
       </b-row>
@@ -181,7 +182,8 @@ export default {
           lat: 37.5662952,
           lot: 126.9757511
         },
-        formVisibleToggle: false
+        formVisibleToggle: false,
+        deletedHashtag: ''
     }
   },
   watch: {
@@ -194,7 +196,8 @@ export default {
           }
         })
       }
-    }
+    },
+
   },
   mounted () {
     const dev = localStorage.getItem('dev') || false
@@ -336,6 +339,10 @@ export default {
       this.$nextTick(() => {
         this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
       })
+    },
+    deletePost: function (deletedhashtag) {
+      console.log(deletedhashtag)
+      return deletedhashtag
     }
   }
 }

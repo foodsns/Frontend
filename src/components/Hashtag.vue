@@ -34,7 +34,10 @@ export default {
     methods: {
         deleteHashtag: function (event, index) {
             if (index > -1) {
+                this.deletedHashtag = this.renderHashtag[index][0]
+                this.$emit('deleteHashtag', this.deletedHashtag)
                 this.deletedHastagIdxList.push(index)
+                return this.deletedHashtag
             }
         },
         clickHashtag (event) {
@@ -69,7 +72,8 @@ export default {
             return {
                 postList: this.postListProps,
                 hashtag: [],
-                deletedHastagIdxList: []
+                deletedHastagIdxList: [],
+                deleteHash: ''
             }
         }
 }
