@@ -174,7 +174,8 @@ export default {
       firestoreDao: new FirestoreDao(),
       uploadProcessing: false,
       submitProcessing: false,
-      errorMsg: ''
+      errorMsg: '',
+      file: null
     }
   },
   mounted () {
@@ -205,12 +206,7 @@ export default {
           city: null,
           state: null,
           street: null,
-          hashtag: null,
-          file: null
-        }
-        this.cropModal = {
-          file: null,
-          show: false
+          hashtag: null
         }
     },
     onSubmit: function () {
@@ -230,8 +226,8 @@ export default {
         })
         .then(result => {
           console.log('result', result)
-          this.showUploaSuccessdModal()
           this.onCancelBtnClicked() // 임시 초기화
+          this.showUploaSuccessdModal()
           this.$emit('submit-success')
           this.$nextTick(() => {
             this.submitProcessing = false
@@ -257,6 +253,7 @@ export default {
           console.log('result', result)
           this.$emit('submit-success')
           this.showEditSuccessdModal()
+          this.onCancelBtnClicked()
           this.$nextTick(() => {
             this.submitProcessing = false
             this.errorMsg = ''
