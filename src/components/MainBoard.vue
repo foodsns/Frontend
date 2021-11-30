@@ -82,7 +82,7 @@
       </b-row>
       <b-row align-h="center" v-if="viewMode === 'grid' || (viewMode === 'map' && formVisibleToggle)">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
-          <write-post-ui @submit-success="onSubmitPostSuccess"></write-post-ui>
+          <write-post-ui @submit-success="onSubmitPostSuccess" v-if="getUserId()"></write-post-ui>
         </b-col>
       </b-row>
       <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
@@ -336,6 +336,9 @@ export default {
       this.$nextTick(() => {
         this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
       })
+    },
+    getUserId () {
+      return Vue.prototype.$firebaseAuth.getCurrentUserUid()
     }
   }
 }
