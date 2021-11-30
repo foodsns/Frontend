@@ -69,19 +69,25 @@ export default class FirestoreDao {
             where('visibility', '==', 'public'),
             where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
         var hw = document.getElementById('dropDowmListID')
-        hw.addEventListener('change', function() {
-            console.log('change~!!~!~!!~!!!' + hw.value)
-            if (hw.value == 1) {
-                constraints = [
-                    orderBy('date', dateOrderByDir), orderBy('good', goodOrderByDir),
-                    where('visibility', '==', 'public'),
-                    where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
-            }
-            if (hw.value == 2) {
-                constraints = [
-                    orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
-                    where('visibility', '==', 'public'),
-                    where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+        hw.addEventListener('change', function () {
+            switch (hw.value) {
+                case 1:
+                    console.log('change: ' + hw.value)
+                    constraints = [
+                        orderBy('date', dateOrderByDir), orderBy('good', goodOrderByDir),
+                        where('visibility', '==', 'public'),
+                        where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+                    break
+                case 2:
+                    console.log('change: ' + hw.value)
+                    constraints = [
+                        orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
+                        where('visibility', '==', 'public'),
+                        where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+                    break
+                default:
+                    console.log('change: ' + hw.value)
+                    break
             }
         })
         if (forceUpdate) {
