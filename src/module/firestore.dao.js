@@ -155,10 +155,13 @@ export default class FirestoreDao {
         // state = null,
         // street = null,
         uid
-    } = {}) {
+    } = {}, forceUpdate = false) {
         const constraints = [
             orderBy('setTime', sortByRecently ? 'desc' : 'asc'),
             where('authorId', '==', uid)]
+        if (forceUpdate) {
+            this._lastSelectThumbsUpPostsOptions = {}
+        }
         if (JSON.stringify(this._lastSelectThumbsUpPostsOptions) !== JSON.stringify({
             lat,
             lot,
