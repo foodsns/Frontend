@@ -338,7 +338,7 @@ export default {
       })
     },
     getUserId () {
-      return Vue.prototype.$firebaseAuth.getCurrentUserUid()
+      return Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
     }
   }
 }
