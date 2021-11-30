@@ -107,7 +107,6 @@ export default {
     methods: {
       imgsubmit () {
         this.$emit('updatefileProp', this.croppedimg)
-        console.log('cropmodal : ' + this.croppedimg)
       },
       completedEdit () {
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob

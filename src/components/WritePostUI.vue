@@ -174,14 +174,14 @@ export default {
       firestoreDao: new FirestoreDao(),
       uploadProcessing: false,
       submitProcessing: false,
-      errorMsg: '',
-      file: null
+      errorMsg: ''
     }
   },
   mounted () {
     if (Vue.prototype.$notify) {
       Vue.prototype.$notify.$on('onFocusedPostChanged', post => {
         this.post = post
+        this.file = null
       })
     }
   },
@@ -205,14 +205,18 @@ export default {
           city: null,
           state: null,
           street: null,
-          hashtag: null
+          hashtag: null,
+          file: null
+        }
+        this.cropModal = {
+          file: null,
+          show: false
         }
     },
     onSubmit: function () {
       this.submitProcessing = true
       const docID = this.firestoreDao.getDocumentID()
       if (this.file) {
-        console.log('WritePostUI : ' + this.file)
         this.uploadFileToServer(docID, this.file)
         .then(url => {
           this.post.img = url
@@ -339,7 +343,6 @@ export default {
       this.gpsAddrFailMsg = errMsg
     },
     updatefileProp: function (file) {
-      console.log('writepostui1 : ' + file)
       if (typeof file === 'string' && file.includes('blob:')) {
         fetch(file)
         .then(r => r.blob())
