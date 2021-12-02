@@ -36,7 +36,7 @@
         </b-col>
       </b-row>
       <b-row align-h="between" style="padding: 0 0 5px">
-        <b-col style="text-align:left;">
+        <b-col style="text-align:left; padding-left:18px;">
           <input type="file" ref="fileInput" id="filebtn" @change="onFileChanged" style="display:none" accept="image/*"/>
           <span>
             <b-button  v-intro ="'음식사진을 올려주세요.'" pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="uploadProcessing"><font-awesome-icon icon="camera-retro"/></b-button>
@@ -52,7 +52,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col style="text-align:left;padding-left: 15px">
+        <b-col style="text-align:left; padding-left: 17px; padding-bottom: 10px; padding-top:5px;">
           <template v-if="addrEditExpand">
               <b-input-group>
                 <b-form-input
