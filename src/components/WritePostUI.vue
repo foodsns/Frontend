@@ -16,8 +16,9 @@
             max-rows="6"
             v-model="post.descript"
             :state="validateTextArea"
+            @focus="focusOntextarea=true, locationInfo=true"
           ></b-form-textarea>
-          <b-form-invalid-feedback :state="validateTextArea" style="text-align:left;padding-left: 10px">
+          <b-form-invalid-feedback v-if="focusOntextarea" :state="validateTextArea" style="text-align:left;padding-left: 10px">
             해시태그 1개, 200자 미만의 내용이 필요합니다.
           </b-form-invalid-feedback>
         </b-col>
@@ -81,10 +82,10 @@
       </b-row>
       <b-row style="padding: 0 0 5px">
         <b-col>
-          <b-form-invalid-feedback :state="validateForm" style="text-align:right;padding-left: 10px">
+          <b-form-invalid-feedback v-if="focusOntextarea" :state="validateForm" style="text-align:right;padding-left: 10px">
             자세한 리뷰, 위치, 사진이 필요합니다.
           </b-form-invalid-feedback>
-          <b-form-invalid-feedback :state="unAddress" style="text-align:right;padding-left: 10px">
+          <b-form-invalid-feedback v-if="locationInfo" :state="unAddress" style="text-align:right;padding-left: 10px">
             위치정보가 필요합니다.
           </b-form-invalid-feedback>
         </b-col>
@@ -175,7 +176,9 @@ export default {
       uploadProcessing: false,
       submitProcessing: false,
       errorMsg: '',
-      file: null
+      file: null,
+      focusOntextarea: false,
+      locationInfo: true
     }
   },
   mounted () {
@@ -188,6 +191,8 @@ export default {
   },
   methods: {
     onCancelBtnClicked: function () {
+      this.focusOntextarea = false
+      this.locationInfo = false
       this.post = {
           id: '',
           docID: '',
