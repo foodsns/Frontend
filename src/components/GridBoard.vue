@@ -64,8 +64,8 @@ export default {
         // }
     },
     mounted () {
-        this.deletedHashtag = this.$parent.$refs['hashtagEle'].renderHashtag
-        console.log(this.deletedHashtag)
+        // this.deletedHashtag = this.$parent.$refs['hashtagEle'].renderHashtag
+        // console.log(this.deletedHashtag)
         // console.log(this.deletedHashtagProp)
     },
     data () {
