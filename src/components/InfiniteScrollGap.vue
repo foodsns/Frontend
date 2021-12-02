@@ -49,8 +49,8 @@ export default {
             if (!this.$refs.gap || this.clientHeight + this.thresholdProp < this.scrollHeight) {
                 return 0
             }
-            console.log('ref', this.$refs.gap, !this.$refs.gap)
-            return Math.abs((this.clientHeight + this.thresholdProp) - this.$refs.gap.getBoundingClientRect().y)
+            // console.log('ref', this.$refs.gap, !this.$refs.gap)
+            return Math.abs((this.clientHeight + this.thresholdProp) - (this.$refs.gap && this.$refs.gap.getBoundingClientRect() && this.$refs.gap.getBoundingClientRect().y ? this.$refs.gap.getBoundingClientRect().y : 0))
         }
     }
 }
