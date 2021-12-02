@@ -46,6 +46,12 @@ export default {
                 return null
             }
         }
+        // deletedHashtagProp: {
+        //     type: String,
+        //     default: function () {
+        //         return null
+        //     }
+        // }
     },
     watch: {
         focusedPostID: function (id) {
@@ -53,6 +59,14 @@ export default {
                 this.$refs[this.prefix + id][0].scrollIntoView()
             }
         }
+        // deletedHashtag: function () {
+        //     console.log(this.deletedHashtag)
+        // }
+    },
+    mounted () {
+        // this.deletedHashtag = this.$parent.$refs['hashtagEle'].renderHashtag
+        // console.log(this.deletedHashtag)
+        // console.log(this.deletedHashtagProp)
     },
     data () {
         return {

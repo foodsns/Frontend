@@ -16,8 +16,9 @@
             max-rows="6"
             v-model="post.descript"
             :state="validateTextArea"
+            @focus="focusOntextarea=true, locationInfo=true"
           ></b-form-textarea>
-          <b-form-invalid-feedback :state="validateTextArea" style="text-align:left;padding-left: 10px">
+          <b-form-invalid-feedback v-if="focusOntextarea" :state="validateTextArea" style="text-align:left;padding-left: 10px">
             해시태그 1개, 200자 미만의 내용이 필요합니다.
           </b-form-invalid-feedback>
         </b-col>
@@ -35,7 +36,7 @@
         </b-col>
       </b-row>
       <b-row align-h="between" style="padding: 0 0 5px">
-        <b-col style="text-align:left;">
+        <b-col style="text-align:left; padding-left:18px;">
           <input type="file" ref="fileInput" id="filebtn" @change="onFileChanged" style="display:none" accept="image/*"/>
           <span>
             <b-button  v-intro ="'음식사진을 올려주세요.'" pill variant="outline-secondary" @click="$refs.fileInput.click()" :disabled="uploadProcessing"><font-awesome-icon icon="camera-retro"/></b-button>
@@ -51,7 +52,7 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col style="text-align:left;padding-left: 15px">
+        <b-col style="text-align:left; padding-left: 17px; padding-bottom: 10px; padding-top:5px;">
           <template v-if="addrEditExpand">
               <b-input-group>
                 <b-form-input
@@ -81,10 +82,10 @@
       </b-row>
       <b-row style="padding: 0 0 5px">
         <b-col>
-          <b-form-invalid-feedback :state="validateForm" style="text-align:right;padding-left: 10px">
+          <b-form-invalid-feedback v-if="focusOntextarea" :state="validateForm" style="text-align:right;padding-left: 10px">
             자세한 리뷰, 위치, 사진이 필요합니다.
           </b-form-invalid-feedback>
-          <b-form-invalid-feedback :state="unAddress" style="text-align:right;padding-left: 10px">
+          <b-form-invalid-feedback v-if="locationInfo" :state="unAddress" style="text-align:right;padding-left: 10px">
             위치정보가 필요합니다.
           </b-form-invalid-feedback>
         </b-col>
@@ -175,7 +176,9 @@ export default {
       uploadProcessing: false,
       submitProcessing: false,
       errorMsg: '',
-      file: null
+      file: null,
+      focusOntextarea: false,
+      locationInfo: true
     }
   },
   mounted () {
@@ -188,6 +191,8 @@ export default {
   },
   methods: {
     onCancelBtnClicked: function () {
+      this.focusOntextarea = false
+      this.locationInfo = false
       this.post = {
           id: '',
           docID: '',
