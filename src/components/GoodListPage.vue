@@ -62,14 +62,19 @@ export default {
         this.$refs.goodGrid.addEventListener('resize', this.scrollHandler)
         this.$refs.goodGrid.addEventListener('scroll', this.scrollHandler)
         this.scrollHandler()
-        if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
-            Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
-                this.$nextTick(() => {
-                    if (isLoggedIn) {
-                        this.searchPosts(true, false)
-                    }
+        if (Vue.prototype.$firebaseAuth) {
+            if (Vue.prototype.$firebaseAuth.eventBus) {
+                Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+                    this.$nextTick(() => {
+                        if (isLoggedIn) {
+                            this.searchPosts(true, false)
+                        }
+                    })
                 })
-            })
+            }
+            if (Vue.prototype.$firebaseAuth.getCurrentUserUid()) {
+                this.searchPosts(true, false)
+            }
         }
     },
     methods: {
