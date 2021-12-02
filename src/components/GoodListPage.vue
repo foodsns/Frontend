@@ -29,6 +29,14 @@
                                         @need-more="onScrollReachedBottom"></infinite-scroll>
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col>
+                    <infinite-scroll-gap v-if="postList && postList.length > 0"
+                                    v-bind:clientHeight="clientHeight"
+                                    v-bind:scrollHeight="scrollHeight"
+                                    v-bind:thresholdProp="threshold"></infinite-scroll-gap>
+                </b-col>
+            </b-row>
         </b-container>
     </div>
 </template>
