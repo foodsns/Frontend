@@ -102,7 +102,7 @@
     <div class="wrapper" v-if="viewMode === 'map'" v-bind:style="openSideList ? 'transform: translateX(0px);' : 'transform: translateX(-300px);'">
       <div id="sideList" ref="sidelist" class="list">
         <b-container fluid>
-          <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true" v-bind:focusedPostID="focusedPost.id"></grid-board>
+          <grid-board v-bind:postListProps="postList" v-bind:onlyOneLine="true" v-bind:focusedPostID="focusedPost.id" v-bind:deletedHashtagProp="deletedHash"></grid-board>
           <b-row>
             <b-col>
               <infinite-scroll v-bind:clientHeight="clientHeight"
@@ -183,8 +183,7 @@ export default {
           lat: 37.5662952,
           lot: 126.9757511
         },
-        formVisibleToggle: false,
-        deletedHashtag: ''
+        formVisibleToggle: false
     }
   },
   watch: {

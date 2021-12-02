@@ -71,9 +71,7 @@ export default {
     data () {
             return {
                 postList: this.postListProps,
-                hashtag: [],
-                deletedHastagIdxList: [],
-                deleteHash: ''
+                hashtag: []
             }
         }
 }
