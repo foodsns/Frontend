@@ -63,6 +63,7 @@ export default {
         //     console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
         // },
         scrollTop: function (val) {
+            console.log('clientHeight + threshold < scrollHeight', this.clientHeight, this.threshold, this.scrollHeight)
             // console.log(`clientHeight: ${this.clientHeight}, scrollHeight: ${this.scrollHeight}, scrollTop: ${this.scrollTop}, threshold: ${this.threshold}`)
             const height = this.calcCurrentScrollHeight()
             // console.log(`ch + st >= sh - th == ${this.clientHeight + this.scrollTop} >= ${this.scrollHeight - this.threshold} : ${height}`)
