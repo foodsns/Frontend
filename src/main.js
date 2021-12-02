@@ -53,6 +53,7 @@ import ShareAddr from './components/ShareAddr'
 import DropDownList from './components/DropDownList'
 import Manual from './components/Manual'
 import SearchOptionBar from './components/SearchOptionBar'
+import InfiniteScrollGap from './components/InfiniteScrollGap'
 
 // Initialize Firebase
 getAnalytics(app)
@@ -111,6 +112,7 @@ Vue.component('share-addr', ShareAddr)
 Vue.component('drop-down-list', DropDownList)
 Vue.component('manual-btn', Manual)
 Vue.component('search-option-bar', SearchOptionBar)
+Vue.component('infinite-scroll-gap', InfiniteScrollGap)
 
 Vue.use(MdButton)
 Vue.use(MdContent)

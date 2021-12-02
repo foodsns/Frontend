@@ -29,6 +29,14 @@
                                         @need-more="onScrollReachedBottom"></infinite-scroll>
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col>
+                    <infinite-scroll-gap v-if="postList && postList.length > 0"
+                                    v-bind:clientHeight="clientHeight"
+                                    v-bind:scrollHeight="scrollHeight"
+                                    v-bind:thresholdProp="threshold"></infinite-scroll-gap>
+                </b-col>
+            </b-row>
         </b-container>
     </div>
 </template>
@@ -62,14 +70,19 @@ export default {
         this.$refs.goodGrid.addEventListener('resize', this.scrollHandler)
         this.$refs.goodGrid.addEventListener('scroll', this.scrollHandler)
         this.scrollHandler()
-        if (Vue.prototype.$firebaseAuth && Vue.prototype.$firebaseAuth.eventBus) {
-            Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
-                this.$nextTick(() => {
-                    if (isLoggedIn) {
-                        this.searchPosts(true, false)
-                    }
+        if (Vue.prototype.$firebaseAuth) {
+            if (Vue.prototype.$firebaseAuth.eventBus) {
+                Vue.prototype.$firebaseAuth.eventBus.$on('onAuthStateChanged', (isLoggedIn) => {
+                    this.$nextTick(() => {
+                        if (isLoggedIn) {
+                            this.searchPosts(true, false)
+                        }
+                    })
                 })
-            })
+            }
+            if (Vue.prototype.$firebaseAuth.getCurrentUserUid()) {
+                this.searchPosts(true, false)
+            }
         }
     },
     methods: {

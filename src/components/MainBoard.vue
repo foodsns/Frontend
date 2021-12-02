@@ -87,17 +87,27 @@
           <write-post-ui @submit-success="onSubmitPostSuccess" v-if="getUserId()"></write-post-ui>
         </b-col>
       </b-row>
-      <grid-board v-if="viewMode === 'grid'" v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
-      <b-row v-if="viewMode === 'grid'">
-        <b-col>
-          <infinite-scroll v-bind:clientHeight="clientHeight"
-                            v-bind:scrollHeight="scrollHeight"
-                            v-bind:scrollTop="scrollTop"
-                            v-bind:thresholdProp="threshold"
-                            v-bind:messageProp.sync="scrollMsg"
-                            @need-more="onScrollReachedBottom"></infinite-scroll>
-        </b-col>
-      </b-row>
+      <template v-if="viewMode === 'grid'">
+        <grid-board v-bind:postListProps="postList" v-bind:focusedPostID="focusedPost.id"></grid-board>
+        <b-row>
+          <b-col>
+            <infinite-scroll v-bind:clientHeight="clientHeight"
+                              v-bind:scrollHeight="scrollHeight"
+                              v-bind:scrollTop="scrollTop"
+                              v-bind:thresholdProp="threshold"
+                              v-bind:messageProp.sync="scrollMsg"
+                              @need-more="onScrollReachedBottom"></infinite-scroll>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <infinite-scroll-gap v-if="postList && postList.length > 0"
+                              v-bind:clientHeight="clientHeight"
+                              v-bind:scrollHeight="scrollHeight"
+                              v-bind:thresholdProp="threshold"></infinite-scroll-gap>
+          </b-col>
+        </b-row>
+      </template>
     </b-container>
     <div class="wrapper" v-if="viewMode === 'map'" v-bind:style="openSideList ? 'transform: translateX(0px);' : 'transform: translateX(-300px);'">
       <div id="sideList" ref="sidelist" class="list">

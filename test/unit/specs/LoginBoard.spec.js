@@ -17,7 +17,7 @@ describe('LoginBoard.vue', () => {
         expect(loginBoard.vm.error).toBe('This is error')
         loginBoard.setData({error: 'This is error'})
         .then(() => {
-            expect(loginBoard.vm.$el.querySelector('#loginError').textContent).toBe('This is error')
+            expect(loginBoard.vm.$el.querySelector('#loginError').textContent.trim()).toBe('This is error')
         })
     })
 })
