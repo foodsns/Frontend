@@ -1,3 +1,6 @@
+// eslint-disable-next-line no-unused-vars
+import app from '../firebaseApp'
+
 import { getFirestore, collection, collectionGroup, query,
         startAfter, where, getDocs, getDoc,
         orderBy, limit, setDoc, updateDoc, doc, deleteDoc, serverTimestamp, runTransaction} from 'firebase/firestore'
