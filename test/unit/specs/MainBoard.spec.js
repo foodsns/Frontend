@@ -10,7 +10,7 @@ const factory = (propsData) => {
 }
 
 describe('MainBoard.vue', () => {
-  it('Should render 8 items', () => {
+  it('Should render 8 items', (done) => {
     const mainBoard = factory({})
     mainBoard.setData({
         postList: [
@@ -90,6 +90,7 @@ describe('MainBoard.vue', () => {
     })
     .then(() => {
         // expect(mainBoard.vm.$el.querySelectorAll('post-box').length).toEqual(8)
+        done()
     })
   })
 })
