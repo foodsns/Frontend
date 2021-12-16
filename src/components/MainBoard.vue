@@ -12,13 +12,7 @@
         <manual-btn @click = "startOnboarding()"></manual-btn>
       </b-row> -->
       <b-row align-h="end">
-        <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
-          <profile-icon style="position: relative"></profile-icon>
-        </b-col>
-      </b-row>
-      <b-row align-h="end">
         <b-col style="text-align: left; position:relative;">
-          <search-option-bar></search-option-bar>
           <random-btn
             v-intro ="'무엇을 먹을지 고민이 될 때, 음식점을 랜덤으로 고를 수 있어요.'"
             class="btnClass" v-bind:postListProps="postList"></random-btn>
@@ -27,6 +21,9 @@
             class="btnClass"></goodlist-btn>
           <manual-btn class="btnClass"></manual-btn>
           <!--<drop-down-list style="margin-top: 10px"></drop-down-list>-->
+        </b-col>
+        <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
+          <profile-icon style="position: relative"></profile-icon>
         </b-col>
       </b-row>
       <b-row>
@@ -85,6 +82,11 @@
       <b-row align-h="center" v-if="viewMode === 'grid' || (viewMode === 'map' && formVisibleToggle)">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
           <write-post-ui @submit-success="onSubmitPostSuccess" v-if="getUserId()"></write-post-ui>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <search-option-bar style="position: relative"></search-option-bar>
         </b-col>
       </b-row>
       <template v-if="viewMode === 'grid'">
