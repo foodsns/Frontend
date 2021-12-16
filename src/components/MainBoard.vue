@@ -251,14 +251,18 @@ export default {
   },
   methods: {
     searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동', forceUpdate = true) {
-      console.log('test', this.$refs.mainSearchOptionBar.getCurrentSearchOption())
+      const {
+        publicOrPrivate,
+        showAreaOrGlobaly,
+        sortByGoodOrDate,
+        sortDir
+      } = this.$refs.mainSearchOptionBar.getCurrentSearchOption()
       this.firestoreDao.selectPosts({
-          lat: 37.566227,
-          lot: 126.977966,
-          distance: 1,
-          sortBy: 'best',
+          visibility: publicOrPrivate,
+          sortBy: sortByGoodOrDate,
           pageSize: 8,
-          includeMine: false,
+          orderDir: sortDir,
+          scope: showAreaOrGlobaly,
           country,
           city,
           state,
@@ -364,7 +368,7 @@ export default {
       return Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
     },
     onSearchOptionChanged (currentSearchOption) {
-      console.log('onSearchOptionChanged', currentSearchOption)
+      this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
     }
   }
 }
