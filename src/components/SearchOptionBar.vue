@@ -71,13 +71,16 @@ export default {
         opacityCondition: function (val, str) {
             return val === str ? '1' : '0.5'
         },
-        emitOptionChanged: function () {
-            this.$emit('on-option-changed', {
+        getCurrentSearchOption: function () {
+            return {
                 publicOrPrivate: this.publicOrPrivate,
                 sortByGoodOrDate: this.sortByGoodOrDate,
                 showAreaOrGlobaly: this.showAreaOrGlobaly,
                 sortDir: this.sortDir
-            })
+            }
+        },
+        emitOptionChanged: function () {
+            this.$emit('on-option-changed', this.getCurrentSearchOption())
         }
     }
 }
