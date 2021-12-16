@@ -66,7 +66,7 @@
             </b-col>
           </b-row>
         </b-col>
-        <b-col cols="4" class="toggle-btn">
+        <b-col cols="4" class="toggle-btn" id="grid-map-toggle-btn">
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
         </b-col>
       </b-row>
