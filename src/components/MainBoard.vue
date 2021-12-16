@@ -12,13 +12,7 @@
         <manual-btn @click = "startOnboarding()"></manual-btn>
       </b-row> -->
       <b-row align-h="end">
-        <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
-          <profile-icon style="position: relative"></profile-icon>
-        </b-col>
-      </b-row>
-      <b-row align-h="end">
         <b-col style="text-align: left; position:relative;">
-          <search-option-bar></search-option-bar>
           <random-btn
             v-intro ="'무엇을 먹을지 고민이 될 때, 음식점을 랜덤으로 고를 수 있어요.'"
             class="btnClass" v-bind:postListProps="postList"></random-btn>
@@ -27,6 +21,9 @@
             class="btnClass"></goodlist-btn>
           <manual-btn class="btnClass"></manual-btn>
           <!--<drop-down-list style="margin-top: 10px"></drop-down-list>-->
+        </b-col>
+        <b-col align-self="end" cols="5" style="text-align: right; margin-bottom: 15px">
+          <profile-icon style="position: relative"></profile-icon>
         </b-col>
       </b-row>
       <b-row>
@@ -69,7 +66,7 @@
             </b-col>
           </b-row>
         </b-col>
-        <b-col cols="4" class="toggle-btn">
+        <b-col cols="4" class="toggle-btn" id="grid-map-toggle-btn">
           <grid-map-toggle @current-mode="onViewModeChanged" :mode="viewMode"></grid-map-toggle>
         </b-col>
       </b-row>
@@ -85,6 +82,14 @@
       <b-row align-h="center" v-if="viewMode === 'grid' || (viewMode === 'map' && formVisibleToggle)">
         <b-col cols="12" md="6" lg="5" xl="4" style="margin: 15px 0">
           <write-post-ui @submit-success="onSubmitPostSuccess" v-if="getUserId()"></write-post-ui>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <search-option-bar ref="mainSearchOptionBar"
+                              style="position: relative"
+                              @on-option-changed="onSearchOptionChanged">
+                              </search-option-bar>
         </b-col>
       </b-row>
       <template v-if="viewMode === 'grid'">
@@ -246,13 +251,18 @@ export default {
   },
   methods: {
     searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동', forceUpdate = true) {
+      const {
+        publicOrPrivate,
+        showAreaOrGlobaly,
+        sortByGoodOrDate,
+        sortDir
+      } = this.$refs.mainSearchOptionBar.getCurrentSearchOption()
       this.firestoreDao.selectPosts({
-          lat: 37.566227,
-          lot: 126.977966,
-          distance: 1,
-          sortBy: 'best',
+          visibility: publicOrPrivate,
+          sortBy: sortByGoodOrDate,
           pageSize: 8,
-          includeMine: false,
+          orderDir: sortDir,
+          scope: showAreaOrGlobaly,
           country,
           city,
           state,
@@ -356,6 +366,9 @@ export default {
     },
     getUserId () {
       return Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
+    },
+    onSearchOptionChanged (currentSearchOption) {
+      this.searchPosts(false, '대한민국', this.lastLoc.addr1, this.lastLoc.addr2, this.lastLoc.addr3)
     }
   }
 }

@@ -16,6 +16,7 @@
         <h4>{{postItem.hashtag}}</h4>
         <p>{{ cutDescript }}</p>
         <div class="text-date">{{postItem.date}}</div>
+        <div class="text-date">{{postItem.city}} {{postItem.state}} {{postItem.street}}</div>
         <hr>
         <div class="footer">
             <img class="profile-img" :src="postItem.profileImg"/>

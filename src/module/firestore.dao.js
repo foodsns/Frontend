@@ -41,47 +41,42 @@ export default class FirestoreDao {
     // 게시물을 좋아요 기준 정렬하는데 공개형, 같은 나라, 같은 시도, 같은 시군구, 같은 읍면동을 기준으로 페이징 기법을 사용함
     // 자신의 게시물 중 비공개형이 보이지 않으므로 따로 조회하는 api 호출해야 함 (추후 변동될 수 있음)
     async selectPosts ({
-        lat = 37.566227,
-        lot = 126.977966,
-        distance = 1,
-        sortBy = 'best',
+        visibility = 'public',
+        sortBy = 'good',
         pageSize = 8,
-        includeMine = false,
+        orderDir = 'desc',
+        scope = 'area',
         country,
         city,
         state,
         street,
         uid
     } = {}, forceUpdate = false) {
-        let goodOrderByDir = 'desc'
-        let dateOrderByDir = 'desc'
-        switch (sortBy) {
-            case 'best':
-                goodOrderByDir = 'desc'
-                dateOrderByDir = 'desc'
-                break
-            case 'recent':
-                goodOrderByDir = 'asc'
-                dateOrderByDir = 'desc'
-                break
-        }
         const db = getFirestore()
         // https://stackoverflow.com/a/50658718/7270469
-        const constraints = [
-            orderBy('good', goodOrderByDir), orderBy('date', dateOrderByDir),
-            where('visibility', '==', 'public'),
-            where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)]
+        let constraints = []
+
+        constraints.push(orderBy(sortBy, orderDir))
+
+        constraints.push(where('visibility', '==', visibility))
+        if (visibility === 'private') {
+            constraints.push(where('authorId', '==', uid))
+        }
+
+        if (scope === 'area') {
+            constraints = constraints.concat([where('country', '==', country), where('city', '==', city), where('state', '==', state), where('street', '==', street)])
+        }
+
         if (forceUpdate) {
             this._lastSelectPostsOptions = {}
         }
 
         if (JSON.stringify(this._lastSelectPostsOptions) !== JSON.stringify({
-            lat,
-            lot,
-            distance,
+            visibility,
             sortBy,
             pageSize,
-            includeMine,
+            orderDir,
+            scope,
             country,
             city,
             state,
@@ -89,12 +84,11 @@ export default class FirestoreDao {
             uid
         }) || !this._lastSelectPostsDoc) {
             this._lastSelectPostsOptions = {
-                lat,
-                lot,
-                distance,
+                visibility,
                 sortBy,
                 pageSize,
-                includeMine,
+                orderDir,
+                scope,
                 country,
                 city,
                 state,
