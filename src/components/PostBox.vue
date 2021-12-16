@@ -163,7 +163,7 @@ export default {
     border-radius: 10px;
     background-color: white;
     padding: 0 0px 5px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     transition: .4s;
     text-align: left;
 }

@@ -89,7 +89,8 @@ export default {
 #searchOptionBar {
     border-radius: 8px;
     background-color: #EEEEEE;
-    margin-bottom: 10px;
+    margin: 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .option-col {
