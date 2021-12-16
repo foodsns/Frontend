@@ -17,7 +17,7 @@ import { faUserSecret, faHeart, faMap, faTh, faUser,
         faEdit, faCheck, faSortDown, faSortUp, faTrash,
         faPencilAlt, faShare, faSignOutAlt, faTimes,
         faExclamationTriangle, faHome, faHistory, faMapMarked,
-        faSortAmountDownAlt, faSortAmountDown} from '@fortawesome/free-solid-svg-icons'
+        faSortAmountDownAlt, faSortAmountDown, faSortAmountUp} from '@fortawesome/free-solid-svg-icons'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -89,6 +89,7 @@ library.add(faHistory)
 library.add(faMapMarked)
 library.add(faSortAmountDown)
 library.add(faSortAmountDownAlt)
+library.add(faSortAmountUp)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('post-box', PostBox)

@@ -16,7 +16,7 @@
             <b-col cols="3" md="2" class="option-col" v-if="enableSortDir">
                 <font-awesome-icon icon="sort-amount-down" class="icon-btn" @click="sortDir = 'desc'; emitOptionChanged()"
                 v-bind:style="{ opacity: opacityCondition(sortDir, 'desc')}"/>
-                <font-awesome-icon icon="sort-amount-down-alt" class="icon-btn" @click="sortDir = 'asc'; emitOptionChanged()"
+                <font-awesome-icon icon="sort-amount-up" class="icon-btn" @click="sortDir = 'asc'; emitOptionChanged()"
                 v-bind:style="{ opacity: opacityCondition(sortDir, 'asc')}"/>
             </b-col>
             <b-col cols="3" md="2" class="option-col" v-if="eanbleShowAreaOrGlobaly">
