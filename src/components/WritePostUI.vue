@@ -48,7 +48,7 @@
         <b-col style="text-align:right;">
           <b-button pill variant="outline-warning" @click="onCancelBtnClicked()">취소</b-button>
           <b-button pill variant="outline-secondary" :disabled="!validateForm || submitProcessing" @click="onSubmit()"
-          v-intro ="'게시하기 버튼을 누르면 작성한 게시물이 업로드 돼요.'">게시하기</b-button>
+          v-intro ="'등록 버튼을 누르면 작성한 게시물이 업로드 돼요.'">등록</b-button>
         </b-col>
       </b-row>
       <b-row>

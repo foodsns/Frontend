@@ -109,5 +109,8 @@ export default {
     .icon-btn {
         margin-right: 5px;
     }
+    .option-col {
+        padding: 8px 13px;
+    }
 }
 </style>
