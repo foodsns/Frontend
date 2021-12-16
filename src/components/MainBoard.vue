@@ -86,7 +86,8 @@
       </b-row>
       <b-row>
         <b-col>
-          <search-option-bar style="position: relative"
+          <search-option-bar ref="mainSearchOptionBar"
+                              style="position: relative"
                               @on-option-changed="onSearchOptionChanged">
                               </search-option-bar>
         </b-col>
@@ -250,6 +251,7 @@ export default {
   },
   methods: {
     searchPosts (isInfinite = false, country = '대한민국', city = '서울특별시', state = '중구', street = '정동', forceUpdate = true) {
+      console.log('test', this.$refs.mainSearchOptionBar.getCurrentSearchOption())
       this.firestoreDao.selectPosts({
           lat: 37.566227,
           lot: 126.977966,

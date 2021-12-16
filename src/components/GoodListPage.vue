@@ -119,7 +119,7 @@ export default {
                 lat: 37.566227,
                 lot: 126.977966,
                 distance: 1,
-                sortByRecently: this.sortDir === 'dsc',
+                sortByRecently: this.sortDir === 'desc',
                 pageSize: 8,
                 // country = null,
                 // city = null,
