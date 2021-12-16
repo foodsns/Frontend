@@ -86,7 +86,9 @@
       </b-row>
       <b-row>
         <b-col>
-          <search-option-bar style="position: relative"></search-option-bar>
+          <search-option-bar style="position: relative"
+                              @on-option-changed="onSearchOptionChanged">
+                              </search-option-bar>
         </b-col>
       </b-row>
       <template v-if="viewMode === 'grid'">
@@ -358,6 +360,9 @@ export default {
     },
     getUserId () {
       return Vue.prototype.$firebaseAuth ? Vue.prototype.$firebaseAuth.getCurrentUserUid() : ''
+    },
+    onSearchOptionChanged (currentSearchOption) {
+      console.log('onSearchOptionChanged', currentSearchOption)
     }
   }
 }
