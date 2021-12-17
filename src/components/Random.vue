@@ -73,10 +73,10 @@ export default {
                   title: 'Undefined',
                   descript: '...',
                   date: '',
-                  profileImg: Vue.prototype.$markerImg || '',
+                  profileImg: Vue.prototype.$logoImg || '',
                   writer: '먹었소',
                   good: 0,
-                  img: Vue.prototype.$markerImg || '',
+                  img: Vue.prototype.$logoImg || '',
                   hashtag: '#클릭해서 랜덤 돌리기'
               }
     }
