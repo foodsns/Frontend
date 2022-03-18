@@ -1,5 +1,6 @@
 import { getApp } from 'firebase/app'
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { isFileStructureHasName } from './validate'
 
 export default class FirebaseStorage {
     storage = null
@@ -20,7 +21,7 @@ export default class FirebaseStorage {
     }
 
     uploadFile (docID, file) {
-        const imgRef = ref(this.storage, `posts/${docID}/${this.generateGuid()}.${file.name.split('.').pop()}`)
+        const imgRef = ref(this.storage, `posts/${docID}/${this.generateGuid()}.${isFileStructureHasName(file).split('.').pop()}`)
         return uploadBytes(imgRef, file)
         .then((uploadResult) => getDownloadURL(uploadResult.ref))
     }
